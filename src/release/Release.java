@@ -17,9 +17,12 @@
 package release;
 
 import com.acidmanic.release.versionables.Cocoapods;
+import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versioning.SemanticVersion;
+import com.acidmanic.release.versioning.Version;
 import com.acidmanic.release.versioning.Versionable;
 import java.io.File;
+import java.util.Date;
 
 /**
  *
@@ -34,9 +37,16 @@ public class Release {
         // TODO code application logic here
         File here = new File(".");
         
-        Versionable v = new Cocoapods();
-        v.setDirectory(here);
-        v.setVersion(new SemanticVersion(1, 1, 1, "test-app"));
+        Versionable setter = new Cocoapods();
+        String iden = new Date().toString();
+        Version version = new SemanticVersion(1, 1, 1, "release-" + iden);
+        
+        setter.setDirectory(here);
+        setter.setVersion(version);
+        
+        setter = new XCode();
+        setter.setDirectory(here);
+        setter.setVersion(version);
     }
     
 }
