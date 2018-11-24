@@ -56,6 +56,7 @@ public class SpecFileEditor {
             int eqStart = line.indexOf("=");
             String ret = line.substring(0,eqStart+1);
             ret += " '"+version+"'";
+            return ret;
         }
         return line;
     }
