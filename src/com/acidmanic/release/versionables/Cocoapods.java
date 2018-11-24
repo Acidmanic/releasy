@@ -17,6 +17,7 @@
 package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.fileeditors.SpecFileEditor;
+import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versioning.Version;
 import com.acidmanic.release.versioning.Versionable;
 import java.io.File;
@@ -56,6 +57,8 @@ public class Cocoapods implements Versionable {
         if (this.presented) {
             new SpecFileEditor(this.specsFile)
                     .setVerion(version.getVersionString());
+        }else{
+            Logger.log("No Cocoapods project found.",this);
         }
     }
 
@@ -66,6 +69,8 @@ public class Cocoapods implements Versionable {
         if (this.projectName != null) {
             this.specsFile = getSpecFile(directory, this.projectName);
             this.presented = this.specsFile.exists();
+        }else{
+            Logger.log("It's not an XCode project directory.",this);
         }
     }
 
