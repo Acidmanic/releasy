@@ -24,7 +24,8 @@ import java.io.File;
  */
 public interface Versionable {
     
-    boolean isPresentedAt(File directory);
+    void setDirectory(File directory);
+    boolean isPresentedAt();
     void setVersion(Version version);
     
 }
