@@ -41,13 +41,13 @@ public class XCode implements Versionable {
     }
 
     @Override
-    public boolean isPresentedAt() {
+    public boolean canSetVersion() {
         return isXcodeProject && isAGVPresent;
     }
 
     @Override
     public void setVersion(Version version) {
-        if (isPresentedAt()) {
+        if (canSetVersion()) {
             Bash b = new Bash();
             if (version instanceof SemanticVersion) {
                 b.syncRun("agvtool -noscm new-version "

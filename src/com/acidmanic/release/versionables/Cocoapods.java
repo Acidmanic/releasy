@@ -30,7 +30,7 @@ public class Cocoapods implements Versionable {
 
     private final static String PODSPEC_EXT = ".podspec";
 
-    private boolean presented = false;
+    private boolean canSet = false;
     private String projectName = null;
     private File specsFile = null;
 
@@ -42,7 +42,7 @@ public class Cocoapods implements Versionable {
 
     @Override
     public void setVersion(Version version) {
-        if (this.presented) {
+        if (this.canSet) {
             new SpecFileEditor(this.specsFile)
                     .setVerion(version.getVersionString());
         }else{
@@ -53,18 +53,18 @@ public class Cocoapods implements Versionable {
     @Override
     public void setDirectory(File directory) {
         this.projectName = new XCodeProjectDirectoryInfo().getProjectName(directory);
-        this.presented = false;
+        this.canSet = false;
         if (this.projectName != null) {
             this.specsFile = getSpecFile(directory, this.projectName);
-            this.presented = this.specsFile.exists();
+            this.canSet = this.specsFile.exists();
         }else{
             Logger.log("It's not an XCode project directory.",this);
         }
     }
 
     @Override
-    public boolean isPresentedAt() {
-        return this.presented;
+    public boolean canSetVersion() {
+        return this.canSet;
     }
 
 }
