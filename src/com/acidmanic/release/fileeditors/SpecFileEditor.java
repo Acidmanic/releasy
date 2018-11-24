@@ -28,34 +28,36 @@ import java.util.List;
 public class SpecFileEditor {
 
     private final File specFile;
-    
+
     public SpecFileEditor(File specsFile) {
-        this.specFile=specsFile;
+        this.specFile = specsFile;
     }
 
     public void setVerion(String version) {
-            if(this.specFile.exists()){
-                try {
-                    StringBuilder sb = new StringBuilder();
-                    List<String> lines = Files.readAllLines(this.specFile.toPath());
-                    for(String line:lines){
-                        line=checkReplaceVersion(line,version);
-                        sb.append(line);
-                    }
-                    Files.write(this.specFile.toPath(), sb.toString().getBytes(), 
-                            StandardOpenOption.WRITE);
-                } catch (Exception e) {
+        if (this.specFile.exists()) {
+            try {
+                StringBuilder sb = new StringBuilder();
+                List<String> lines = Files.readAllLines(this.specFile.toPath());
+                String sep = "";
+                for (String line : lines) {
+                    line = checkReplaceVersion(line, version);
+                    sb.append(sep).append(line);
+                    sep = "\n";
                 }
+                Files.write(this.specFile.toPath(), sb.toString().getBytes(),
+                        StandardOpenOption.WRITE);
+            } catch (Exception e) {
             }
+        }
     }
 
     private String checkReplaceVersion(String line, String version) {
         String linesig = line.replaceAll("\\s", "").toLowerCase();
         linesig = linesig.replaceAll(".+\\.version", "version");
-        if (linesig.startsWith("version=")){
+        if (linesig.startsWith("version=")) {
             int eqStart = line.indexOf("=");
-            String ret = line.substring(0,eqStart+1);
-            ret += " '"+version+"'";
+            String ret = line.substring(0, eqStart + 1);
+            ret += " '" + version + "'";
             return ret;
         }
         return line;
