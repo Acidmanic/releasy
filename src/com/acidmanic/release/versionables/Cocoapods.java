@@ -28,24 +28,12 @@ import java.io.File;
  */
 public class Cocoapods implements Versionable {
 
-    private final static String XCODE_PROJECT_DIR_EXT = ".xcodeproj";
     private final static String PODSPEC_EXT = ".podspec";
 
     private boolean presented = false;
     private String projectName = null;
     private File specsFile = null;
 
-    private String getProjectName(File directory) {
-        File[] files = directory.listFiles((File dir, String name) -> name.endsWith(XCODE_PROJECT_DIR_EXT));
-        for (File file : files) {
-            if (file.isDirectory()) {
-                String name = file.getName();
-                return name.substring(0, name.length()
-                        - XCODE_PROJECT_DIR_EXT.length());
-            }
-        }
-        return null;
-    }
 
     private static File getSpecFile(File directory, String projectName) {
         return directory.toPath().resolve(projectName + PODSPEC_EXT)
@@ -64,7 +52,7 @@ public class Cocoapods implements Versionable {
 
     @Override
     public void setDirectory(File directory) {
-        this.projectName = getProjectName(directory);
+        this.projectName = new XCodeProjectDirectoryInfo().getProjectName(directory);
         this.presented = false;
         if (this.projectName != null) {
             this.specsFile = getSpecFile(directory, this.projectName);
