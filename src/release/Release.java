@@ -16,6 +16,11 @@
  */
 package release;
 
+import com.acidmanic.release.versionables.Cocoapods;
+import com.acidmanic.release.versioning.SemanticVersion;
+import com.acidmanic.release.versioning.Versionable;
+import java.io.File;
+
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
@@ -27,6 +32,11 @@ public class Release {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        File here = new File(".");
+        
+        Versionable v = new Cocoapods();
+        v.setDirectory(here);
+        v.setVersion(new SemanticVersion(1, 1, 1, "test-app"));
     }
     
 }

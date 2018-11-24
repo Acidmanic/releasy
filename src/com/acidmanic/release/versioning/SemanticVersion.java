@@ -90,7 +90,8 @@ public class SemanticVersion implements Version {
     @Override
     public String getVersionString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.major).append(this.minor)
+        sb.append(this.major).append(".")
+                .append(this.minor).append(".")
                 .append(this.patch);
         if(hasIdentifiers()){
             sb.append("-").append(this.identifiers);
