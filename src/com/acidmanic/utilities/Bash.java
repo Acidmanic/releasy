@@ -24,22 +24,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class Bash{
+public class Bash {
 
-    private interface LineScanner{
+    private interface LineScanner {
+
         void scan(String line);
     }
-    
+
     public String syncRun(String command) {
         try {
             Process p = runCommand(command);
-            StringBuilder builder= new StringBuilder();
-            readOutputs(p,line -> builder.append(line).append("\n"));
+            StringBuilder builder = new StringBuilder();
+            readOutputs(p, line -> builder.append(line).append("\n"));
             return builder.toString();
         } catch (Throwable th) {
             log("Runtime Error: " + th.getClass().getName());
@@ -47,12 +47,22 @@ public class Bash{
         return null;
     }
 
-    private void readOutputs(Process p,LineScanner scanner) throws IOException {
-        readAllInStream(p.getInputStream(),scanner);
-        readAllInStream(p.getErrorStream(),scanner);
+    public boolean commandCanBeRunned(String command) {
+        try {
+            Process p = runCommand(command);
+            return true;
+        } catch (Throwable th) {
+
+        }
+        return false;
     }
 
-    private void readAllInStream(InputStream input,LineScanner scanner) throws IOException {
+    private void readOutputs(Process p, LineScanner scanner) throws IOException {
+        readAllInStream(p.getInputStream(), scanner);
+        readAllInStream(p.getErrorStream(), scanner);
+    }
+
+    private void readAllInStream(InputStream input, LineScanner scanner) throws IOException {
         String line;
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(input))) {
@@ -142,4 +152,3 @@ public class Bash{
     }
 
 }
-
