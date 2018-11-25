@@ -24,7 +24,6 @@ import com.acidmanic.release.versioning.SemanticVersion;
 import com.acidmanic.release.versioning.Version;
 import com.acidmanic.release.versioning.Versionable;
 import java.io.File;
-import java.util.Date;
 
 /**
  *

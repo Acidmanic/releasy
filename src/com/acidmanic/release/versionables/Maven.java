@@ -21,9 +21,7 @@ import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versioning.Version;
 import com.acidmanic.release.versioning.Versionable;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 /**
