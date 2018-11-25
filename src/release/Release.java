@@ -17,6 +17,7 @@
 package release;
 
 import com.acidmanic.release.versionables.Cocoapods;
+import com.acidmanic.release.versionables.GitTag;
 import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versioning.SemanticVersion;
 import com.acidmanic.release.versioning.Version;
@@ -38,13 +39,17 @@ public class Release {
         File here = new File(".");
         
         Versionable setter = new Cocoapods();
-        String iden = new Date().toString();
-        Version version = new SemanticVersion(1, 1, 1, "release-" + iden);
+        String iden = "testgit2";
+        Version version = new SemanticVersion(1, 2, 3, iden);
         
         setter.setDirectory(here);
         setter.setVersion(version);
         
         setter = new XCode();
+        setter.setDirectory(here);
+        setter.setVersion(version);
+        
+        setter = new GitTag();
         setter.setDirectory(here);
         setter.setVersion(version);
     }
