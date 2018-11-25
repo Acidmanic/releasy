@@ -18,6 +18,7 @@ package release;
 
 import com.acidmanic.release.versionables.Cocoapods;
 import com.acidmanic.release.versionables.GitTag;
+import com.acidmanic.release.versionables.Maven;
 import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versioning.SemanticVersion;
 import com.acidmanic.release.versioning.Version;
@@ -49,9 +50,16 @@ public class Release {
         setter.setDirectory(here);
         setter.setVersion(version);
         
+        setter = new Maven();
+        setter.setDirectory(here);
+        setter.setVersion(version);
+        
         setter = new GitTag();
         setter.setDirectory(here);
         setter.setVersion(version);
+        
+        
+        
     }
     
 }
