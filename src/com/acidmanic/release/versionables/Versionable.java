@@ -26,7 +26,7 @@ import java.io.File;
 public interface Versionable {
     
     void setDirectory(File directory);
-    boolean canSetVersion();
+    boolean isPresent();
     void setVersion(Version version);
     
 }

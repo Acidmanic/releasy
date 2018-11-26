@@ -44,26 +44,21 @@ public class Maven implements Versionable {
     }
 
     @Override
-    public boolean canSetVersion() {
-        return mavenPomPresent;
-    }
-
-    @Override
     public void setVersion(Version version) {
-        try {
+        if (mavenPomPresent) {
+            try {
+                String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
+                XmlInPlaceEditor editor = new XmlInPlaceEditor();
+                mavenFileContent = editor.setTagContent(new String[]{"project", "version"}, mavenFileContent,
+                        version.getVersionString());
+                Files.write(this.mavenPomFile.toPath(), mavenFileContent.getBytes(), StandardOpenOption.CREATE);
+                Logger.log("Maven Project Version set.", this);
+            } catch (Exception e) {
+                Logger.log("ERROR: Unable to set maven project version.", this);
+                Logger.log("ERROR: " + e.getClass().getSimpleName(), this);
 
-            String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
-            XmlInPlaceEditor editor = new XmlInPlaceEditor();
-            mavenFileContent = editor.setTagContent(new String[]{"project", "version"}, mavenFileContent,
-                    version.getVersionString());
-            Files.write(this.mavenPomFile.toPath(), mavenFileContent.getBytes(), StandardOpenOption.CREATE);
-            Logger.log("Maven Project Version set.", this);
-        } catch (Exception e) {
-            Logger.log("ERROR: Unable to set maven project version.", this);
-            Logger.log("ERROR: " + e.getClass().getSimpleName(), this);
-
+            }
         }
-
     }
 
     private File searchForPom(File directory) {
@@ -78,6 +73,9 @@ public class Maven implements Versionable {
         return name.toLowerCase().compareTo(pomxml.toLowerCase()) == 0;
     }
 
-   
+    @Override
+    public boolean isPresent() {
+        return mavenPomPresent;
+    }
 
 }

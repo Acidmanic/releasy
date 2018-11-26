@@ -41,33 +41,32 @@ public class XCode implements Versionable {
     }
 
     @Override
-    public boolean canSetVersion() {
-        return isXcodeProject && isAGVPresent;
-    }
-
-    @Override
     public void setVersion(Version version) {
-        if (canSetVersion()) {
-            Bash b = new Bash();
-            if (version instanceof SemanticVersion) {
-                b.syncRun("agvtool -noscm new-version "
-                        + ((SemanticVersion) version).getPatch());
+        if (isPresent()) {
+            if (isAGVPresent) {
+                try {
+                    setVersionOnXCode(version);
+                } catch (Exception e) {
+                }
             } else {
-                b.syncRun("agvtool -noscm new-version 0");
-                Logger.log("WARNING: "
-                        + "Patch version defaulted to zero due to choosed version format.", this);
-            }
-            b.syncRun("agvtool -noscm new-marketing-version \""
-                    + version.getVersionString()+ "\"") ;
-        } else {
-            Logger.log("Can not set the version.", this);
-            if (!isXcodeProject) {
-                Logger.log("This directory is not an xCodeProject Directory.", this);
-            }
-            if (!isAGVPresent) {
+                Logger.log("Can not set the version.", this);
                 Logger.log("Apple-generic versioning tool for Xcode projects is not available.", this);
             }
         }
+    }
+
+    private void setVersionOnXCode(Version version) {
+        Bash b = new Bash();
+        if (version instanceof SemanticVersion) {
+            b.syncRun("agvtool -noscm new-version "
+                    + ((SemanticVersion) version).getPatch());
+        } else {
+            b.syncRun("agvtool -noscm new-version 0");
+            Logger.log("WARNING: "
+                    + "Patch version defaulted to zero due to choosed version format.", this);
+        }
+        b.syncRun("agvtool -noscm new-marketing-version \""
+                + version.getVersionString() + "\"");
     }
 
     private boolean checkAGV() {
@@ -81,6 +80,11 @@ public class XCode implements Versionable {
                     && result.contains("new-marketing-version");
         }
         return false;
+    }
+
+    @Override
+    public boolean isPresent() {
+        return isXcodeProject;
     }
 
 }

@@ -23,7 +23,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 
 /**
  *
@@ -44,23 +43,20 @@ public class GitTag implements Versionable {
     }
 
     @Override
-    public boolean canSetVersion() {
-        return gitAvalable && isRepository;
-    }
-
-    @Override
     public void setVersion(Version version) {
-        if (checkLegalVersion(version)) {
-            gitCommand("add -A");
-            gitCommand("commit -m 'Set release versions to: "
-                    + version.getVersionString() + "'");
-            gitCommand("tag " + version.getVersionString() + " -m '"
-                    + "Released at: " + new Date().toString() + "'");
-            Logger.log("All versions set.", this);
-            printGitPushCommands(version.getVersionString());
-        } else {
-            Logger.log("ERROR: Did not performed a relelase.", this);
-            Logger.log("because given version is not legal.", this);
+        if (gitAvalable && isRepository) {
+            if (checkLegalVersion(version)) {
+                gitCommand("add -A");
+                gitCommand("commit -m 'Set release versions to: "
+                        + version.getVersionString() + "'");
+                gitCommand("tag " + version.getVersionString() + " -m '"
+                        + "Released at: " + new Date().toString() + "'");
+                Logger.log("All versions set.", this);
+                printGitPushCommands(version.getVersionString());
+            } else {
+                Logger.log("ERROR: Did not performed a relelase.", this);
+                Logger.log("because given version is not legal.", this);
+            }
         }
     }
 
@@ -124,12 +120,17 @@ public class GitTag implements Versionable {
             Logger.log("");
             Logger.log("git push " + remote + " " + branch);
             Logger.log("git push " + remote + " " + versionString);
-             Logger.log("");
+            Logger.log("");
             Logger.log("Or with Single Command:");
-             Logger.log("");
+            Logger.log("");
             Logger.log("git push " + remote + " " + branch + " --follow-tags");
         }
         Logger.log("");
+    }
+
+    @Override
+    public boolean isPresent() {
+        return isRepository;
     }
 
 }
