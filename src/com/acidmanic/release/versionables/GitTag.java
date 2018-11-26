@@ -18,9 +18,8 @@ package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.Bash;
+import com.acidmanic.utilities.GitStdWrapper;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,14 +31,13 @@ public class GitTag implements Versionable {
 
     private boolean gitAvalable = false;
     private boolean isRepository = false;
-    private String gitDirectory = "";
+    private GitStdWrapper git = null;
 
     @Override
     public void setDirectory(File directory) {
-        this.gitAvalable = checkForGit();
-        this.gitDirectory = "--git-dir "
-                + directory.toPath().resolve(".git").toAbsolutePath().toString();
-        this.isRepository = checkRepository();
+        this.gitAvalable = GitStdWrapper.isGitAvailable();
+        this.git = new GitStdWrapper(directory);
+        this.isRepository = git.isGitRepository();
     }
 
     @Override
@@ -61,69 +59,25 @@ public class GitTag implements Versionable {
     }
 
     private void setReleaseVersion(Version version) {
-        gitCommand("add -A");
-        gitCommand("commit -m 'Set release versions to: "
-                + version.getVersionString() + "'");
-        gitCommand("tag " + version.getVersionString() + " -m '"
-                + "Released at: " + new Date().toString() + "'");
+        git.commit("Set release versions to: "
+                + version.getVersionString());
+        git.tag(version.getVersionString(), getReleaseMessage());
         Logger.log("All versions set.", this);
         printGitPushCommands(version.getVersionString());
     }
 
-    private boolean checkForGit() {
-        Bash b = new Bash();
-        String command = "git version";
-        if (b.commandCanBeRunned(command)) {
-            String result = b.syncRun(command);
-            if (result != null) {
-                result = result.replaceAll("\\d", "");
-                result = result.replaceAll("\\.", "");
-                result = result.trim();
-                return result.compareTo("git version") == 0;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkRepository() {
-        String result = gitCommand("status").trim();
-        return result.startsWith("On branch");
+    private static String getReleaseMessage() {
+        return "Released at: " + new Date().toString();
     }
 
     private boolean checkLegalVersion(Version version) {
-        String allTags = gitCommand("fetch --tags");
-        return !allTags.contains(version.getVersionString());
-    }
-
-    private String gitCommand(String command) {
-        command = "git " + this.gitDirectory + " " + command;
-        return new Bash().syncRun(command);
-    }
-
-    private List<String> getAllRemotes() {
-        ArrayList<String> repos = new ArrayList<>();
-        String[] lines = gitCommand("remote -v").split("\n");
-        for (String line : lines) {
-            line = line.replaceAll("\\s", " ");
-            String remote = line.substring(0, line.indexOf(" "));
-            if (!repos.contains(remote)) {
-                repos.add(remote);
-            }
-        }
-        return repos;
-    }
-
-    private String getBranch() {
-        String[] resultLines = gitCommand("status").trim().split("\n");
-        if (resultLines != null && resultLines.length > 0) {
-            return resultLines[0].replace("On branch", "").trim();
-        }
-        return "<branch>";
+        git.fetchTags();
+        return !git.tagExists(version.getVersionString());
     }
 
     private void printGitPushCommands(String versionString) {
-        List<String> remotes = getAllRemotes();
-        String branch = getBranch();
+        List<String> remotes = git.getAllRemotes();
+        String branch = git.getBranch();
         Logger.log("");
         Logger.log("You can perform release by running followings:");
         for (String remote : remotes) {
@@ -141,6 +95,11 @@ public class GitTag implements Versionable {
     @Override
     public boolean isPresent() {
         return isRepository;
+    }
+
+    @Override
+    public String getVersion() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
