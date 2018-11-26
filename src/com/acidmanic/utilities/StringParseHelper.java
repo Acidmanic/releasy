@@ -33,4 +33,30 @@ public class StringParseHelper {
     public String unQoute(String qoutedValue) {
         return qoutedValue.substring(1, qoutedValue.length() - 1);
     }
+
+    public String escapeAndQoute(String message, char c) {
+        return c + escape(message, new char[]{c}) + c;
+    }
+
+    public boolean isEscape(char c, char[] escapeChars) {
+        for (char es : escapeChars) {
+            if (es == c) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String escape(String message, char[] escapeChars) {
+        char[] chars = message.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for (char c : chars) {
+            if (isEscape(c, escapeChars)) {
+                sb.append("\\");
+            }
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
 }
