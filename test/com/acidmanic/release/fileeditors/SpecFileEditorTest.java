@@ -118,5 +118,15 @@ public class SpecFileEditorTest {
         String actual = new String(Files.readAllBytes(this.versionLineFile.toPath()));
         assertEquals(expected, actual);
     }
+    
+    
+    @Test
+    public void shouldReadOldVersionFromTheContent() throws IOException {
+        System.out.println("--------  shouldReplaceTheVersionInAVersionLine --------");
+        SpecFileEditor instance = new SpecFileEditor(this.versionLineFile);
+        String expected = OLD_VERSION;
+        String actual = instance.getVerion();
+        assertEquals(expected, actual);
+    }
 
 }

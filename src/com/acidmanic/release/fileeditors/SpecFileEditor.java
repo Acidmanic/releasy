@@ -16,10 +16,16 @@
  */
 package com.acidmanic.release.fileeditors;
 
+import com.acidmanic.release.versions.Version;
+import com.acidmanic.utilities.StringParseHelper;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import jdk.nashorn.internal.runtime.regexp.JoniRegExp;
+import jdk.nashorn.internal.runtime.regexp.RegExp;
+import jdk.nashorn.internal.runtime.regexp.RegExpFactory;
+import jdk.nashorn.internal.runtime.regexp.RegExpResult;
 
 /**
  *
@@ -51,10 +57,14 @@ public class SpecFileEditor {
         }
     }
 
-    private String checkReplaceVersion(String line, String version) {
+    private boolean isVersionLine(String line) {
         String linesig = line.replaceAll("\\s", "").toLowerCase();
         linesig = linesig.replaceAll(".+\\.version", "version");
-        if (linesig.startsWith("version=")) {
+        return linesig.startsWith("version=");
+    }
+
+    private String checkReplaceVersion(String line, String version) {
+        if (isVersionLine(line)) {
             int eqStart = line.indexOf("=");
             String ret = line.substring(0, eqStart + 1);
             ret += " '" + version + "'";
@@ -62,5 +72,34 @@ public class SpecFileEditor {
         }
         return line;
     }
+
+    public String getVerion() {
+        StringParseHelper helper = new StringParseHelper();
+        if (this.specFile.exists()) {
+            try {
+                List<String> lines = Files.readAllLines(this.specFile.toPath());
+                for (String line : lines) {
+                    if (isVersionLine(line)) {
+                        String[] parts = line.split("\\s");
+                        boolean isRight = false;
+                        for (String part : parts) {
+                            if (!isRight) {
+                                if ("=".compareTo(part) == 0) {
+                                    isRight = true;
+                                }
+                            } else if (helper.isQuotedValues(part)) {
+                                return helper.unQoute(part);
+                            }
+                        }
+
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        return null;
+    }
+
+   
 
 }
