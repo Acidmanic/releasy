@@ -72,4 +72,16 @@ public class Cocoapods implements Versionable {
         return this.present;
     }
 
+    @Override
+    public String getVersion() {
+        if (isPresent()) {
+            try {
+                return new SpecFileEditor(this.specsFile)
+                        .getVerion();
+            } catch (Exception e) {
+            }
+        }
+        return null;
+    }
+
 }
