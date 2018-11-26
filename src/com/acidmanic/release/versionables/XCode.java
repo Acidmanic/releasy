@@ -41,18 +41,21 @@ public class XCode implements Versionable {
     }
 
     @Override
-    public void setVersion(Version version) {
+    public boolean setVersion(Version version) {
         if (isPresent()) {
             if (isAGVPresent) {
                 try {
                     setVersionOnXCode(version);
+                    return true;
                 } catch (Exception e) {
+                    Logger.log("Unable to set Version: " + e.getClass().getSimpleName(), this);
                 }
             } else {
                 Logger.log("Can not set the version.", this);
                 Logger.log("Apple-generic versioning tool for Xcode projects is not available.", this);
             }
         }
+        return false;
     }
 
     private void setVersionOnXCode(Version version) {

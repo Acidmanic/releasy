@@ -43,21 +43,31 @@ public class GitTag implements Versionable {
     }
 
     @Override
-    public void setVersion(Version version) {
+    public boolean setVersion(Version version) {
         if (gitAvalable && isRepository) {
             if (checkLegalVersion(version)) {
-                gitCommand("add -A");
-                gitCommand("commit -m 'Set release versions to: "
-                        + version.getVersionString() + "'");
-                gitCommand("tag " + version.getVersionString() + " -m '"
-                        + "Released at: " + new Date().toString() + "'");
-                Logger.log("All versions set.", this);
-                printGitPushCommands(version.getVersionString());
+                try {
+                    setReleaseVersion(version);
+                    return true;
+                } catch (Exception e) {
+                    Logger.log("Unable to set Version: " + e.getClass().getSimpleName(), this);
+                }
             } else {
                 Logger.log("ERROR: Did not performed a relelase.", this);
                 Logger.log("because given version is not legal.", this);
             }
         }
+        return false;
+    }
+
+    private void setReleaseVersion(Version version) {
+        gitCommand("add -A");
+        gitCommand("commit -m 'Set release versions to: "
+                + version.getVersionString() + "'");
+        gitCommand("tag " + version.getVersionString() + " -m '"
+                + "Released at: " + new Date().toString() + "'");
+        Logger.log("All versions set.", this);
+        printGitPushCommands(version.getVersionString());
     }
 
     private boolean checkForGit() {

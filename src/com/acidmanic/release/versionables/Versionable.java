@@ -27,6 +27,11 @@ public interface Versionable {
     
     void setDirectory(File directory);
     boolean isPresent();
-    void setVersion(Version version);
+    /***
+     * This will set the version in versionable's target.
+     * @param version will be set into target.
+     * @return true for Success, false for Failure.
+     */
+    boolean setVersion(Version version);
     
 }

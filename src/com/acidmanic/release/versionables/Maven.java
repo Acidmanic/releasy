@@ -20,6 +20,7 @@ import com.acidmanic.release.fileeditors.xmlinplace.XmlInPlaceEditor;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
@@ -44,21 +45,25 @@ public class Maven implements Versionable {
     }
 
     @Override
-    public void setVersion(Version version) {
+    public boolean setVersion(Version version) {
         if (mavenPomPresent) {
             try {
-                String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
-                XmlInPlaceEditor editor = new XmlInPlaceEditor();
-                mavenFileContent = editor.setTagContent(new String[]{"project", "version"}, mavenFileContent,
-                        version.getVersionString());
-                Files.write(this.mavenPomFile.toPath(), mavenFileContent.getBytes(), StandardOpenOption.CREATE);
-                Logger.log("Maven Project Version set.", this);
+                setMavenProjectVersion(version);
+                return true;
             } catch (Exception e) {
-                Logger.log("ERROR: Unable to set maven project version.", this);
-                Logger.log("ERROR: " + e.getClass().getSimpleName(), this);
-
+                Logger.log("Unable to set Version: " + e.getClass().getSimpleName(), this);
             }
         }
+        return false;
+    }
+
+    private void setMavenProjectVersion(Version version) throws IOException {
+        String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
+        XmlInPlaceEditor editor = new XmlInPlaceEditor();
+        mavenFileContent = editor.setTagContent(new String[]{"project", "version"}, mavenFileContent,
+                version.getVersionString());
+        Files.write(this.mavenPomFile.toPath(), mavenFileContent.getBytes(), StandardOpenOption.CREATE);
+        Logger.log("Maven Project Version set.", this);
     }
 
     private File searchForPom(File directory) {

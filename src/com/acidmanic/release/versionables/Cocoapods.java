@@ -34,20 +34,25 @@ public class Cocoapods implements Versionable {
     private String projectName = null;
     private File specsFile = null;
 
-
     private static File getSpecFile(File directory, String projectName) {
         return directory.toPath().resolve(projectName + PODSPEC_EXT)
                 .toFile();
     }
 
     @Override
-    public void setVersion(Version version) {
+    public boolean setVersion(Version version) {
         if (this.present) {
-            new SpecFileEditor(this.specsFile)
-                    .setVerion(version.getVersionString());
-        }else{
-            Logger.log("No Cocoapods project found.",this);
+            try {
+                new SpecFileEditor(this.specsFile)
+                        .setVerion(version.getVersionString());
+                return true;
+            } catch (Exception e) {
+                Logger.log("Unable to set Version: " + e.getClass().getSimpleName(), this);
+            }
+        } else {
+            Logger.log("No Cocoapods project found.", this);
         }
+        return false;
     }
 
     @Override
@@ -57,8 +62,8 @@ public class Cocoapods implements Versionable {
         if (this.projectName != null) {
             this.specsFile = getSpecFile(directory, this.projectName);
             this.present = this.specsFile.exists();
-        }else{
-            Logger.log("It's not an XCode project directory.",this);
+        } else {
+            Logger.log("It's not an XCode project directory.", this);
         }
     }
 
