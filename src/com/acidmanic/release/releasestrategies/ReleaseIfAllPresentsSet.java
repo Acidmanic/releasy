@@ -39,8 +39,11 @@ public class ReleaseIfAllPresentsSet implements ReleaseStrategy {
             return;
         }
         printVersionables(presents);
+        releaser.setDirectory(currentDirectory);
         if (!releaser.isPresent()) {
-            Logger.log("WARNING: Release tool is not present.");
+            Logger.log("WARNING: Release tool ("
+                    + releaser.getClass().getSimpleName()
+                    + ") is not present.");
             Logger.log("WARNING: Nothing has been done.");
             return;
         }
@@ -48,12 +51,12 @@ public class ReleaseIfAllPresentsSet implements ReleaseStrategy {
             Logger.log("INFO: 👍 All Versions set.");
             if (releaser.setVersion(version)) {
                 Logger.log("INFO: 👍 Released Successfully.");
-            }else{
+            } else {
                 Logger.log("ERROR: Final release did not succeed.");
             }
 
         } else {
-            Logger.log("WARNING: Some present versionables encountered and error.");
+            Logger.log("WARNING: Some present versionables encountered an error.");
             Logger.log("WARNING: while setting the version.");
             Logger.log("ERROR: Final Release will not be performed.");
         }
@@ -70,7 +73,7 @@ public class ReleaseIfAllPresentsSet implements ReleaseStrategy {
     private void printVersionables(List<Versionable> presents) {
         Logger.log("Found Versionable systems:");
         for (Versionable versionable : presents) {
-            Logger.log(versionable.getClass().getSimpleName());
+            Logger.log("\t"+versionable.getClass().getSimpleName());
         }
     }
 
