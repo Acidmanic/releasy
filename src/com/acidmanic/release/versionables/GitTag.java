@@ -77,19 +77,21 @@ public class GitTag implements Versionable {
 
     private void printGitPushCommands(String versionString) {
         List<String> remotes = git.getAllRemotes();
-        String branch = git.getBranch();
-        Logger.log("");
-        Logger.log("You can perform release by running followings:");
-        for (String remote : remotes) {
+        if (!remotes.isEmpty()) {
+            String branch = git.getBranch();
             Logger.log("");
-            Logger.log("git push " + remote + " " + branch);
-            Logger.log("git push " + remote + " " + versionString);
+            Logger.log("You can perform release by running followings:");
+            for (String remote : remotes) {
+                Logger.log("");
+                Logger.log("git push " + remote + " " + branch);
+                Logger.log("git push " + remote + " " + versionString);
+                Logger.log("");
+                Logger.log("Or with Single Command:");
+                Logger.log("");
+                Logger.log("git push " + remote + " " + branch + " --follow-tags");
+            }
             Logger.log("");
-            Logger.log("Or with Single Command:");
-            Logger.log("");
-            Logger.log("git push " + remote + " " + branch + " --follow-tags");
         }
-        Logger.log("");
     }
 
     @Override
@@ -99,7 +101,11 @@ public class GitTag implements Versionable {
 
     @Override
     public String getVersion() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<String> tags = git.listTags();
+        if (tags.isEmpty()) {
+            return null;
+        }
+        return tags.get(tags.size() - 1);
     }
 
 }

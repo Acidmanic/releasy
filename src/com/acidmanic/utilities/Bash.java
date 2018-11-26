@@ -47,6 +47,18 @@ public class Bash {
         return null;
     }
 
+    public String syncRun(String command, File startup) {
+        try {
+            Process p = runCommand(command, startup);
+            StringBuilder builder = new StringBuilder();
+            readOutputs(p, line -> builder.append(line).append("\n"));
+            return builder.toString();
+        } catch (Throwable th) {
+            log("Runtime Error: " + th.getClass().getName());
+        }
+        return null;
+    }
+
     public boolean commandCanBeRunned(String command) {
         try {
             Process p = runCommand(command);
@@ -75,6 +87,12 @@ public class Bash {
     private Process runCommand(String command) throws IOException {
         String[] splitedCommand = splitToArgs(command);
         Process p = Runtime.getRuntime().exec(splitedCommand);
+        return p;
+    }
+
+    private Process runCommand(String command, File startup) throws Exception {
+        String[] splitedCommand = splitToArgs(command);
+        Process p = Runtime.getRuntime().exec(splitedCommand, null, startup);
         return p;
     }
 

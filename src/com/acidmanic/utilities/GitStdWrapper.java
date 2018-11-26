@@ -29,9 +29,12 @@ public class GitStdWrapper {
 
     private String gitDirectoryExtension = "";
 
-    public GitStdWrapper(File gitDirectoty) {
+    private final File workspace;
+
+    public GitStdWrapper(File workspace) {
+        this.workspace = workspace;
         this.gitDirectoryExtension = "--git-dir "
-                + gitDirectoty.toPath().resolve(".git").toAbsolutePath().toString();
+                + workspace.toPath().resolve(".git").toAbsolutePath().toString();
     }
 
     public GitStdWrapper() {
@@ -39,8 +42,11 @@ public class GitStdWrapper {
     }
 
     public String command(String command) {
-        command = "git " + this.gitDirectoryExtension + " " + command;
-        return new Bash().syncRun(command);
+//        command = "git " + this.gitDirectoryExtension + " " + command;
+//        return new Bash().syncRun(command);
+
+        return new Bash().syncRun("git " + command, workspace);
+
     }
 
     public boolean isGitRepository() {
@@ -50,12 +56,15 @@ public class GitStdWrapper {
 
     public List<String> getAllRemotes() {
         ArrayList<String> repos = new ArrayList<>();
-        String[] lines = command("remote -v").split("\n");
+        String[] lines = command("remote -v").trim().split("\n");
         for (String line : lines) {
-            line = line.replaceAll("\\s", " ");
-            String remote = line.substring(0, line.indexOf(" "));
-            if (!repos.contains(remote)) {
-                repos.add(remote);
+            line = line.trim().replaceAll("\\s", " ");
+            int nd = line.indexOf(" ");
+            if (nd > 0) {
+                String remote = line.substring(0, nd);
+                if (!repos.contains(remote)) {
+                    repos.add(remote);
+                }
             }
         }
         return repos;
@@ -89,8 +98,8 @@ public class GitStdWrapper {
     }
 
     public void commit(String message) {
-        command("commit -m '" + new StringParseHelper()
-                .escapeAndQoute(message, '\'') + "'");
+        command("commit -m " + new StringParseHelper()
+                .escapeAndQoute(message, '\''));
     }
 
     public void tag(String version, String message) {
@@ -117,9 +126,13 @@ public class GitStdWrapper {
         ret.addAll(Arrays.asList(tags));
         return ret;
     }
-    
-    public void fetchTags(){
+
+    public void fetchTags() {
         command("fetch --tags");
+    }
+
+    public void init() {
+        command("init");
     }
 
 }
