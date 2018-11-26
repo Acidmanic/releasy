@@ -23,6 +23,7 @@ import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.versionables.Versionable;
+import com.acidmanic.utilities.ClassRegistery;
 import java.io.File;
 
 /**
@@ -36,29 +37,16 @@ public class Release {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        File here = new File(".");
-        
-        Versionable setter = new Cocoapods();
-        String iden = "testgit2";
-        Version version = new SemanticVersion(1, 2, 3, iden);
-        
-        setter.setDirectory(here);
-        setter.setVersion(version);
-        
-        setter = new XCode();
-        setter.setDirectory(here);
-        setter.setVersion(version);
-        
-        setter = new Maven();
-        setter.setDirectory(here);
-        setter.setVersion(version);
-        
-        setter = new GitTag();
-        setter.setDirectory(here);
-        setter.setVersion(version);
-        
-        
-        
+
+        Application.initialize();
+
+        String iden = "test-default";
+        Version version = new SemanticVersion(2, 2, 2, iden);
+
+        Application.getReleaseStrategy()
+                .release(ClassRegistery.makeInstance().all(Versionable.class),
+                        Application.getReleaser(), version);
+
     }
-    
+
 }
