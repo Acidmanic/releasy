@@ -20,7 +20,6 @@ import com.acidmanic.release.projectdirectory.XCodeProjectDirectoryInfo;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versioning.SemanticVersion;
 import com.acidmanic.release.versioning.Version;
-import com.acidmanic.release.versioning.Versionable;
 import com.acidmanic.utilities.Bash;
 import java.io.File;
 

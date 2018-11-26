@@ -18,7 +18,6 @@ package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versioning.Version;
-import com.acidmanic.release.versioning.Versionable;
 import com.acidmanic.utilities.Bash;
 import java.io.File;
 import java.util.ArrayList;

@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.releasestrategies;
 
-import com.acidmanic.release.versioning.Versionable;
+import com.acidmanic.release.versionables.Versionable;
 import java.util.List;
 
 /**

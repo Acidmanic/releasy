@@ -19,7 +19,6 @@ package com.acidmanic.release.versionables;
 import com.acidmanic.release.fileeditors.xmlinplace.XmlInPlaceEditor;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versioning.Version;
-import com.acidmanic.release.versioning.Versionable;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
