@@ -83,4 +83,15 @@ public class Maven implements Versionable {
         return mavenPomPresent;
     }
 
+    @Override
+    public String getVersion() {
+        try {
+            String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
+            XmlInPlaceEditor editor = new XmlInPlaceEditor();
+            return editor.getTagContent(new String[]{"project", "version"}, mavenFileContent);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
 }
