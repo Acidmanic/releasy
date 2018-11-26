@@ -20,8 +20,8 @@ import com.acidmanic.release.versionables.Cocoapods;
 import com.acidmanic.release.versionables.GitTag;
 import com.acidmanic.release.versionables.Maven;
 import com.acidmanic.release.versionables.XCode;
-import com.acidmanic.release.versioning.SemanticVersion;
-import com.acidmanic.release.versioning.Version;
+import com.acidmanic.release.versions.SemanticVersion;
+import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.versionables.Versionable;
 import java.io.File;
 

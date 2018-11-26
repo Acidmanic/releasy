@@ -19,7 +19,7 @@ package com.acidmanic.release.versionables;
 import com.acidmanic.release.projectdirectory.XCodeProjectDirectoryInfo;
 import com.acidmanic.release.fileeditors.SpecFileEditor;
 import com.acidmanic.release.logging.Logger;
-import com.acidmanic.release.versioning.Version;
+import com.acidmanic.release.versions.Version;
 import java.io.File;
 
 /**

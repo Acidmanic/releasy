@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.versionables;
 
-import com.acidmanic.release.versioning.Version;
+import com.acidmanic.release.versions.Version;
 import java.io.File;
 
 /**
