@@ -22,4 +22,12 @@ package com.acidmanic.release.versions;
  */
 public interface Version {
     String getVersionString();
+    
+    
+    public static final Version NULL = new Version() {
+        @Override
+        public String getVersionString() {
+            return "1.0.0";
+        }
+    };
 }
