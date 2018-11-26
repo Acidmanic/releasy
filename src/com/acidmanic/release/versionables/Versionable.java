@@ -33,5 +33,6 @@ public interface Versionable {
      * @return true for Success, false for Failure.
      */
     boolean setVersion(Version version);
+    String getVersion();
     
 }
