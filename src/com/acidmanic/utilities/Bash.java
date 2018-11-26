@@ -151,4 +151,19 @@ public class Bash {
         return parts.toArray(ret);
     }
 
+    private final char[] bashEscapeChars = {'\'', '\"'};
+
+    public String bashEscape(String message) {
+        char[] chars = message.toCharArray();
+        StringParseHelper helper = new StringParseHelper();
+        StringBuilder sb = new StringBuilder();
+        for (char c : chars) {
+            if (helper.isEscape(c, bashEscapeChars)) {
+                sb.append("\\");
+            }
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
 }
