@@ -17,16 +17,15 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.release.logging.Logger;
-import com.acidmanic.release.versions.Version;
 import release.Application;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class SetVersion extends ReleaseCommandBase {
+public class Version extends ReleaseCommandBase {
 
-    private Version version;
+    private com.acidmanic.release.versions.Version version;
 
     @Override
     protected String getUsageString() {
