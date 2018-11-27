@@ -62,7 +62,6 @@ public class ClassRegistery {
 
     public <T> List<T> all(Class<? extends T> type) {
         ArrayList<T> ret = new ArrayList<>();
-        String fullName = type.getName();
         for (Class t : this.classes) {
             try {
                 Object o = t.newInstance();

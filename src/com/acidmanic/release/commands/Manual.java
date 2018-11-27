@@ -31,12 +31,13 @@ public class Manual extends ReleaseCommandBase {
     protected String getUsageString() {
         return "Will set given version into all present Versionable-Systems, "
                 + "then tries to perform a release. \n"
+                + "Optional parameter: "
                 + RELEASE_TYPE_DESCRIPTION;
     }
 
     @Override
     protected String declareArguments() {
-        return "<version-string> [<release-type>]";
+        return "<version-string> [" + RELEASE_TYPE_ARG_DEC + "]";
     }
 
     @Override

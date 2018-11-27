@@ -24,7 +24,6 @@ import com.acidmanic.release.versionables.Versionable;
 import static com.acidmanic.release.versions.ReleaseTypes.*;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.ReleaseParametersBuilder;
-import java.io.File;
 import java.util.List;
 import release.Application;
 
@@ -36,8 +35,9 @@ public abstract class ReleaseCommandBase extends CommandBase {
 
     protected ReleaseEnvironment environment = new ReleaseEnvironment();
 
+    protected final static String RELEASE_TYPE_ARG_DEC = "<release-type>";
     protected final static String RELEASE_TYPE_DESCRIPTION
-            = "Optional parameter: <release-type> will describe the level "
+            = "<release-type> will describe the level "
             + "of development for your release. it can be nightly (default),"
             + "alpha, beta, release-candidate (alternatively: rc) or stable.";
 
