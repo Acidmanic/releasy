@@ -36,7 +36,7 @@ public class XCode implements Versionable {
     private boolean isAGVPresent = false;
 
     @Override
-    public void setDirectory(File directory) {
+    public void setup(File directory,int releaseType) {
         this.projectName = new XCodeProjectDirectoryInfo().getProjectName(directory);
         this.isXcodeProject = this.projectName != null;
         this.isAGVPresent = new AgvtoolStdWrapper().checkAGV();

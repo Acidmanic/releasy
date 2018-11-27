@@ -58,7 +58,7 @@ public class Cocoapods implements Versionable {
     }
 
     @Override
-    public void setDirectory(File directory) {
+    public void setup(File directory,int releaseType) {
         this.projectName = new XCodeProjectDirectoryInfo().getProjectName(directory);
         this.present = false;
         if (this.projectName != null) {

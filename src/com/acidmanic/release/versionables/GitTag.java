@@ -35,7 +35,7 @@ public class GitTag implements Versionable {
     private static final int TOP_TAGS_COUNT = 10;
 
     @Override
-    public void setDirectory(File directory) {
+    public void setup(File directory,int releaseType) {
         this.gitAvalable = GitStdWrapper.isGitAvailable();
         this.git = new GitStdWrapper(directory);
         this.isRepository = git.isGitRepository();

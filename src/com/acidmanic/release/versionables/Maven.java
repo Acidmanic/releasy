@@ -18,6 +18,7 @@ package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.fileeditors.xmlinplace.XmlInPlaceEditor;
 import com.acidmanic.release.logging.Logger;
+import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.release.versions.Version;
 import java.io.File;
 import java.io.IOException;
@@ -32,11 +33,14 @@ import java.util.List;
  */
 public class Maven implements Versionable {
 
+    private static final String MAVEN_SNAPSHOT_POSTFIX = "-SNAPSHOT";
+
     private boolean mavenPomPresent;
     private File mavenPomFile;
+    private int releaseType;
 
     @Override
-    public void setDirectory(File directory) {
+    public void setup(File directory, int releaseType) {
         this.mavenPomFile = null;
         this.mavenPomPresent = false;
         File pom = searchForPom(directory);
@@ -44,13 +48,14 @@ public class Maven implements Versionable {
             this.mavenPomFile = pom;
             this.mavenPomPresent = true;
         }
+        this.releaseType = releaseType;
     }
 
     @Override
     public boolean setVersion(Version version) {
         if (mavenPomPresent) {
             try {
-                setMavenProjectVersion(version);
+                setMavenProjectVersion(version, this.releaseType);
                 return true;
             } catch (Exception e) {
                 Logger.log("Unable to set Version: " + e.getClass().getSimpleName(), this);
@@ -59,11 +64,11 @@ public class Maven implements Versionable {
         return false;
     }
 
-    private void setMavenProjectVersion(Version version) throws IOException {
+    private void setMavenProjectVersion(Version version, int releaseType) throws IOException {
         String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
         XmlInPlaceEditor editor = new XmlInPlaceEditor();
         mavenFileContent = editor.setTagContent(new String[]{"project", "version"}, mavenFileContent,
-                version.getVersionString());
+                mavenVersionStringFor(version, releaseType));
         if (this.mavenPomFile.exists()) {
             this.mavenPomFile.delete();
         }
@@ -90,15 +95,24 @@ public class Maven implements Versionable {
 
     @Override
     public List<String> getVersions() {
+        ArrayList<String> ret = new ArrayList<>();
         try {
             String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
             XmlInPlaceEditor editor = new XmlInPlaceEditor();
-            ArrayList<String> ret = new ArrayList<>();
+
             ret.add(editor.getTagContent(new String[]{"project", "version"}, mavenFileContent));
             return ret;
         } catch (Exception e) {
         }
-        return null;
+        return ret;
+    }
+
+    private String mavenVersionStringFor(Version version, int releaseType) {
+        String ret = version.getVersionString();
+        if (releaseType != ReleaseTypes.STABLE) {
+            ret += MAVEN_SNAPSHOT_POSTFIX;
+        }
+        return ret;
     }
 
 }

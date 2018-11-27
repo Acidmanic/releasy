@@ -26,7 +26,7 @@ import java.util.List;
  */
 public interface Versionable {
 
-    void setDirectory(File directory);
+    void setup(File directory,int releaseType);
 
     boolean isPresent();
 
@@ -40,5 +40,9 @@ public interface Versionable {
     boolean setVersion(Version version);
 
     List<String> getVersions();
+    
+    
+    
+    public static final Versionable NULL = new NullVersionable();
 
 }

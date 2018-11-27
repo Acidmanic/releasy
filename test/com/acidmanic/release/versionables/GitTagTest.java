@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.versionables;
 
+import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.GitStdWrapper;
 import java.io.File;
@@ -45,7 +46,7 @@ public class GitTagTest {
     private final File gitDir;
     private final String TAG_TO_SET = "v1.0.0-test";
     private final Version VERSION_TO_SET;
-
+    
     public GitTagTest() throws IOException {
         this.VERSION_TO_SET = new Version() {
             @Override
@@ -84,7 +85,7 @@ public class GitTagTest {
     public void shouldReturnTrueForBeingPresent() {
         System.out.println("---- shouldReturnTrueForBeingPresent ----");
         GitTag instance = new GitTag();
-        instance.setDirectory(wsDir);
+        instance.setup(wsDir,ReleaseTypes.NIGHTLY);
         boolean expected = true;
         boolean actual = instance.isPresent();
         assertEquals(expected, actual);
@@ -94,7 +95,7 @@ public class GitTagTest {
     public void shouldReturnTrueForAddingATag() {
         System.out.println("---- shouldReturnTrueForAddingATag ----");
         GitTag instance = new GitTag();
-        instance.setDirectory(wsDir);
+        instance.setup(wsDir,ReleaseTypes.NIGHTLY);
         boolean expResult = true;
         boolean result = instance.setVersion(VERSION_TO_SET);
         assertEquals(expResult, result);
@@ -104,7 +105,7 @@ public class GitTagTest {
     public void shouldReadPreviouselySetVersion() {
         System.out.println("---- shouldReadPreviouselySetVersion ----");
         GitTag instance = new GitTag();
-        instance.setDirectory(wsDir);
+        instance.setup(wsDir,ReleaseTypes.NIGHTLY);
         String expResult = TAG_TO_SET;
         new GitStdWrapper(gitDir).tag(TAG_TO_SET);
         List<String> allVersions = instance.getVersions();

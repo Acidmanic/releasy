@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.versionables;
 
+import com.acidmanic.release.versions.ReleaseTypes;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -72,7 +73,7 @@ public class MavenTest {
     public void shouldReadOldVersionFromPomFile() {
         System.out.println("---- shouldReadOldVersionFromPomFile ----");
         Maven mvn = new Maven();
-        mvn.setDirectory(wsDir);
+        mvn.setup(wsDir,ReleaseTypes.NIGHTLY);
         String expected = OLD_VERSION;
         List<String> versions = mvn.getVersions();
         Assert.assertEquals(1, versions.size());
