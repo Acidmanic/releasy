@@ -77,9 +77,9 @@ public class Cocoapods implements Versionable {
 
     @Override
     public List<String> getVersions() {
+        ArrayList<String> ret = new ArrayList<>();
         if (isPresent()) {
             try {
-                ArrayList<String> ret = new ArrayList<>();
                 ret.add(
                         new SpecFileEditor(this.specsFile)
                         .getVerion());
@@ -87,7 +87,7 @@ public class Cocoapods implements Versionable {
             } catch (Exception e) {
             }
         }
-        return null;
+        return ret;
     }
 
 }

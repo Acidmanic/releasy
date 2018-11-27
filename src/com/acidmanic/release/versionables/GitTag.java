@@ -19,7 +19,10 @@ package com.acidmanic.release.versionables;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.GitStdWrapper;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.File;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class GitTag implements Versionable {
     private static final int TOP_TAGS_COUNT = 10;
 
     @Override
-    public void setup(File directory,int releaseType) {
+    public void setup(File directory, int releaseType) {
         this.gitAvalable = GitStdWrapper.isGitAvailable();
         this.git = new GitStdWrapper(directory);
         this.isRepository = git.isGitRepository();
@@ -102,13 +105,16 @@ public class GitTag implements Versionable {
 
     @Override
     public List<String> getVersions() {
-        List<String> tags = git.listTags();
-        if (tags.size() <= TOP_TAGS_COUNT) {
-            return tags;
-        } else {
-            int count = tags.size();
-            return tags.subList(count - TOP_TAGS_COUNT, count);
+        if (gitAvalable && isRepository) {
+            List<String> tags = git.listTags();
+            if (tags.size() <= TOP_TAGS_COUNT) {
+                return tags;
+            } else {
+                int count = tags.size();
+                return tags.subList(count - TOP_TAGS_COUNT, count);
+            }
         }
+        return new ArrayList<>();
     }
 
 }
