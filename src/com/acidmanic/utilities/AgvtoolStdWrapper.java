@@ -25,8 +25,24 @@ import java.util.List;
  */
 public class AgvtoolStdWrapper {
 
+    
+    
+    private final BashFactory bashFactory;
+
+    public AgvtoolStdWrapper() {
+        this.bashFactory = new DefaultBashFactory();
+    }
+
+    public AgvtoolStdWrapper(BashFactory bashFactory) {
+        this.bashFactory = bashFactory;
+    }
+    
+    
+    
+    
+    
     public boolean checkAGV() {
-        Bash b = new Bash();
+        Bash b = bashFactory.make();
         String command = "agvtool help";
         if (b.commandCanBeRunned(command)) {
             String result = b.syncRun(command);
@@ -39,14 +55,14 @@ public class AgvtoolStdWrapper {
     }
 
     public void setVersion(String full, String patch) {
-        Bash b = new Bash();
+        Bash b = bashFactory.make();
         b.syncRun("agvtool -noscm new-version " + patch);
         b.syncRun("agvtool -noscm new-marketing-version \""
                 + full + "\"");
     }
 
     public List<String> getFullVersions() {
-        String fullResult = new Bash().syncRun("agvtool what-marketing-version");
+        String fullResult = bashFactory.make().syncRun("agvtool what-marketing-version");
         String[] lines = fullResult.split("\\n");
         ArrayList<String> versions = new ArrayList<>();
         for (String line : lines) {
