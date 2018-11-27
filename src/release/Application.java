@@ -16,6 +16,7 @@
  */
 package release;
 
+import acidmanic.commandline.commands.ApplicationWideTypeRegistery;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.versionables.Cocoapods;
@@ -42,6 +43,8 @@ public class Application {
         ClassRegistery.makeInstance().add(Cocoapods.class);
         ClassRegistery.makeInstance().add(Maven.class);
         ClassRegistery.makeInstance().add(XCode.class);
+        
+        
         
         
         releaser = new GitTag();

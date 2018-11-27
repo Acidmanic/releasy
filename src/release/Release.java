@@ -16,6 +16,8 @@
  */
 package release;
 
+import acidmanic.commandline.commands.ApplicationWideCommandFactory;
+import acidmanic.commandline.commands.ICommand;
 import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.models.ReleaseParameters;
@@ -36,13 +38,19 @@ public class Release {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
 
         Application.initialize();
 
-        String iden = "test-default";
-        Version version = new SemanticVersion(2, 2, 2, iden);
+        ICommand command = ApplicationWideCommandFactory
+                .makeInstance().makeCommand(args);
+        command.execute();
+    }
 
+    @Deprecated
+    private static void testCode() {
+        String iden = "test-default";
+
+        Version version = new SemanticVersion(2, 2, 2, iden);
 
         ReleaseParameters parameters = getParameters(version);
 
@@ -52,7 +60,6 @@ public class Release {
 
         Application.getReleaseStrategy()
                 .release(parameters);
-
     }
 
     private static void printAllVersionsTest(ReleaseParameters parameters) {
