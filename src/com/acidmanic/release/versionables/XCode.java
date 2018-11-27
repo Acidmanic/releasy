@@ -70,7 +70,7 @@ public class XCode implements Versionable {
                     + "Patch version defaulted to zero due to choosed version format.", this);
         }
         full = version.getVersionString();
-        new AgvtoolStdWrapper().setVersion(patch, full);
+        new AgvtoolStdWrapper().setVersion(full, patch);
     }
 
     @Override
