@@ -20,7 +20,6 @@ import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.GitStdWrapper;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -53,11 +52,6 @@ public class GitTagTest {
             public String getVersionString() {
                 return TAG_TO_SET;
             }
-
-            @Override
-            public void parse(String versionString) throws ParseException {
-            }
-
             @Override
             public boolean tryParse(String versionString) {
                 return false;

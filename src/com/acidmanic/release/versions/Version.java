@@ -16,8 +16,6 @@
  */
 package com.acidmanic.release.versions;
 
-import java.text.ParseException;
-
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
@@ -26,7 +24,6 @@ public interface Version {
 
     String getVersionString();
 
-    public void parse(String versionString) throws ParseException;
 
     public boolean tryParse(String versionString);
 
@@ -34,10 +31,6 @@ public interface Version {
         @Override
         public String getVersionString() {
             return "0.0";
-        }
-
-        @Override
-        public void parse(String versionString) throws ParseException {
         }
 
         @Override

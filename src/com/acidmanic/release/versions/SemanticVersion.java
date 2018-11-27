@@ -16,8 +16,6 @@
  */
 package com.acidmanic.release.versions;
 
-import java.text.ParseException;
-
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
@@ -97,12 +95,6 @@ public class SemanticVersion implements Version {
         return sb.toString();
     }
 
-    @Override
-    public void parse(String versionString) throws ParseException {
-        if (!tryParse(versionString)) {
-            throw new ParseException("Unable to parse given String", 0);
-        }
-    }
 
     @Override
     public boolean tryParse(String versionString) {
