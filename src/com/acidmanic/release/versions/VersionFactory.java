@@ -24,4 +24,5 @@ package com.acidmanic.release.versions;
 public interface VersionFactory<T extends Version> {
 
     T make(T base, Change changes,int releaseType);
+    T blank();
 }

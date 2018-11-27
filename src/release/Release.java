@@ -54,32 +54,11 @@ public class Release {
 
         ReleaseParameters parameters = getParameters(version);
 
-        printAllVersionsTest(parameters);
-
-        presetupRelease(parameters);
-
-        Application.getReleaseStrategy()
-                .release(parameters);
     }
 
-    private static void printAllVersionsTest(ReleaseParameters parameters) {
-        Logger.log("------- Found Version Systems: -------------------");
-        for (Versionable v : parameters.getVersionables()) {
-            printVersionsByVersionable(v, parameters.getReleaseType());
-        }
-        printVersionsByVersionable(parameters.getReleaser(), parameters.getReleaseType());
-        Logger.log("-------------------------------------------------");
+    
 
-    }
-
-    private static void printVersionsByVersionable(Versionable v, int type) {
-        v.setup(new File("."), type);
-        List<String> versions = v.getVersions();
-        Logger.log("", v);
-        for (String vers : versions) {
-            Logger.log(vers);
-        }
-    }
+   
 
     private static ReleaseParameters getParameters(Version version) {
         return new ReleaseParametersBuilder()
@@ -89,33 +68,7 @@ public class Release {
                 .build();
     }
 
-    private static void presetupRelease(ReleaseParameters parameters) {
-        File currentDirectory = new File(".");
-        if (!parametersValid(parameters)) {
-            return;
-        }
-        printVersionables(parameters.getVersionables());
-        parameters.getReleaser().setup(currentDirectory, parameters.getReleaseType());
-        if (!parameters.getReleaser().isPresent()) {
-            Logger.log("WARNING: Release tool ("
-                    + parameters.getReleaser().getClass().getSimpleName()
-                    + ") is not present.");
-            Logger.log("WARNING: Nothing has been done.");
-            return;
-        }
-    }
-
-    private static boolean parametersValid(ReleaseParameters parameters) {
-        if (parameters == null) {
-            return false;
-        }
-        if (parameters.getVersionables().isEmpty()) {
-            Logger.log("WARNING: There is no known versionable system.");
-            Logger.log("WARNING: Nothing has been done.");
-            return false;
-        }
-        return true;
-    }
+    
 
     private static void printVersionables(List<Versionable> presents) {
         Logger.log("Found Versionable systems:");

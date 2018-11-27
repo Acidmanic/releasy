@@ -17,6 +17,7 @@
 package release;
 
 import acidmanic.commandline.commands.ApplicationWideTypeRegistery;
+import com.acidmanic.release.commands.SetVersion;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.versionables.Cocoapods;
@@ -33,23 +34,21 @@ import com.acidmanic.utilities.ClassRegistery;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public class Application {
-    
-    
+
     private static Versionable releaser;
     private static ReleaseStrategy releaseStrategy;
     private static VersionFactory versionFactory;
-    
-    public static void initialize(){
+
+    public static void initialize() {
         ClassRegistery.makeInstance().add(Cocoapods.class);
         ClassRegistery.makeInstance().add(Maven.class);
         ClassRegistery.makeInstance().add(XCode.class);
-        
-        
-        
-        
+
+        ApplicationWideTypeRegistery.makeInstance().registerClass(SetVersion.class);
+
         releaser = new GitTag();
         releaseStrategy = new ReleaseIfAllPresentsSet();
-        
+
         versionFactory = new SemanticVersionFactory();
     }
 
@@ -64,5 +63,5 @@ public class Application {
     public static VersionFactory getVersionFactory() {
         return versionFactory;
     }
-    
+
 }
