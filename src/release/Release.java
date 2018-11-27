@@ -16,6 +16,7 @@
  */
 package release;
 
+import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.GitTag;
@@ -46,9 +47,8 @@ public class Release {
         String iden = "test-default";
         Version version = new SemanticVersion(2, 2, 2, iden);
 
-        int type = ReleaseTypes.NIGHTLY;
 
-        ReleaseParameters parameters = getParameters(version, type);
+        ReleaseParameters parameters = getParameters(version);
 
         printAllVersionsTest(parameters);
 
@@ -78,29 +78,9 @@ public class Release {
         }
     }
 
-    private static List<Versionable> getPresentVersionables(File directory, int type) {
-        List<Versionable> versionables = ClassRegistery.makeInstance()
-                .all(Versionable.class
-                );
-        List<Versionable> ret = new ArrayList<>();
-        for (Versionable v : versionables) {
-            v.setup(directory, type);
-            if (v.isPresent()) {
-                try {
-                    ret.add(
-                            v.getClass().newInstance()
-                    );
-                } catch (Exception e) {
-                }
-            }
-        }
-        return ret;
-    }
-
-    private static ReleaseParameters getParameters(Version version, int type) {
-        File here = new File(".");
+    private static ReleaseParameters getParameters(Version version) {
         return new ReleaseParametersBuilder()
-                .versionables(getPresentVersionables(here, type))
+                .versionables(new ReleaseEnvironment().getPresentVersionables())
                 .version(version)
                 .releaser(new GitTag())
                 .build();
