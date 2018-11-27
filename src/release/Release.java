@@ -17,12 +17,16 @@
 package release;
 
 import com.acidmanic.release.logging.Logger;
+import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.GitTag;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.versionables.Versionable;
+import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.utilities.ClassRegistery;
+import com.acidmanic.utilities.ReleaseParametersBuilder;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,29 +46,62 @@ public class Release {
         String iden = "test-default";
         Version version = new SemanticVersion(2, 2, 2, iden);
 
-        printAllVersionsTest();
+        int type = ReleaseTypes.NIGHTLY;
+
+        ReleaseParameters parameters = getParameters(version, type);
+
+        printAllVersionsTest(parameters);
 
         Application.getReleaseStrategy()
-                .release(ClassRegistery.makeInstance().all(Versionable.class),
-                        Application.getReleaser(), version);
+                .release(parameters);
 
     }
 
-    private static void printAllVersionsTest() {
+    private static void printAllVersionsTest(ReleaseParameters parameters) {
+        Logger.log("------- Found Version Systems: -------------------");
+        for (Versionable v : parameters.getVersionables()) {
+            printVersionsByVersionable(v,parameters.getReleaseType());
+        }
+        printVersionsByVersionable(parameters.getReleaser(),parameters.getReleaseType());
+        Logger.log("-------------------------------------------------");
+
+    }
+
+    private static void printVersionsByVersionable(Versionable v,int type) {
+        v.setup(new File("."), type);
+        List<String> versions = v.getVersions();
+        Logger.log("", v);
+        for (String vers : versions) {
+            Logger.log(vers);
+        }
+    }
+
+    private static List<Versionable> getPresentVersionables(File directory, int type)  {
         List<Versionable> versionables = ClassRegistery.makeInstance()
-                .all(Versionable.class);
-        versionables.add(new GitTag());
-        File here = new File(".");
+                .all(Versionable.class
+                );
+        List<Versionable> ret = new ArrayList<>();
         for (Versionable v : versionables) {
-            v.setDirectory(here);
+            v.setup(directory, type);
             if (v.isPresent()) {
-                List<String> versions = v.getVersions();
-                for (String vers : versions) {
-                    Logger.log(vers, v);
+                try {
+                    ret.add(
+                        v.getClass().newInstance()
+                );
+                } catch (Exception e) {
                 }
             }
         }
-        Logger.log("-------------------------------------------------");
+        return ret;
+    }
+
+    private static ReleaseParameters getParameters(Version version, int type) {
+        File here = new File(".");
+        return new ReleaseParametersBuilder()
+                .versionables(getPresentVersionables(here, type))
+                .version(version)
+                .releaser(new GitTag())
+                .build();
     }
 
 }
