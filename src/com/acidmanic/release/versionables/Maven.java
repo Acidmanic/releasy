@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -84,11 +86,13 @@ public class Maven implements Versionable {
     }
 
     @Override
-    public String getVersion() {
+    public List<String> getVersion() {
         try {
             String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
             XmlInPlaceEditor editor = new XmlInPlaceEditor();
-            return editor.getTagContent(new String[]{"project", "version"}, mavenFileContent);
+            ArrayList<String> ret = new ArrayList<>();
+            ret.add(editor.getTagContent(new String[]{"project", "version"}, mavenFileContent));
+            return ret;
         } catch (Exception e) {
         }
         return null;

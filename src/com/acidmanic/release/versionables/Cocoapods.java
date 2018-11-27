@@ -21,6 +21,8 @@ import com.acidmanic.release.fileeditors.SpecFileEditor;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -73,11 +75,14 @@ public class Cocoapods implements Versionable {
     }
 
     @Override
-    public String getVersion() {
+    public List<String> getVersion() {
         if (isPresent()) {
             try {
-                return new SpecFileEditor(this.specsFile)
-                        .getVerion();
+                ArrayList<String> ret = new ArrayList<>();
+                ret.add(
+                        new SpecFileEditor(this.specsFile)
+                        .getVerion());
+                return ret;
             } catch (Exception e) {
             }
         }

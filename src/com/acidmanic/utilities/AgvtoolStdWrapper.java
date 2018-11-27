@@ -17,6 +17,7 @@
 package com.acidmanic.utilities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,7 +45,7 @@ public class AgvtoolStdWrapper {
                 + full + "\"");
     }
 
-    public String getFullVersion() {
+    public List<String> getFullVersions() {
         String fullResult = new Bash().syncRun("agvtool what-marketing-version");
         String[] lines = fullResult.split("\\n");
         ArrayList<String> versions = new ArrayList<>();
@@ -54,11 +55,7 @@ public class AgvtoolStdWrapper {
                 versions.add(version);
             }
         }
-
-        if (!versions.isEmpty()) {
-            return versions.get(0);
-        }
-        return null;
+        return versions;
     }
 
     private static final String ST_TAG = " of \"";

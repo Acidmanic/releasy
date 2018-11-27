@@ -23,6 +23,7 @@ import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.AgvtoolStdWrapper;
 import com.acidmanic.utilities.Bash;
 import java.io.File;
+import java.util.List;
 
 /**
  *
@@ -78,9 +79,9 @@ public class XCode implements Versionable {
     }
 
     @Override
-    public String getVersion() {
+    public List<String> getVersion() {
         if (isXcodeProject && isAGVPresent) {
-            return new AgvtoolStdWrapper().getFullVersion();
+            return new AgvtoolStdWrapper().getFullVersions();
         }
         return null;
 

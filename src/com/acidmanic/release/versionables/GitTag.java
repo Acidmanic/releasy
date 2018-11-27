@@ -32,6 +32,7 @@ public class GitTag implements Versionable {
     private boolean gitAvalable = false;
     private boolean isRepository = false;
     private GitStdWrapper git = null;
+    private static final int TOP_TAGS_COUNT = 10;
 
     @Override
     public void setDirectory(File directory) {
@@ -100,12 +101,14 @@ public class GitTag implements Versionable {
     }
 
     @Override
-    public String getVersion() {
+    public List<String> getVersion() {
         List<String> tags = git.listTags();
-        if (tags.isEmpty()) {
-            return null;
+        if (tags.size() < TOP_TAGS_COUNT) {
+            return tags;
+        } else {
+            int ubound = tags.size() - 1;
+            return tags.subList(ubound - TOP_TAGS_COUNT, ubound);
         }
-        return tags.get(tags.size() - 1);
     }
 
 }

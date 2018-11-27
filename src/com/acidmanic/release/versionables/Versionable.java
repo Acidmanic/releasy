@@ -18,21 +18,27 @@ package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.versions.Version;
 import java.io.File;
+import java.util.List;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public interface Versionable {
-    
+
     void setDirectory(File directory);
+
     boolean isPresent();
-    /***
+
+    /**
+     * *
      * This will set the version in versionable's target.
+     *
      * @param version will be set into target.
      * @return true for Success, false for Failure.
      */
     boolean setVersion(Version version);
-    String getVersion();
-    
+
+    List<String> getVersion();
+
 }
