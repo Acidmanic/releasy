@@ -19,15 +19,11 @@ package release;
 import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.models.ReleaseParameters;
-import com.acidmanic.release.versionables.GitTag;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.versionables.Versionable;
-import com.acidmanic.release.versions.ReleaseTypes;
-import com.acidmanic.utilities.ClassRegistery;
 import com.acidmanic.utilities.ReleaseParametersBuilder;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,7 +78,7 @@ public class Release {
         return new ReleaseParametersBuilder()
                 .versionables(new ReleaseEnvironment().getPresentVersionables())
                 .version(version)
-                .releaser(new GitTag())
+                .releaser(Application.getReleaser())
                 .build();
     }
 
