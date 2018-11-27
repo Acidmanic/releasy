@@ -92,7 +92,7 @@ public class GitTagTest {
         instance.setDirectory(wsDir);
         String expResult = TAG_TO_SET;
         new GitStdWrapper(gitDir).tag(TAG_TO_SET);
-        List<String> allVersions = instance.getVersion();
+        List<String> allVersions = instance.getVersions();
         assertFalse(allVersions.isEmpty());
         String result = allVersions.get(allVersions.size()-1);
         assertEquals(expResult, result);

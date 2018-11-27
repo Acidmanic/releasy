@@ -39,6 +39,6 @@ public interface Versionable {
      */
     boolean setVersion(Version version);
 
-    List<String> getVersion();
+    List<String> getVersions();
 
 }

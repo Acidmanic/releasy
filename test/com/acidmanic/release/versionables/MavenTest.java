@@ -74,7 +74,7 @@ public class MavenTest {
         Maven mvn = new Maven();
         mvn.setDirectory(wsDir);
         String expected = OLD_VERSION;
-        List<String> versions = mvn.getVersion();
+        List<String> versions = mvn.getVersions();
         Assert.assertEquals(1, versions.size());
         String actual = versions.get(0);
         TestCase.assertEquals(expected, actual);

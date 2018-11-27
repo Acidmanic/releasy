@@ -75,7 +75,7 @@ public class Cocoapods implements Versionable {
     }
 
     @Override
-    public List<String> getVersion() {
+    public List<String> getVersions() {
         if (isPresent()) {
             try {
                 ArrayList<String> ret = new ArrayList<>();

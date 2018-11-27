@@ -86,7 +86,7 @@ public class Maven implements Versionable {
     }
 
     @Override
-    public List<String> getVersion() {
+    public List<String> getVersions() {
         try {
             String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
             XmlInPlaceEditor editor = new XmlInPlaceEditor();

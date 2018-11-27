@@ -79,7 +79,7 @@ public class XCode implements Versionable {
     }
 
     @Override
-    public List<String> getVersion() {
+    public List<String> getVersions() {
         if (isXcodeProject && isAGVPresent) {
             return new AgvtoolStdWrapper().getFullVersions();
         }

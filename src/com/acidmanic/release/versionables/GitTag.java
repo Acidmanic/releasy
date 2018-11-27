@@ -101,7 +101,7 @@ public class GitTag implements Versionable {
     }
 
     @Override
-    public List<String> getVersion() {
+    public List<String> getVersions() {
         List<String> tags = git.listTags();
         if (tags.size() < TOP_TAGS_COUNT) {
             return tags;
