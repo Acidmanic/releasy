@@ -95,7 +95,6 @@ public class SemanticVersion implements Version {
         return sb.toString();
     }
 
-
     @Override
     public boolean tryParse(String versionString) {
         String[] parts = versionString.split("\\.");
@@ -123,6 +122,33 @@ public class SemanticVersion implements Version {
         }
 
         return false;
+    }
+
+    @Override
+    public int compare(Version v) {
+        if (v instanceof SemanticVersion) {
+            return this.compare((SemanticVersion) v);
+        }
+        return 0;
+    }
+
+    public int compare(SemanticVersion v) {
+        int maj = compareInt(this.major, v.major);
+        if (maj != 0) {
+            return maj;
+        }
+        int min = compareInt(this.minor, v.minor);
+        if (min != 0) {
+            return min;
+        }
+        return compareInt(this.patch, v.patch);
+    }
+
+    private int compareInt(int value1, int value2) {
+        if (value1 == value2) {
+            return 0;
+        }
+        return value1 > value2 ? -1 : 1;
     }
 
 }

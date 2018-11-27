@@ -52,9 +52,15 @@ public class GitTagTest {
             public String getVersionString() {
                 return TAG_TO_SET;
             }
+
             @Override
             public boolean tryParse(String versionString) {
                 return false;
+            }
+
+            @Override
+            public int compare(Version v) {
+                return 0;
             }
         };
 

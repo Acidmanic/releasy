@@ -24,8 +24,9 @@ public interface Version {
 
     String getVersionString();
 
-
     public boolean tryParse(String versionString);
+
+    public int compare(Version v);
 
     public static final Version NULL = new Version() {
         @Override
@@ -36,6 +37,11 @@ public interface Version {
         @Override
         public boolean tryParse(String versionString) {
             return false;
+        }
+
+        @Override
+        public int compare(Version v) {
+            return -1;
         }
     };
 }
