@@ -19,9 +19,12 @@ package com.acidmanic.release.environment;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.utilities.ClassRegistery;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import release.Application;
 
 /**
  *
@@ -60,6 +63,34 @@ public class ReleaseEnvironment {
 
     public File getDirectory() {
         return directory;
+    }
+
+    public List<String> enumAllVersions() {
+        List<Versionable> versionables = getPresentVersionables();
+        List<String> ret = retrieveVersions(versionables);
+        List<String> releasedVersions = getReleaserVersions();
+        ret.addAll(releasedVersions);
+        return ret;
+    }
+
+    private List<String> retrieveVersions(List<Versionable> versionables) {
+        List<String> ret = new ArrayList();
+        for (Versionable versionable : versionables) {
+            versionable.setup(directory, 0);
+            List<String> versions = versionable.getVersions();
+            ret.addAll(versions);
+        }
+        return ret;
+    }
+
+    private List<String> getReleaserVersions() {
+        try {
+            Versionable clone = Application.getReleaser().getClass().newInstance();
+            clone.setup(directory, 0);
+            return clone.getVersions();
+        } catch (Exception e) {
+        }
+        return new ArrayList<>();
     }
 
 }
