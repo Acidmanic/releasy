@@ -19,7 +19,9 @@ package com.acidmanic.release.versionables;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -72,7 +74,9 @@ public class MavenTest {
         Maven mvn = new Maven();
         mvn.setDirectory(wsDir);
         String expected = OLD_VERSION;
-        String actual = mvn.getVersion();
+        List<String> versions = mvn.getVersion();
+        Assert.assertEquals(1, versions.size());
+        String actual = versions.get(0);
         TestCase.assertEquals(expected, actual);
     }
 

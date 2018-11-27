@@ -18,9 +18,9 @@ package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.GitStdWrapper;
-import com.sun.prism.sw.SWPipeline;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -92,7 +92,9 @@ public class GitTagTest {
         instance.setDirectory(wsDir);
         String expResult = TAG_TO_SET;
         new GitStdWrapper(gitDir).tag(TAG_TO_SET);
-        String result = instance.getVersion();
+        List<String> allVersions = instance.getVersion();
+        assertFalse(allVersions.isEmpty());
+        String result = allVersions.get(allVersions.size()-1);
         assertEquals(expResult, result);
     }
 
