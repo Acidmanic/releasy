@@ -20,6 +20,7 @@ import com.acidmanic.release.projectdirectory.XCodeProjectDirectoryInfo;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
+import com.acidmanic.utilities.AgvtoolStdWrapper;
 import com.acidmanic.utilities.Bash;
 import java.io.File;
 
@@ -37,7 +38,7 @@ public class XCode implements Versionable {
     public void setDirectory(File directory) {
         this.projectName = new XCodeProjectDirectoryInfo().getProjectName(directory);
         this.isXcodeProject = this.projectName != null;
-        this.isAGVPresent = checkAGV();
+        this.isAGVPresent = new AgvtoolStdWrapper().checkAGV();
     }
 
     @Override
@@ -59,35 +60,30 @@ public class XCode implements Versionable {
     }
 
     private void setVersionOnXCode(Version version) {
-        Bash b = new Bash();
+        String full, patch;
         if (version instanceof SemanticVersion) {
-            b.syncRun("agvtool -noscm new-version "
-                    + ((SemanticVersion) version).getPatch());
+            patch = Integer.toString(((SemanticVersion) version).getPatch());
         } else {
-            b.syncRun("agvtool -noscm new-version 0");
+            patch = "0";
             Logger.log("WARNING: "
                     + "Patch version defaulted to zero due to choosed version format.", this);
         }
-        b.syncRun("agvtool -noscm new-marketing-version \""
-                + version.getVersionString() + "\"");
-    }
-
-    private boolean checkAGV() {
-        Bash b = new Bash();
-        String command = "agvtool help";
-        if (b.commandCanBeRunned(command)) {
-            String result = b.syncRun(command);
-            return result != null && result.contains("usage")
-                    && result.contains("agvtool help")
-                    && result.contains("new-version")
-                    && result.contains("new-marketing-version");
-        }
-        return false;
+        full = version.getVersionString();
+        new AgvtoolStdWrapper().setVersion(patch, full);
     }
 
     @Override
     public boolean isPresent() {
         return isXcodeProject;
+    }
+
+    @Override
+    public String getVersion() {
+        if (isXcodeProject && isAGVPresent) {
+            return new AgvtoolStdWrapper().getFullVersion();
+        }
+        return null;
+
     }
 
 }
