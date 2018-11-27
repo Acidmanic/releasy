@@ -21,8 +21,8 @@ import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.AgvtoolStdWrapper;
-import com.acidmanic.utilities.Bash;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,7 +83,7 @@ public class XCode implements Versionable {
         if (isXcodeProject && isAGVPresent) {
             return new AgvtoolStdWrapper().getFullVersions();
         }
-        return null;
+        return new ArrayList<>();
 
     }
 

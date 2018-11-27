@@ -16,15 +16,14 @@
  */
 package release;
 
-import com.acidmanic.release.versionables.Cocoapods;
+import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versionables.GitTag;
-import com.acidmanic.release.versionables.Maven;
-import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.utilities.ClassRegistery;
 import java.io.File;
+import java.util.List;
 
 /**
  *
@@ -43,10 +42,29 @@ public class Release {
         String iden = "test-default";
         Version version = new SemanticVersion(2, 2, 2, iden);
 
+        printAllVersionsTest();
+
         Application.getReleaseStrategy()
                 .release(ClassRegistery.makeInstance().all(Versionable.class),
                         Application.getReleaser(), version);
 
+    }
+
+    private static void printAllVersionsTest() {
+        List<Versionable> versionables = ClassRegistery.makeInstance()
+                .all(Versionable.class);
+        versionables.add(new GitTag());
+        File here = new File(".");
+        for (Versionable v : versionables) {
+            v.setDirectory(here);
+            if (v.isPresent()) {
+                List<String> versions = v.getVersions();
+                for (String vers : versions) {
+                    Logger.log(vers, v);
+                }
+            }
+        }
+        Logger.log("-------------------------------------------------");
     }
 
 }
