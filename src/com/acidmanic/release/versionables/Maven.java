@@ -99,8 +99,12 @@ public class Maven implements Versionable {
         try {
             String mavenFileContent = new String(Files.readAllBytes(this.mavenPomFile.toPath()));
             XmlInPlaceEditor editor = new XmlInPlaceEditor();
-
-            ret.add(editor.getTagContent(new String[]{"project", "version"}, mavenFileContent));
+            String mavenVersion = editor.getTagContent(new String[]{"project", "version"}, mavenFileContent);
+            if (mavenVersion.endsWith(MAVEN_SNAPSHOT_POSTFIX)) {
+                mavenVersion = mavenVersion.substring(0,
+                        mavenVersion.lastIndexOf(MAVEN_SNAPSHOT_POSTFIX));
+            }
+            ret.add(mavenVersion);
             return ret;
         } catch (Exception e) {
         }
