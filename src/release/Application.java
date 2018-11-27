@@ -23,6 +23,8 @@ import com.acidmanic.release.versionables.GitTag;
 import com.acidmanic.release.versionables.Maven;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versionables.XCode;
+import com.acidmanic.release.versions.SemanticVersionFactory;
+import com.acidmanic.release.versions.VersionFactory;
 import com.acidmanic.utilities.ClassRegistery;
 
 /**
@@ -34,6 +36,7 @@ public class Application {
     
     private static Versionable releaser;
     private static ReleaseStrategy releaseStrategy;
+    private static VersionFactory versionFactory;
     
     public static void initialize(){
         ClassRegistery.makeInstance().add(Cocoapods.class);
@@ -43,6 +46,8 @@ public class Application {
         
         releaser = new GitTag();
         releaseStrategy = new ReleaseIfAllPresentsSet();
+        
+        versionFactory = new SemanticVersionFactory();
     }
 
     public static Versionable getReleaser() {
@@ -52,6 +57,9 @@ public class Application {
     public static ReleaseStrategy getReleaseStrategy() {
         return releaseStrategy;
     }
-    
+
+    public static VersionFactory getVersionFactory() {
+        return versionFactory;
+    }
     
 }
