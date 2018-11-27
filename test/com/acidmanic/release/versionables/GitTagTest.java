@@ -20,6 +20,7 @@ import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.GitStdWrapper;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -47,7 +48,21 @@ public class GitTagTest {
     private final Version VERSION_TO_SET;
 
     public GitTagTest() throws IOException {
-        this.VERSION_TO_SET = () -> TAG_TO_SET;
+        this.VERSION_TO_SET = new Version() {
+            @Override
+            public String getVersionString() {
+                return TAG_TO_SET;
+            }
+
+            @Override
+            public void parse(String versionString) throws ParseException {
+            }
+
+            @Override
+            public boolean tryParse(String versionString) {
+                return false;
+            }
+        };
 
         File here = new File(".");
         wsDir = here.toPath().resolve("git-test").toFile();
@@ -94,7 +109,7 @@ public class GitTagTest {
         new GitStdWrapper(gitDir).tag(TAG_TO_SET);
         List<String> allVersions = instance.getVersions();
         assertFalse(allVersions.isEmpty());
-        String result = allVersions.get(allVersions.size()-1);
+        String result = allVersions.get(allVersions.size() - 1);
         assertEquals(expResult, result);
     }
 

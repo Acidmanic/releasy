@@ -16,6 +16,8 @@
  */
 package com.acidmanic.release.versions;
 
+import java.text.ParseException;
+
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
@@ -25,7 +27,7 @@ public class SemanticVersion implements Version {
     private int major;
     private int minor;
     private int patch;
-    private String identifiers ;
+    private String identifiers;
 
     private boolean hasIdentifiers() {
         return this.identifiers != null && this.identifiers.length() > 0;
@@ -82,10 +84,6 @@ public class SemanticVersion implements Version {
     public void setIdentifiers(String identifiers) {
         this.identifiers = identifiers;
     }
-    
-    
-    
-    
 
     @Override
     public String getVersionString() {
@@ -93,10 +91,46 @@ public class SemanticVersion implements Version {
         sb.append(this.major).append(".")
                 .append(this.minor).append(".")
                 .append(this.patch);
-        if(hasIdentifiers()){
+        if (hasIdentifiers()) {
             sb.append("-").append(this.identifiers);
         }
         return sb.toString();
+    }
+
+    @Override
+    public void parse(String versionString) throws ParseException {
+        if (!tryParse(versionString)) {
+            throw new ParseException("Unable to parse given String", 0);
+        }
+    }
+
+    @Override
+    public boolean tryParse(String versionString) {
+        String[] parts = versionString.split("\\.");
+        if (parts.length != 3) {
+            return false;
+        }
+        try {
+            this.major = Integer.parseInt(parts[0]);
+            this.minor = Integer.parseInt(parts[1]);
+            String sPatch, id = "";
+            int st = parts[2].indexOf("-");
+            if (st < 0) {
+                sPatch = parts[2];
+            } else if (st == 0) {
+                sPatch = "0";
+                id = parts[2];
+            } else {
+                sPatch = parts[2].substring(0, st);
+                id = parts[2].substring(st + 1, parts[2].length());
+            }
+            this.patch = Integer.parseInt(sPatch);
+            this.identifiers = id;
+            return true;
+        } catch (Exception e) {
+        }
+
+        return false;
     }
 
 }
