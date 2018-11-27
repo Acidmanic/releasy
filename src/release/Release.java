@@ -18,15 +18,6 @@ package release;
 
 import acidmanic.commandline.commands.ApplicationWideCommandFactory;
 import acidmanic.commandline.commands.ICommand;
-import com.acidmanic.release.environment.ReleaseEnvironment;
-import com.acidmanic.release.logging.Logger;
-import com.acidmanic.release.models.ReleaseParameters;
-import com.acidmanic.release.versions.SemanticVersion;
-import com.acidmanic.release.versions.Version;
-import com.acidmanic.release.versionables.Versionable;
-import com.acidmanic.utilities.ReleaseParametersBuilder;
-import java.io.File;
-import java.util.List;
 
 /**
  *
@@ -46,35 +37,5 @@ public class Release {
         command.execute();
     }
 
-    @Deprecated
-    private static void testCode() {
-        String iden = "test-default";
-
-        Version version = new SemanticVersion(2, 2, 2, iden);
-
-        ReleaseParameters parameters = getParameters(version);
-
-    }
-
-    
-
-   
-
-    private static ReleaseParameters getParameters(Version version) {
-        return new ReleaseParametersBuilder()
-                .versionables(new ReleaseEnvironment().getPresentVersionables())
-                .version(version)
-                .releaser(Application.getReleaser())
-                .build();
-    }
-
-    
-
-    private static void printVersionables(List<Versionable> presents) {
-        Logger.log("Found Versionable systems:");
-        for (Versionable versionable : presents) {
-            Logger.log("\t" + versionable.getClass().getSimpleName());
-        }
-    }
 
 }
