@@ -52,6 +52,8 @@ public class Release {
 
         printAllVersionsTest(parameters);
 
+        presetupRelease(parameters);
+
         Application.getReleaseStrategy()
                 .release(parameters);
 
@@ -60,14 +62,14 @@ public class Release {
     private static void printAllVersionsTest(ReleaseParameters parameters) {
         Logger.log("------- Found Version Systems: -------------------");
         for (Versionable v : parameters.getVersionables()) {
-            printVersionsByVersionable(v,parameters.getReleaseType());
+            printVersionsByVersionable(v, parameters.getReleaseType());
         }
-        printVersionsByVersionable(parameters.getReleaser(),parameters.getReleaseType());
+        printVersionsByVersionable(parameters.getReleaser(), parameters.getReleaseType());
         Logger.log("-------------------------------------------------");
 
     }
 
-    private static void printVersionsByVersionable(Versionable v,int type) {
+    private static void printVersionsByVersionable(Versionable v, int type) {
         v.setup(new File("."), type);
         List<String> versions = v.getVersions();
         Logger.log("", v);
@@ -76,7 +78,7 @@ public class Release {
         }
     }
 
-    private static List<Versionable> getPresentVersionables(File directory, int type)  {
+    private static List<Versionable> getPresentVersionables(File directory, int type) {
         List<Versionable> versionables = ClassRegistery.makeInstance()
                 .all(Versionable.class
                 );
@@ -86,8 +88,8 @@ public class Release {
             if (v.isPresent()) {
                 try {
                     ret.add(
-                        v.getClass().newInstance()
-                );
+                            v.getClass().newInstance()
+                    );
                 } catch (Exception e) {
                 }
             }
@@ -102,6 +104,41 @@ public class Release {
                 .version(version)
                 .releaser(new GitTag())
                 .build();
+    }
+
+    private static void presetupRelease(ReleaseParameters parameters) {
+        File currentDirectory = new File(".");
+        if (!parametersValid(parameters)) {
+            return;
+        }
+        printVersionables(parameters.getVersionables());
+        parameters.getReleaser().setup(currentDirectory, parameters.getReleaseType());
+        if (!parameters.getReleaser().isPresent()) {
+            Logger.log("WARNING: Release tool ("
+                    + parameters.getReleaser().getClass().getSimpleName()
+                    + ") is not present.");
+            Logger.log("WARNING: Nothing has been done.");
+            return;
+        }
+    }
+
+    private static boolean parametersValid(ReleaseParameters parameters) {
+        if (parameters == null) {
+            return false;
+        }
+        if (parameters.getVersionables().isEmpty()) {
+            Logger.log("WARNING: There is no known versionable system.");
+            Logger.log("WARNING: Nothing has been done.");
+            return false;
+        }
+        return true;
+    }
+
+    private static void printVersionables(List<Versionable> presents) {
+        Logger.log("Found Versionable systems:");
+        for (Versionable versionable : presents) {
+            Logger.log("\t" + versionable.getClass().getSimpleName());
+        }
     }
 
 }

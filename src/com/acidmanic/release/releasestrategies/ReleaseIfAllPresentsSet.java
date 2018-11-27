@@ -19,8 +19,6 @@ package com.acidmanic.release.releasestrategies;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
-import java.io.File;
-import java.util.List;
 
 /**
  *
@@ -30,19 +28,7 @@ public class ReleaseIfAllPresentsSet implements ReleaseStrategy {
 
     @Override
     public void release(ReleaseParameters parameters) {
-        File currentDirectory = new File(".");
-        if (!parametersValid(parameters)) {
-            return;
-        }
-        printVersionables(parameters.getVersionables());
-        parameters.getReleaser().setup(currentDirectory, parameters.getReleaseType());
-        if (!parameters.getReleaser().isPresent()) {
-            Logger.log("WARNING: Release tool ("
-                    + parameters.getReleaser().getClass().getSimpleName()
-                    + ") is not present.");
-            Logger.log("WARNING: Nothing has been done.");
-            return;
-        }
+        
         if (setAll(parameters)) {
             Logger.log("INFO: 👍   All Versions set.");
             if (parameters.getReleaser().setVersion(parameters.getVersion())) {
@@ -66,24 +52,5 @@ public class ReleaseIfAllPresentsSet implements ReleaseStrategy {
         return ret;
     }
 
-    private void printVersionables(List<Versionable> presents) {
-        Logger.log("Found Versionable systems:");
-        for (Versionable versionable : presents) {
-            Logger.log("\t" + versionable.getClass().getSimpleName());
-        }
-    }
-
-
-    private boolean parametersValid(ReleaseParameters parameters) {
-        if (parameters == null) {
-            return false;
-        }
-        if (parameters.getVersionables().isEmpty()) {
-            Logger.log("WARNING: There is no known versionable system.");
-            Logger.log("WARNING: Nothing has been done.");
-            return false;
-        }
-        return true;
-    }
 
 }
