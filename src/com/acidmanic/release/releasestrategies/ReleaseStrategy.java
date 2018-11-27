@@ -16,9 +16,7 @@
  */
 package com.acidmanic.release.releasestrategies;
 
-import com.acidmanic.release.versionables.Versionable;
-import com.acidmanic.release.versions.Version;
-import java.util.List;
+import com.acidmanic.release.models.ReleaseParameters;
 
 /**
  *
@@ -27,5 +25,5 @@ import java.util.List;
 public interface ReleaseStrategy {
     
     
-    void release(List<Versionable> versionables, Versionable releaser,Version version);
+    void release(ReleaseParameters parameters);
 }
