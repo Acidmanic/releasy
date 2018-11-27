@@ -23,7 +23,7 @@ package com.acidmanic.release.versions;
 public class SemanticVersionFactory implements VersionFactory<SemanticVersion> {
 
     @Override
-    public SemanticVersion make(SemanticVersion base, Change changes) {
+    public SemanticVersion make(SemanticVersion base, Change changes, int releaseType) {
         if (changes.changeDesign) {
             return new SemanticVersion(base.getMajor() + 1, 0, 0);
         }
@@ -35,7 +35,23 @@ public class SemanticVersionFactory implements VersionFactory<SemanticVersion> {
         if (changes.fixBugs) {
             patch += 1;
         }
-        return new SemanticVersion(base.getMajor(), minor, patch);
+        String identifier = getIdentifier(releaseType);
+        if (identifier == null) {
+            return new SemanticVersion(base.getMajor(), minor, patch);
+        }
+        return new SemanticVersion(base.getMajor(), minor, patch, identifier);
+    }
+
+    private String getIdentifier(int releaseType) {
+        switch (releaseType) {
+            case ReleaseTypes.ALPHA:
+                return "alpha";
+            case ReleaseTypes.BETA:
+                return "beta";
+            case ReleaseTypes.RELEASE_CANDIDATE:
+                return "rc";
+        }
+        return null;
     }
 
 }

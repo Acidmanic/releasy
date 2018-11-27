@@ -19,9 +19,12 @@ package com.acidmanic.release.versions;
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
- * @param <T> Concrete type of Version class
  */
-public interface VersionFactory<T extends Version> {
+public class ReleaseTypes {
 
-    T make(T base, Change changes,int releaseType);
+    public static final int NIGHTLY = 0;
+    public static final int ALPHA = 1;
+    public static final int BETA = 2;
+    public static final int RELEASE_CANDIDATE = 3;
+    public static final int STABLE = 4;
 }
