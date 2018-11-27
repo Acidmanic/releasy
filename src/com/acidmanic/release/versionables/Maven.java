@@ -64,6 +64,9 @@ public class Maven implements Versionable {
         XmlInPlaceEditor editor = new XmlInPlaceEditor();
         mavenFileContent = editor.setTagContent(new String[]{"project", "version"}, mavenFileContent,
                 version.getVersionString());
+        if (this.mavenPomFile.exists()) {
+            this.mavenPomFile.delete();
+        }
         Files.write(this.mavenPomFile.toPath(), mavenFileContent.getBytes(), StandardOpenOption.CREATE);
         Logger.log("Maven Project Version set.", this);
     }

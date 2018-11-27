@@ -19,6 +19,7 @@ package com.acidmanic.release.fileeditors;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 import org.junit.Test;
@@ -34,7 +35,9 @@ public class SpecFileEditorTest {
     private final static String NEW_VERSION = "2.2.03";
 
     private final static String VERSION_LINE = "  s.version          = '" + OLD_VERSION + "'";
-    private final static String SPEC_CONTENT = "Pod::Spec.new do |s|\n"
+    private final static String SPEC_CONTENT = "\n"
+            + "\n"
+            + "Pod::Spec.new do |s|\n"
             + "  s.name             = 'NamingConventions'\n"
             + VERSION_LINE + "\n"
             + "  s.summary          = 'This provides a solution to parse and convert name/ids from different conventions.'\n"
@@ -118,14 +121,45 @@ public class SpecFileEditorTest {
         String actual = new String(Files.readAllBytes(this.versionLineFile.toPath()));
         assertEquals(expected, actual);
     }
-    
-    
+
     @Test
     public void shouldReadOldVersionFromTheContent() throws IOException {
         System.out.println("--------  shouldReplaceTheVersionInAVersionLine --------");
         SpecFileEditor instance = new SpecFileEditor(this.versionLineFile);
         String expected = OLD_VERSION;
         String actual = instance.getVerion();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldKeepFileUnChangedAfterSaveSameVersion() throws IOException {
+        System.out.println("--------  shouldKeepFileUnChangedAfterSaveSameVersion --------");
+        File existingFile = new File("existing.tst.podspec");
+        if (existingFile.exists()) {
+            existingFile.delete();
+        }
+        Files.write(existingFile.toPath(), SPEC_CONTENT.getBytes(), StandardOpenOption.CREATE);
+
+        SpecFileEditor instance = new SpecFileEditor(existingFile);
+        String expected = SPEC_CONTENT;
+        instance.setVerion(OLD_VERSION);
+        String actual = new String(Files.readAllBytes(this.specFile.toPath()));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void fileSizeShouldBeSmallerAfterNullfiyingTheVersion() throws IOException {
+        System.out.println("--------  fileSizeShouldBeSmallerAfterNullfiyingTheVersion --------");
+        File existingFile = new File("existing.tst.podspec");
+        if (existingFile.exists()) {
+            existingFile.delete();
+        }
+        Files.write(existingFile.toPath(), SPEC_CONTENT.getBytes(), StandardOpenOption.CREATE);
+
+        SpecFileEditor instance = new SpecFileEditor(existingFile);
+        int expected = OLD_VERSION.length();
+        instance.setVerion("");
+        int actual = SPEC_CONTENT.length() - new String(Files.readAllBytes(existingFile.toPath())).length();
         assertEquals(expected, actual);
     }
 

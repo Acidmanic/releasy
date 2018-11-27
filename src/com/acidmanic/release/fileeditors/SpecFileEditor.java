@@ -16,16 +16,11 @@
  */
 package com.acidmanic.release.fileeditors;
 
-import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.StringParseHelper;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-import jdk.nashorn.internal.runtime.regexp.JoniRegExp;
-import jdk.nashorn.internal.runtime.regexp.RegExp;
-import jdk.nashorn.internal.runtime.regexp.RegExpFactory;
-import jdk.nashorn.internal.runtime.regexp.RegExpResult;
 
 /**
  *
@@ -50,8 +45,11 @@ public class SpecFileEditor {
                     sb.append(sep).append(line);
                     sep = "\n";
                 }
+                if(this.specFile.exists()){
+                    this.specFile.delete();
+                }
                 Files.write(this.specFile.toPath(), sb.toString().getBytes(),
-                        StandardOpenOption.WRITE);
+                        StandardOpenOption.CREATE);
             } catch (Exception e) {
             }
         }
