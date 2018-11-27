@@ -18,6 +18,8 @@ package com.acidmanic.release.commands;
 
 import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.logging.Logger;
+import com.acidmanic.release.models.ReleaseParameters;
+import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.VersionProcessor;
@@ -29,7 +31,7 @@ import release.Application;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public class Auto extends ReleaseCommandBase {
-
+    
     @Override
     protected String getUsageString() {
         return "This Will process previouse versions on all present "
@@ -57,8 +59,17 @@ public class Auto extends ReleaseCommandBase {
         List<String> versions = new ReleaseEnvironment().enumAllVersions();
         VersionProcessor processor = new VersionProcessor(Application.getVersionFactory());
         Version version = processor.generateVersionFromStrings(versions, change, releaseType);
-        Logger.log("Releasing version: "+version.getVersionString(), this);
-        
+        Logger.log("Releasing version: " + version.getVersionString(), this);
+
+        performRelease(version);
+
+    }
+
+    @Override
+    protected ReleaseParameters buildParameters(Version version, List<Versionable> presents) {
+        ReleaseParameters ret = super.buildParameters(version, presents);
+        ret.setChanges(getChanges());
+        return ret;
     }
 
     private Change getChanges() {
