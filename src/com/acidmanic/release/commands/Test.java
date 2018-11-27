@@ -44,20 +44,33 @@ public class Test extends CommandBase {
     public void execute() {
         JUnitCore core = new JUnitCore();
         List<Class> classes = getClasses();
+        log("");
         for (Class c : classes) {
+            logLine();
+            String shortName = c.getSimpleName();
+            shortName = shortName.substring(0, shortName.indexOf("Test"));
+            log(" 🔧    Running Unit Tests for: " + shortName);
+            log("");
             Result result = core.run(c);
             log(result);
         }
+        logLine();
+    }
+
+    private void logLine() {
+        log("------------------------------------------------------------------");
     }
 
     private void log(Result result) {
-        log("Result: " + (result.wasSuccessful() ? "👍" : "❌"));
+        logLine();
+        log(" " + (result.wasSuccessful() ? "👍    All Passed." : "❌    Failures:"));
         result.getFailures().forEach((Failure f) -> {
             String name = f.getTestHeader();
             name = name.substring(0, name.indexOf("("));
-            log("--------------------------------------------");
-            log("❌   " + name);
+            logLine();
+            log(" ❌   " + name);
             log("    " + f.getMessage());
+            log("");
         });
     }
 
@@ -65,8 +78,8 @@ public class Test extends CommandBase {
         ArrayList<Class> ret = new ArrayList<>();
         for (String name : args) {
             try {
-                Class type = Class.forName(Application.getInAppTestPackage() 
-                        + "." + name +"Test");
+                Class type = Class.forName(Application.getInAppTestPackage()
+                        + "." + name + "Test");
                 ret.add(type);
             } catch (Exception e) {
             }
