@@ -20,6 +20,7 @@ import acidmanic.commandline.commands.ApplicationWideTypeRegistery;
 import com.acidmanic.release.commands.Auto;
 import com.acidmanic.release.commands.Install;
 import com.acidmanic.release.commands.Manual;
+import com.acidmanic.release.commands.Status;
 import com.acidmanic.release.commands.Test;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
@@ -52,6 +53,7 @@ public class Application {
         ApplicationWideTypeRegistery.makeInstance().registerClass(Auto.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Test.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Install.class);
+        ApplicationWideTypeRegistery.makeInstance().registerClass(Status.class);
 
         releaser = new GitTag();
         releaseStrategy = new ReleaseIfAllPresentsSet();
