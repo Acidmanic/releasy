@@ -29,22 +29,17 @@ public class InstallExecutableScript extends InstallationTask<Scription, String>
 
     @Override
     protected boolean onWindows(Scription input) {
-        String windir = System.getenv("windir");
-        if (windir == null) {
-            System.out.println("Unable to find windows directory.");
-            return false;
-        }
-        File file = new File(windir).toPath().resolve(input.getName()+".bat").toFile();
-        return registerScript(file, input);
+        return registerScript(input, ".bat");
     }
 
     @Override
     protected boolean onUnix(Scription input) {
-        File file = new File("/usr/local/bin/").toPath().resolve(input.getName()).toFile();
-        return registerScript(file, input);
+        return registerScript(input, "");
     }
 
-    private boolean registerScript(File file, Scription input) {
+    private boolean registerScript(Scription input, String fileExtension) {
+        File file = getEnvironmentalInfo().getExecutableBinariesDirectory()
+                .toPath().resolve(input.getName() + fileExtension).toFile();
         try {
             if (file.exists()) {
                 file.delete();
