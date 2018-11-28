@@ -16,6 +16,7 @@
  */
 package com.acidmanic.installation.tasks;
 
+import com.acidmanic.installation.environment.EnvironmentalInfo;
 import com.acidmanic.installation.utils.Os;
 
 /**
@@ -37,6 +38,8 @@ public abstract class InstallationTask<Tin, Tout> {
     protected abstract boolean getIgnorability();
 
     protected final static String DEFAULT_CHARSET = "UTF-8";
+
+    private EnvironmentalInfo environmentalInfo;
 
     protected boolean onMac(Tin input) {
         return onUnix(input);
@@ -61,16 +64,16 @@ public abstract class InstallationTask<Tin, Tout> {
     public boolean execute(Tin input) {
         this.result = null;
         try {
-             Os os = new Os();
-             if(os.isLinux()){
-                 return onLinux(input);
-             }
-             if(os.isMac()){
-                 return onMac(input);
-             }
-             if(os.isWindows()){
-                 return onWindows(input);
-             }
+            Os os = new Os();
+            if (os.isLinux()) {
+                return onLinux(input);
+            }
+            if (os.isMac()) {
+                return onMac(input);
+            }
+            if (os.isWindows()) {
+                return onWindows(input);
+            }
         } catch (Exception e) {
         }
         return false;
@@ -78,6 +81,14 @@ public abstract class InstallationTask<Tin, Tout> {
 
     public Tout getResult() {
         return result;
+    }
+
+    public EnvironmentalInfo getEnvironmentalInfo() {
+        return environmentalInfo;
+    }
+
+    public void setEnvironmentalInfo(EnvironmentalInfo environmentalInfo) {
+        this.environmentalInfo = environmentalInfo;
     }
 
 }
