@@ -87,7 +87,7 @@ public class InstallationTaskTestBase {
 
     }
 
-    protected boolean runExecuteMethod(InstallExecutableScript task, Object input) {
+    protected boolean runExecuteMethod(InstallationTask task, Object input) {
         TestTask tester = new TestTask(task, input);
         tester.install();
         List<Boolean> results = tester.getResults();
