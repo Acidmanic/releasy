@@ -17,9 +17,12 @@
 package com.acidmanic.installation.tasks;
 
 import com.acidmanic.installation.models.Scription;
+import com.sun.javafx.runtime.SystemProperties;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -29,17 +32,29 @@ public class RegisterExecutionCommand extends InstallationTask<Scription, String
 
     @Override
     protected boolean onWindows(Scription input) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("From Windows");
+        String windir = System.getenv("windir");
+        if (windir == null) {
+            System.out.println("Unable to find windows directory.");
+            return false;
+        }
+        File file = new File(windir).toPath().resolve(input.getName()+".bat").toFile();
+        return registerScript(file, input);
     }
 
     @Override
     protected boolean onUnix(Scription input) {
+        File file = new File("/usr/local/bin/").toPath().resolve(input.getName()).toFile();
+        return registerScript(file, input);
+    }
+
+    private boolean registerScript(File file, Scription input) {
         try {
-            File file = new File("/usr/local/bin/").toPath().resolve(input.getName()).toFile();
             if (file.exists()) {
                 file.delete();
             }
-            Files.write(file.toPath(), input.getScript().getBytes(DEFAULT_CHARSET), StandardOpenOption.CREATE);
+            Files.write(file.toPath(), input.getScript().getBytes(DEFAULT_CHARSET),
+                    StandardOpenOption.CREATE);
             file.setExecutable(true, false);
             this.result = file.getAbsolutePath();
             return true;
