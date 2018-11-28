@@ -17,6 +17,7 @@
 package release;
 
 import acidmanic.commandline.commands.ApplicationWideCommandFactory;
+import acidmanic.commandline.commands.HelpCommand;
 import acidmanic.commandline.commands.ICommand;
 
 /**
@@ -34,8 +35,10 @@ public class Release {
 
         ICommand command = ApplicationWideCommandFactory
                 .makeInstance().makeCommand(args);
+        if (command == ICommand.NULLCOMMAND) {
+            command = new HelpCommand();
+        }
         command.execute();
     }
-
 
 }
