@@ -17,7 +17,7 @@
 package release.inapptests;
 
 import com.acidmanic.installation.models.Scription;
-import com.acidmanic.installation.tasks.RegisterExecutionCommand;
+import com.acidmanic.installation.tasks.InstallExecutableScript;
 import java.io.File;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -26,14 +26,14 @@ import static org.junit.Assert.*;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class RegisterExecutionCommandTest {
+public class InstallExecutableScriptTest {
     
-    public RegisterExecutionCommandTest() {
+    public InstallExecutableScriptTest() {
     }
 
     @Test
     public void shouldReturnTrueSucceedingToAddExecutableScript() {
-        RegisterExecutionCommand cmd = new RegisterExecutionCommand();
+        InstallExecutableScript cmd = new InstallExecutableScript();
         boolean result = cmd.execute(new Scription("echo Mani", "test-install-mani"));
         assertEquals(true, result);
         File file = new File(cmd.getResult());

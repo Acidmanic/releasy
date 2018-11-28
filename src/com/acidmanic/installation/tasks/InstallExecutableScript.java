@@ -17,22 +17,18 @@
 package com.acidmanic.installation.tasks;
 
 import com.acidmanic.installation.models.Scription;
-import com.sun.javafx.runtime.SystemProperties;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class RegisterExecutionCommand extends InstallationTask<Scription, String> {
+public class InstallExecutableScript extends InstallationTask<Scription, String> {
 
     @Override
     protected boolean onWindows(Scription input) {
-        System.out.println("From Windows");
         String windir = System.getenv("windir");
         if (windir == null) {
             System.out.println("Unable to find windows directory.");
