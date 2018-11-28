@@ -17,7 +17,10 @@
 package com.acidmanic.installation.tasks;
 
 import com.acidmanic.installation.models.Scription;
+import com.acidmanic.installation.utils.Copier;
 import com.acidmanic.installation.utils.InstallationActions;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,31 +30,44 @@ public class InstallJarFileExecutable extends InstallationTask<String, Void> {
 
     @Override
     protected boolean onWindows(String input) {
-        Scription s = getScription(input,"%*");
-        return (new InstallationActions(getEnvironmentalInfo())
-                .registerScript(s, ".bat")) != null;
 
-    }
-
-    private Scription getScription(String input, String allArgs) {
-        String script = "java -jar ";
-        script += getEnvironmentalInfo()
-                .getDeploymentMetadata().getExecutionJarFile();
-        script += " " + allArgs;
-        Scription s = new Scription(script, input);
-        return s;
+        return perform(input, "%*", ".bat");
     }
 
     @Override
     protected boolean onUnix(String input) {
-        Scription s = getScription(input,"$@");
-        return (new InstallationActions(getEnvironmentalInfo())
-                .registerScript(s, "")) != null;
+        return perform(input, "$@", "");
     }
 
-    @Override
-    protected boolean getIgnorability() {
-        return false;
+    private boolean perform(String input, String aArg, String sExt) {
+        String jarname = installDestinationJar();
+        if (jarname == null) {
+            return false;
+        }
+        Scription scr = getScription(input, jarname, aArg);
+        return (new InstallationActions(getEnvironmentalInfo())
+                .registerScript(scr, sExt)) != null;
+    }
+
+    private String installDestinationJar() {
+        String myName = getEnvironmentalInfo()
+                .getDeploymentMetadata().getExecutionJarFile()
+                .getName();
+        List<String> res = new ArrayList();
+        new InstallationActions(getEnvironmentalInfo())
+                .installContent(myName, res);
+        if (res.isEmpty()) {
+            return null;
+        }
+        return res.get(0);
+    }
+
+    private Scription getScription(String input, String jarName, String allArgs) {
+        String script = "java -jar ";
+        script += jarName;
+        script += " " + allArgs;
+        Scription s = new Scription(script, input);
+        return s;
     }
 
 }

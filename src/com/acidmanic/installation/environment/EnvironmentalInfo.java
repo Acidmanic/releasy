@@ -28,6 +28,7 @@ public class EnvironmentalInfo {
     private File executableBinariesDirectory;
     private File applicationsDirectory;
     private File installationDirectory;
+    private File currentDirectory;
 
     private final DeploymentMetadata deploymentMetadata;
 
@@ -62,5 +63,15 @@ public class EnvironmentalInfo {
     public DeploymentMetadata getDeploymentMetadata() {
         return deploymentMetadata;
     }
+
+    public File getCurrentDirectory() {
+        return currentDirectory;
+    }
+
+    public void setCurrentDirectory(File currentDirectory) {
+        this.currentDirectory = currentDirectory;
+    }
+    
+    
 
 }

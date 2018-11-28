@@ -16,7 +16,6 @@
  */
 package com.acidmanic.installation.environment;
 
-import com.acidmanic.installation.models.DeploymentMetadata;
 import java.io.File;
 
 /**
@@ -26,7 +25,7 @@ import java.io.File;
 public class WindowsEnvironmentalInfoProvider extends EnvironmentalInfoProviderBase {
 
     private File getSystemFile(String name) {
-        String path = System.getenv("windir");
+        String path = System.getenv(name);
         if (path == null) {
             System.out.println("Unable to find " + name + ".");
         } else {

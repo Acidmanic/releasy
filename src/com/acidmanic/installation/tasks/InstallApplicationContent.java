@@ -16,28 +16,33 @@
  */
 package com.acidmanic.installation.tasks;
 
-import com.acidmanic.installation.models.Scription;
 import com.acidmanic.installation.utils.InstallationActions;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class InstallExecutableScript extends InstallationTask<Scription, String> {
+public class InstallApplicationContent extends InstallationTask<List<String>, List<String>> {
 
     @Override
-    protected boolean onWindows(Scription input) {
-        this.result = new InstallationActions(getEnvironmentalInfo())
-                .registerScript(input, ".bat");
-        return this.result != null;
+    protected boolean onWindows(List<String> input) {
+        return perform(input);
     }
 
     @Override
-    protected boolean onUnix(Scription input) {
-        this.result = new InstallationActions(getEnvironmentalInfo())
-                .registerScript(input, "");
-        return this.result != null;
+    protected boolean onUnix(List<String> input) {
+        return perform(input);
     }
 
+    private boolean perform(List<String> input) {
+        this.result = new ArrayList<>();
+        InstallationActions actions = new InstallationActions(getEnvironmentalInfo());
+        for (String name : input) {
+            actions.installContent(name, this.result);
+        }
+        return true;
+    }
 
 }

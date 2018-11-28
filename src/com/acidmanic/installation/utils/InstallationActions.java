@@ -17,11 +17,13 @@
 package com.acidmanic.installation.utils;
 
 import com.acidmanic.installation.environment.EnvironmentalInfo;
-import com.acidmanic.installation.models.DeploymentMetadata;
 import com.acidmanic.installation.models.Scription;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -50,6 +52,19 @@ public class InstallationActions {
             System.out.println(ex);
         }
         return null;
+    }
+
+    public void installContent(String name) {
+        installContent(name, new ArrayList<>());
+    }
+
+    public void installContent(String name, List<String> copiedFiles) {
+        Path here = info.getDeploymentMetadata().getExecutionJarFile()
+                .toPath().getParent().normalize();
+        File src = here.resolve(name).toFile();
+        new Copier().copyAny(src,
+                info.getInstallationDirectory(), copiedFiles);
+
     }
 
 }

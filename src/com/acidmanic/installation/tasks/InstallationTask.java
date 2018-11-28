@@ -27,15 +27,11 @@ import com.acidmanic.installation.utils.Os;
  */
 public abstract class InstallationTask<Tin, Tout> {
 
-    private boolean ignorable = false;
-
     protected Tout result;
 
     protected abstract boolean onWindows(Tin input);
 
     protected abstract boolean onUnix(Tin input);
-
-    protected abstract boolean getIgnorability();
 
     private EnvironmentalInfo environmentalInfo;
 
@@ -52,11 +48,10 @@ public abstract class InstallationTask<Tin, Tout> {
     }
 
     private void initialize() {
-        this.ignorable = getIgnorability();
     }
 
     public boolean isIgnorable() {
-        return ignorable;
+        return false;
     }
 
     public boolean execute(Tin input) {

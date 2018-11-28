@@ -31,6 +31,8 @@ public abstract class EnvironmentalInfoProviderBase implements EnvironmentalInfo
         ret.setExecutableBinariesDirectory(executableBinariesDirectory());
         ret.setApplicationsDirectory(applicationsDirectory());
         ret.setInstallationDirectory(getInstallDir(ret.getApplicationsDirectory(), metadata));
+        ret.setCurrentDirectory(new File("."));
+
         return ret;
     }
 

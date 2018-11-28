@@ -18,7 +18,6 @@ package release.inapptests;
 
 import com.acidmanic.installation.InstallerBase;
 import com.acidmanic.installation.models.DeploymentMetadata;
-import com.acidmanic.installation.tasks.InstallExecutableScript;
 import com.acidmanic.installation.tasks.InstallationTask;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class InstallationTaskTestBase {
         }
 
         @Override
-        protected boolean getIgnorability() {
+        public boolean isIgnorable() {
             return true;
         }
 
