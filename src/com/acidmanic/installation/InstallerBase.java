@@ -23,7 +23,6 @@ import com.acidmanic.installation.environment.EnvironmentalInfoProvider;
 import com.acidmanic.installation.utils.Os;
 import com.acidmanic.installation.environment.UnixEnvironmentalInfoProvider;
 import com.acidmanic.installation.environment.WindowsEnvironmentalInfoProvider;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,24 +36,32 @@ public abstract class InstallerBase {
     private EnvironmentalInfo environmentalInfo;
 
     private final List<InstallationTask> tasks;
+    private final List<Boolean> results;
 
     protected abstract void setupMetaData(DeploymentMetadata metadata);
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public InstallerBase() {
         this.tasks = new ArrayList<>();
+        this.results = new ArrayList<>();
         introduceTasks(tasks);
     }
 
     public void install() {
-
+        this.metadata = new DeploymentMetadata();
         setupMetaData(metadata);
         environmentalInfo = getEnvironmentalInfoProvider().getInfo(metadata);
-        
+
+        runTasks();
+    }
+
+    private void runTasks() {
         Object input = null;
-        for(InstallationTask task:this.tasks){
+        for (InstallationTask task : this.tasks) {
             task.setEnvironmentalInfo(environmentalInfo);
-            if(!task.execute(input) && !task.isIgnorable()){
+            boolean result = task.execute(input);
+            this.results.add(result);
+            if (!result && !task.isIgnorable()) {
                 break;
             }
             input = task.getResult();
@@ -72,5 +79,11 @@ public abstract class InstallerBase {
     }
 
     protected abstract void introduceTasks(List<InstallationTask> tasks);
+
+    public List<Boolean> getResults() {
+        ArrayList<Boolean> ret = new ArrayList<>();
+        ret.addAll(results);
+        return ret;
+    }
 
 }
