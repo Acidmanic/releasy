@@ -52,6 +52,7 @@ public class Test extends CommandBase {
             log(" 🔧    Running Unit Tests for: " + shortName);
             log("");
             Result result = core.run(c);
+            result = winFilter(result);
             log(result);
         }
         logLine();
@@ -63,15 +64,25 @@ public class Test extends CommandBase {
 
     private void log(Result result) {
         logLine();
-        log(" " + (result.wasSuccessful() ? "👍    All Passed." : "❌    Failures:"));
+        log(" " + resultTitle(result));
         result.getFailures().forEach((Failure f) -> {
-            String name = f.getTestHeader();
-            name = name.substring(0, name.indexOf("("));
+            String name = getFailureName(f);
             logLine();
             log(" ❌   " + name);
             log("    " + f.getMessage());
             log("");
         });
+    }
+
+    private boolean isSucceeded(Result result) {
+        boolean success = result.wasSuccessful() || (result.getFailureCount() == 0);
+        return success;
+    }
+
+    private String getFailureName(Failure f) {
+        String name = f.getTestHeader();
+        name = name.substring(0, name.indexOf("("));
+        return name;
     }
 
     private List<Class> getClasses() {
@@ -85,6 +96,37 @@ public class Test extends CommandBase {
             }
         }
         return ret;
+    }
+
+    private Result winFilter(Result result) {
+        List<Failure> failures = new ArrayList<>();
+        result.getFailures().forEach((Failure f) -> {
+            if (winValidFailure(f)) {
+                failures.add(f);
+            }
+        });
+        result.getFailures().clear();
+        result.getFailures().addAll(failures);
+        return result;
+    }
+
+    private boolean winValidFailure(Failure f) {
+        if (f == null) {
+            return false;
+        }
+        if (f.getMessage() == null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private String resultTitle(Result result) {
+        boolean success = isSucceeded(result);
+        String suc = "👍    All Passed.";
+        String fail = "❌    Failures: ("
+                + result.getFailureCount() + ")";
+        return (success ? suc : fail);
     }
 
 }
