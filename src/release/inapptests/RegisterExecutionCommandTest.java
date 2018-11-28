@@ -18,6 +18,7 @@ package release.inapptests;
 
 import com.acidmanic.installation.models.Scription;
 import com.acidmanic.installation.tasks.RegisterExecutionCommand;
+import java.io.File;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -33,9 +34,12 @@ public class RegisterExecutionCommandTest {
     @Test
     public void shouldReturnTrueSucceedingToAddExecutableScript() {
         RegisterExecutionCommand cmd = new RegisterExecutionCommand();
-        boolean actual = cmd.execute(new Scription("echo Mani", "test-install-mani"));
-        boolean expected = true;
-        assertEquals(expected, actual);
+        boolean result = cmd.execute(new Scription("echo Mani", "test-install-mani"));
+        assertEquals(true, result);
+        File file = new File(cmd.getResult());
+        assertEquals(true, result);
+        assertEquals(true, file.exists());
+        assertEquals(true, file.canExecute());
     }
     
 }

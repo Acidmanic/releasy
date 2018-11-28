@@ -25,7 +25,7 @@ import java.nio.file.StandardOpenOption;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class RegisterExecutionCommand extends InstallationTask<Scription, Void> {
+public class RegisterExecutionCommand extends InstallationTask<Scription, String> {
 
     @Override
     protected boolean onWindows(Scription input) {
@@ -41,10 +41,11 @@ public class RegisterExecutionCommand extends InstallationTask<Scription, Void> 
             }
             Files.write(file.toPath(), input.getScript().getBytes(DEFAULT_CHARSET), StandardOpenOption.CREATE);
             file.setExecutable(true, false);
+            this.result = file.getAbsolutePath();
             return true;
         } catch (Exception ex) {
             System.out.println(ex);
-            
+
         }
         return false;
     }
