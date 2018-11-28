@@ -40,6 +40,7 @@ public class InstallApplicationContent extends InstallationTask<List<String>, Li
         this.result = new ArrayList<>();
         InstallationActions actions = new InstallationActions(getEnvironmentalInfo());
         for (String name : input) {
+            System.out.println("Installing Application content: " + name);
             actions.installContent(name, this.result);
         }
         return true;

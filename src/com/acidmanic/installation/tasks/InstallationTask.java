@@ -56,6 +56,7 @@ public abstract class InstallationTask<Tin, Tout> {
 
     public boolean execute(Tin input) {
         this.result = null;
+        System.out.println("Performing: " + this.getClass().getSimpleName());
         try {
             Os os = new Os();
             if (os.isLinux()) {

@@ -17,7 +17,6 @@
 package com.acidmanic.installation.tasks;
 
 import com.acidmanic.installation.models.Scription;
-import com.acidmanic.installation.utils.Copier;
 import com.acidmanic.installation.utils.InstallationActions;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +39,7 @@ public class InstallJarFileExecutable extends InstallationTask<String, Void> {
     }
 
     private boolean perform(String input, String aArg, String sExt) {
+        System.out.println("Installing " + input + sExt + " in env path.");
         String jarname = installDestinationJar();
         if (jarname == null) {
             return false;

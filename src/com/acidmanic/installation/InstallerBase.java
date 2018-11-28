@@ -54,17 +54,16 @@ public abstract class InstallerBase {
         setupMetaData(metadata);
         environmentalInfo = getEnvironmentalInfoProvider().getInfo(metadata);
 
-        System.out.println("Jar:");
-        System.out.println(this.metadata.getExecutionJarFile().getAbsolutePath());
-        System.out.println("Applications:");
-        System.out.println(this.environmentalInfo.getApplicationsDirectory().getAbsolutePath());
-        System.out.println("Binaries:");
-        System.out.println(this.environmentalInfo.getExecutableBinariesDirectory().getAbsolutePath());
-        System.out.println("Installation:");
-        System.out.println(this.environmentalInfo.getInstallationDirectory().getAbsolutePath());
-        System.out.println("Current Directory:");
-        System.out.println(this.environmentalInfo.getCurrentDirectory().getAbsolutePath());
-
+//        System.out.println("Jar:");
+//        System.out.println(this.metadata.getExecutionJarFile().getAbsolutePath());
+//        System.out.println("Applications:");
+//        System.out.println(this.environmentalInfo.getApplicationsDirectory().getAbsolutePath());
+//        System.out.println("Binaries:");
+//        System.out.println(this.environmentalInfo.getExecutableBinariesDirectory().getAbsolutePath());
+//        System.out.println("Installation:");
+//        System.out.println(this.environmentalInfo.getInstallationDirectory().getAbsolutePath());
+//        System.out.println("Current Directory:");
+//        System.out.println(this.environmentalInfo.getCurrentDirectory().getAbsolutePath());
         runTasks();
     }
 
@@ -74,8 +73,10 @@ public abstract class InstallerBase {
             task.setEnvironmentalInfo(environmentalInfo);
             boolean result = task.execute(input);
             this.results.add(result);
+            System.out.println(" " + (result ? "✅    Done" : "⛔    Failed") + ".");
             if (!result && !task.isIgnorable()) {
-                break;
+                System.out.println("ERROR: Failed. exiting the installation.");
+//                break;
             }
             input = task.getResult();
         }

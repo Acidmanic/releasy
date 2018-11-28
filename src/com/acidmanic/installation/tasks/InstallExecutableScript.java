@@ -27,6 +27,7 @@ public class InstallExecutableScript extends InstallationTask<Scription, String>
 
     @Override
     protected boolean onWindows(Scription input) {
+        System.out.println("Installing " + input.getName() + " in env path.");
         this.result = new InstallationActions(getEnvironmentalInfo())
                 .registerScript(input, ".bat");
         return this.result != null;
@@ -34,10 +35,10 @@ public class InstallExecutableScript extends InstallationTask<Scription, String>
 
     @Override
     protected boolean onUnix(Scription input) {
+        System.out.println("Installing " + input.getName() + " in env path.");
         this.result = new InstallationActions(getEnvironmentalInfo())
                 .registerScript(input, "");
         return this.result != null;
     }
-
 
 }

@@ -24,19 +24,25 @@ package com.acidmanic.installation.tasks;
  * @param <Tout> Type of feeding data.
  *
  */
-public class DataFeed<Tout> extends InstallationTask<Void, Tout> {
+public class DataFeed<Tout> extends InstallationTask<Object, Tout> {
+
+    private final Tout data;
 
     public DataFeed(Tout data) {
-        this.result = data;
+        this.data = data;
     }
 
     @Override
-    protected boolean onWindows(Void input) {
+    protected boolean onWindows(Object input) {
+        System.out.println("Feeding data - Unix");
+        this.result = data;
         return true;
     }
 
     @Override
-    protected boolean onUnix(Void input) {
+    protected boolean onUnix(Object input) {
+        System.out.println("Feeding data - Unix");
+        this.result = data;
         return true;
     }
 

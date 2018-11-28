@@ -17,6 +17,7 @@
 package com.acidmanic.installation;
 
 import com.acidmanic.installation.tasks.DataFeed;
+import com.acidmanic.installation.tasks.InstallApplicationContent;
 import com.acidmanic.installation.tasks.InstallJarFileExecutable;
 import com.acidmanic.installation.tasks.InstallationTask;
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public abstract class BasicInstaller extends InstallerBase{
         content.add("lib");
         
         tasks.add( new DataFeed<>(content));
+        tasks.add(new InstallApplicationContent());
+        tasks.add(new DataFeed<>("release"));
         tasks.add(new InstallJarFileExecutable());
         
         
