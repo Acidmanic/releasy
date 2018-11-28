@@ -34,14 +34,12 @@ public class DataFeed<Tout> extends InstallationTask<Object, Tout> {
 
     @Override
     protected boolean onWindows(Object input) {
-        System.out.println("Feeding data - Unix");
         this.result = data;
         return true;
     }
 
     @Override
     protected boolean onUnix(Object input) {
-        System.out.println("Feeding data - Unix");
         this.result = data;
         return true;
     }

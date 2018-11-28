@@ -18,6 +18,7 @@ package com.acidmanic.installation.tasks;
 
 import com.acidmanic.installation.models.Scription;
 import com.acidmanic.installation.utils.InstallationActions;
+import com.acidmanic.utilities.StringParseHelper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class InstallJarFileExecutable extends InstallationTask<String, Void> {
 
     private Scription getScription(String input, String jarName, String allArgs) {
         String script = "java -jar ";
-        script += jarName;
+        script += new StringParseHelper().escapeAndQoute(jarName, '\"');
         script += " " + allArgs;
         Scription s = new Scription(script, input);
         return s;
