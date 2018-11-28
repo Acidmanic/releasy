@@ -23,10 +23,11 @@ import java.io.File;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public class EnvironmentalInfo {
+
     private File executableBinariesDirectory;
     private File applicationsDirectory;
     private File installationDirectory;
-    
+
     public EnvironmentalInfo() {
     }
 
@@ -53,6 +54,5 @@ public class EnvironmentalInfo {
     public void setApplicationsDirectory(File applicationsDirectory) {
         this.applicationsDirectory = applicationsDirectory;
     }
-    
-    
+
 }

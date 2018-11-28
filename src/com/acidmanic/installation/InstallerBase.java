@@ -23,6 +23,8 @@ import com.acidmanic.installation.environment.EnvironmentalInfoProvider;
 import com.acidmanic.installation.utils.Os;
 import com.acidmanic.installation.environment.UnixEnvironmentalInfoProvider;
 import com.acidmanic.installation.environment.WindowsEnvironmentalInfoProvider;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public abstract class InstallerBase {
     }
 
     public void install() {
-        this.metadata = new DeploymentMetadata();
+        this.metadata = new DeploymentMetadata(getExec());
         setupMetaData(metadata);
         environmentalInfo = getEnvironmentalInfoProvider().getInfo(metadata);
 
@@ -84,6 +86,14 @@ public abstract class InstallerBase {
         ArrayList<Boolean> ret = new ArrayList<>();
         ret.addAll(results);
         return ret;
+    }
+
+    private File getExec() {
+        try {
+            return new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
+        } catch (URISyntaxException ex) {
+            return new File(".");
+        }
     }
 
 }

@@ -16,6 +16,8 @@
  */
 package com.acidmanic.installation.models;
 
+import java.io.File;
+
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
@@ -24,10 +26,13 @@ public class DeploymentMetadata {
 
     private String productName;
     private String organizationName;
+    
+    private final File executionJarFile; 
 
-    public DeploymentMetadata() {
+    public DeploymentMetadata(File executionJarFile) {
+        this.executionJarFile = executionJarFile;
     }
-
+    
     public String getProductName() {
         return productName;
     }
@@ -43,5 +48,11 @@ public class DeploymentMetadata {
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
     }
+
+    public File getExecutionJarFile() {
+        return executionJarFile;
+    }
+    
+    
 
 }
