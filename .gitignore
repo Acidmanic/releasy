@@ -2,4 +2,5 @@
 /test-env
 /build/
 /nbproject/private/private.xml
-/win-test
+/win-jre
+/release.bat
