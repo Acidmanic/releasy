@@ -18,6 +18,7 @@ package release;
 
 import acidmanic.commandline.commands.ApplicationWideTypeRegistery;
 import com.acidmanic.release.commands.Auto;
+import com.acidmanic.release.commands.Install;
 import com.acidmanic.release.commands.Manual;
 import com.acidmanic.release.commands.Test;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
@@ -50,6 +51,7 @@ public class Application {
         ApplicationWideTypeRegistery.makeInstance().registerClass(Manual.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Auto.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Test.class);
+        ApplicationWideTypeRegistery.makeInstance().registerClass(Install.class);
 
         releaser = new GitTag();
         releaseStrategy = new ReleaseIfAllPresentsSet();
