@@ -63,6 +63,7 @@ public class GitTag implements Versionable {
     }
 
     private void setReleaseVersion(Version version) {
+        git.addAll();
         git.commit("Set release versions to: "
                 + version.getVersionString());
         git.tag(version.getVersionString(), getReleaseMessage());
