@@ -18,6 +18,8 @@ package com.acidmanic.installation.tasks;
 
 import com.acidmanic.installation.models.Scription;
 import com.acidmanic.installation.utils.InstallationActions;
+import com.acidmanic.release.models.ScriptParamSet;
+import com.acidmanic.release.models.ScriptParamSets;
 import com.acidmanic.utilities.StringParseHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,23 +33,23 @@ public class InstallJarFileExecutable extends InstallationTask<String, Void> {
     @Override
     protected boolean onWindows(String input) {
 
-        return perform(input, "%*", ".bat");
+        return perform(input, ScriptParamSets.WINDOWS_ONPATH_SCRIPT);
     }
 
     @Override
     protected boolean onUnix(String input) {
-        return perform(input, "$@", "");
+        return perform(input, ScriptParamSets.UNIX_ONPATH_SCRIPT);
     }
 
-    private boolean perform(String input, String aArg, String sExt) {
-        System.out.println("Installing " + input + sExt + " in env path.");
+    private boolean perform(String scriptname, ScriptParamSet params) {
+        System.out.println("Installing " + scriptname + params.fileExtension + " in env path.");
         String jarname = installDestinationJar();
         if (jarname == null) {
             return false;
         }
-        Scription scr = getScription(input, jarname, aArg);
+        Scription scr = getScription(scriptname, jarname, params);
         return (new InstallationActions(getEnvironmentalInfo())
-                .registerScript(scr, sExt)) != null;
+                .registerScript(scr, params.fileExtension)) != null;
     }
 
     private String installDestinationJar() {
@@ -63,11 +65,14 @@ public class InstallJarFileExecutable extends InstallationTask<String, Void> {
         return res.get(0);
     }
 
-    private Scription getScription(String input, String jarName, String allArgs) {
-        String script = "java -jar ";
+    private Scription getScription(String scriptname,
+            String jarName,
+            ScriptParamSet params) {
+        String script = params.header + params.newLineSymbol;
+        script += "java -jar ";
         script += new StringParseHelper().escapeAndQoute(jarName, '\"');
-        script += " " + allArgs;
-        Scription s = new Scription(script, input);
+        script += " " + params.allArgumentsSymbol;
+        Scription s = new Scription(script, scriptname);
         return s;
     }
 
