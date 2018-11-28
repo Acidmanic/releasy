@@ -31,7 +31,7 @@ public class UnixEnvironmentalInfoProvider extends EnvironmentalInfoProviderBase
 
     @Override
     protected File applicationsDirectory() {
-        return new File("/usr/local/apps");
+        return new File("/usr/local/app");
     }
 
 }
