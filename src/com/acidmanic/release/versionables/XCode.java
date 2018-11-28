@@ -48,6 +48,7 @@ public class XCode implements Versionable {
             if (isAGVPresent) {
                 try {
                     setVersionOnXCode(version);
+                    Logger.log("XCode version has been set using agvtool.", this);
                     return true;
                 } catch (Exception e) {
                     Logger.log("Unable to set Version: " + e.getClass().getSimpleName(), this);
