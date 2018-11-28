@@ -21,6 +21,7 @@ import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.VersionProcessor;
+import java.io.File;
 import java.util.List;
 import release.Application;
 
@@ -63,21 +64,50 @@ public class Status extends CommandBase {
             log("No Versionable systems are detected in current workspace.");
         } else {
             log("Detected versionables: ");
+            log("");
             for (Versionable v : versionables) {
-                String line = v.getClass().getSimpleName();
-                List<String> svers = v.getVersions();
-                if (!svers.isEmpty()) {
-                    List<Version> vers = processor.toVersionList(svers);
-                    if (!vers.isEmpty()) {
-                        line += " -> " + processor.getLatest(vers).getVersionString();
-                    }
-                }
-                log(line);
+                printVersionableState(v, processor);
             }
         }
 
         log(LINE);
 
+        if (Application.getReleaser() == null) {
+            log("There are no releasers configured in your settings.");
+        } else {
+            Application.getReleaser().setup(new File("."), 0);
+            String releaserName = Application.getReleaser().getClass().getSimpleName();
+            if (Application.getReleaser().isPresent()) {
+                log("Releaser:");
+                printVersionableState(Application.getReleaser(), processor);
+            } else {
+                log("Your Releaser (" + releaserName + ") is not present.");
+            }
+        }
+        log(LINE);
     }
 
+    private void printVersionableState(Versionable v, VersionProcessor processor) {
+        String line = v.getClass().getSimpleName();
+        String latest = getLatestVersion(v, processor);
+        if (latest != null) {
+            line += " -> " + latest;
+        }
+        System.out.println(line);
+    }
+
+    private String getLatestVersion(Versionable versionable, VersionProcessor processor) {
+        versionable.setup(new File("."), 0);
+        List<String> svers = versionable.getVersions();
+        if (!svers.isEmpty()) {
+            List<Version> vers = processor.toVersionList(svers);
+            if (!vers.isEmpty()) {
+                Version latest = processor.getLatest(vers);
+                if (latest != null && latest != Version.NULL) {
+                    return latest.getVersionString();
+                }
+            }
+        }
+        return null;
+    }
 }
