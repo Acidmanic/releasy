@@ -17,9 +17,7 @@
 package com.acidmanic.installation.tasks;
 
 import com.acidmanic.installation.models.Scription;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
+import com.acidmanic.installation.utils.InstallationActions;
 
 /**
  *
@@ -29,31 +27,16 @@ public class InstallExecutableScript extends InstallationTask<Scription, String>
 
     @Override
     protected boolean onWindows(Scription input) {
-        return registerScript(input, ".bat");
+        this.result = new InstallationActions(getEnvironmentalInfo())
+                .registerScript(input, ".bat");
+        return this.result != null;
     }
 
     @Override
     protected boolean onUnix(Scription input) {
-        return registerScript(input, "");
-    }
-
-    private boolean registerScript(Scription input, String fileExtension) {
-        File file = getEnvironmentalInfo().getExecutableBinariesDirectory()
-                .toPath().resolve(input.getName() + fileExtension).toFile();
-        try {
-            if (file.exists()) {
-                file.delete();
-            }
-            Files.write(file.toPath(), input.getScript().getBytes(DEFAULT_CHARSET),
-                    StandardOpenOption.CREATE);
-            file.setExecutable(true, false);
-            this.result = file.getAbsolutePath();
-            return true;
-        } catch (Exception ex) {
-            System.out.println(ex);
-
-        }
-        return false;
+        this.result = new InstallationActions(getEnvironmentalInfo())
+                .registerScript(input, "");
+        return this.result != null;
     }
 
     @Override

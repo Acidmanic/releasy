@@ -26,13 +26,15 @@ public class DeploymentMetadata {
 
     private String productName;
     private String organizationName;
-    
-    private final File executionJarFile; 
+    private String defaultCharset;
+
+    private final File executionJarFile;
 
     public DeploymentMetadata(File executionJarFile) {
         this.executionJarFile = executionJarFile;
+        this.defaultCharset = "UTF-8";
     }
-    
+
     public String getProductName() {
         return productName;
     }
@@ -52,7 +54,13 @@ public class DeploymentMetadata {
     public File getExecutionJarFile() {
         return executionJarFile;
     }
-    
-    
+
+    public String getDefaultCharset() {
+        return defaultCharset;
+    }
+
+    public void setDefaultCharset(String defaultCharset) {
+        this.defaultCharset = defaultCharset;
+    }
 
 }

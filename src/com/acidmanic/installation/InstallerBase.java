@@ -77,7 +77,7 @@ public abstract class InstallerBase {
         } else if (os.isUnix()) {
             return new UnixEnvironmentalInfoProvider();
         }
-        return (DeploymentMetadata metadata1) -> new EnvironmentalInfo();
+        return (DeploymentMetadata metadata1) -> new EnvironmentalInfo(metadata1);
     }
 
     protected abstract void introduceTasks(List<InstallationTask> tasks);

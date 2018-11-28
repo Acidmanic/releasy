@@ -27,7 +27,7 @@ public abstract class EnvironmentalInfoProviderBase implements EnvironmentalInfo
 
     @Override
     public EnvironmentalInfo getInfo(DeploymentMetadata metadata) {
-        EnvironmentalInfo ret = new EnvironmentalInfo();
+        EnvironmentalInfo ret = new EnvironmentalInfo(metadata);
         ret.setExecutableBinariesDirectory(executableBinariesDirectory());
         ret.setApplicationsDirectory(applicationsDirectory());
         ret.setInstallationDirectory(getInstallDir(ret.getApplicationsDirectory(), metadata));

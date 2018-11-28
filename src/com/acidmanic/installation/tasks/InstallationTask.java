@@ -37,8 +37,6 @@ public abstract class InstallationTask<Tin, Tout> {
 
     protected abstract boolean getIgnorability();
 
-    protected final static String DEFAULT_CHARSET = "UTF-8";
-
     private EnvironmentalInfo environmentalInfo;
 
     protected boolean onMac(Tin input) {

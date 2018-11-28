@@ -16,6 +16,7 @@
  */
 package com.acidmanic.installation.environment;
 
+import com.acidmanic.installation.models.DeploymentMetadata;
 import java.io.File;
 
 /**
@@ -28,9 +29,12 @@ public class EnvironmentalInfo {
     private File applicationsDirectory;
     private File installationDirectory;
 
-    public EnvironmentalInfo() {
-    }
+    private final DeploymentMetadata deploymentMetadata;
 
+    public EnvironmentalInfo(DeploymentMetadata deploymentMetadata) {
+        this.deploymentMetadata = deploymentMetadata;
+    }
+    
     public File getExecutableBinariesDirectory() {
         return executableBinariesDirectory;
     }
@@ -53,6 +57,10 @@ public class EnvironmentalInfo {
 
     public void setApplicationsDirectory(File applicationsDirectory) {
         this.applicationsDirectory = applicationsDirectory;
+    }
+
+    public DeploymentMetadata getDeploymentMetadata() {
+        return deploymentMetadata;
     }
 
 }
