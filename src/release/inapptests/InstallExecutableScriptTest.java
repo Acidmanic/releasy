@@ -26,20 +26,27 @@ import static org.junit.Assert.*;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class InstallExecutableScriptTest {
-    
+public class InstallExecutableScriptTest extends InstallationTaskTestBase{
+
     public InstallExecutableScriptTest() {
     }
 
+    
+
     @Test
     public void shouldReturnTrueSucceedingToAddExecutableScript() {
-        InstallExecutableScript cmd = new InstallExecutableScript();
-        boolean result = cmd.execute(new Scription("echo Mani", "test-install-mani"));
+        InstallExecutableScript task = new InstallExecutableScript();
+        Object arg = new Scription("echo Mani", "test-install-mani");
+        
+        boolean result = runExecuteMethod(task, arg);
+        
         assertEquals(true, result);
-        File file = new File(cmd.getResult());
+        File file = new File(task.getResult());
         assertEquals(true, result);
         assertEquals(true, file.exists());
         assertEquals(true, file.canExecute());
     }
+
     
+
 }

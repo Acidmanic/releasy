@@ -68,8 +68,8 @@ public class Test extends CommandBase {
         result.getFailures().forEach((Failure f) -> {
             String name = getFailureName(f);
             logLine();
-            log(" ❌   " + name);
-            log("    " + f.getMessage());
+            log(" ❌    " + name);
+            log("     " + f.getMessage());
             log("");
         });
     }
