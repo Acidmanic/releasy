@@ -18,8 +18,8 @@ package com.acidmanic.installation.tasks;
 
 import com.acidmanic.installation.models.Scription;
 import com.acidmanic.installation.utils.InstallationActions;
-import com.acidmanic.release.models.ScriptParamSet;
-import com.acidmanic.release.models.ScriptParamSets;
+import com.acidmanic.installation.models.ScriptParamSet;
+import com.acidmanic.installation.models.ScriptParamSets;
 import com.acidmanic.utilities.StringParseHelper;
 import java.util.ArrayList;
 import java.util.List;

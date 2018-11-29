@@ -14,15 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.models;
+package com.acidmanic.installation.models;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public abstract class ScriptParamSets {
+public class ScriptParamSet {
 
-    public static final ScriptParamSet UNIX_ONPATH_SCRIPT = new ScriptParamSet("#!/bin/bash", "", "$@","\n");
-    public static final ScriptParamSet UNIX_GENERIC_SCRIPT = new ScriptParamSet("#!/bin/bash", ".sh", "$@","\n");
-    public static final ScriptParamSet WINDOWS_ONPATH_SCRIPT = new ScriptParamSet("@ECHO off", ".bat", "%*","\r\n");
+    public String header;
+    public String fileExtension;
+    public String allArgumentsSymbol;
+    public String newLineSymbol;
+
+    public ScriptParamSet() {
+        this.header = "";
+        this.fileExtension = "";
+        this.allArgumentsSymbol = "$@";
+        this.newLineSymbol = "\n";
+    }
+
+    public ScriptParamSet(String header, String fileExtension, String allArgumentsSymbol, String newLineSymbol) {
+        this.header = header;
+        this.fileExtension = fileExtension;
+        this.allArgumentsSymbol = allArgumentsSymbol;
+        this.newLineSymbol = newLineSymbol;
+    }
+
 }
