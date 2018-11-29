@@ -65,9 +65,7 @@ public class Cocoapods implements Versionable {
         if (this.projectName != null) {
             this.specsFile = getSpecFile(directory, this.projectName);
             this.present = this.specsFile.exists();
-        } else {
-            Logger.log("It's not an XCode project directory.", this);
-        }
+        } 
     }
 
     @Override
