@@ -16,6 +16,7 @@
  */
 package com.acidmanic.utilities;
 
+import com.acidmanic.release.utilities.AgvtoolStdWrapper;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;

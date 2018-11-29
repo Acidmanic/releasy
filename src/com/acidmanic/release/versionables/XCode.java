@@ -20,7 +20,7 @@ import com.acidmanic.release.projectdirectory.XCodeProjectDirectoryInfo;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.AgvtoolStdWrapper;
+import com.acidmanic.release.utilities.AgvtoolStdWrapper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

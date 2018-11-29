@@ -22,7 +22,7 @@ import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.VersionProcessor;
+import com.acidmanic.release.utilities.VersionProcessor;
 import java.util.List;
 import release.Application;
 

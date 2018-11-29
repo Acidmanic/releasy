@@ -16,6 +16,7 @@
  */
 package com.acidmanic.utilities;
 
+import com.acidmanic.release.utilities.GitStdWrapper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

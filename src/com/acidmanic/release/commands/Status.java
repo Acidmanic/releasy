@@ -20,7 +20,7 @@ import acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.VersionProcessor;
+import com.acidmanic.release.utilities.VersionProcessor;
 import java.io.File;
 import java.util.List;
 import release.Application;

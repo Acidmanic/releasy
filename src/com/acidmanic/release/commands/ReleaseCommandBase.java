@@ -23,7 +23,7 @@ import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
 import static com.acidmanic.release.versions.ReleaseTypes.*;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.ReleaseParametersBuilder;
+import com.acidmanic.release.utilities.ReleaseParametersBuilder;
 import java.util.List;
 import release.Application;
 

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.utilities;
+package com.acidmanic.release.utilities;
 
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;

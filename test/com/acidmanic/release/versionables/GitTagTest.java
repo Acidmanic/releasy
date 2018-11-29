@@ -18,7 +18,7 @@ package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.GitStdWrapper;
+import com.acidmanic.release.utilities.GitStdWrapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

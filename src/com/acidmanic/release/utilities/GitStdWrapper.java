@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.utilities;
+package com.acidmanic.release.utilities;
 
 import com.acidmanic.parse.QuotationParser;
+import com.acidmanic.utilities.Bash;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
