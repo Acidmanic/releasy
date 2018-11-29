@@ -16,28 +16,10 @@
  */
 package release.inapptests;
 
-import com.acidmanic.installation.tasks.InstallJarFileExecutable;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class InstallJarFileExecutableTest extends InstallationTaskTestBase{
+class InAppTestPackageAnchor {
     
-    
-    
-    @Test
-    public void shouldRegisterApplicationJarFileAsExecutableBinary(){
-        InstallJarFileExecutable task = new InstallJarFileExecutable();
-       
-        boolean result = runExecuteMethod(task, "test-install-mani");
-        
-        assertEquals(true, result);
-//        File file = new File(task.getResult());
-//        assertEquals(true, result);
-//        assertEquals(true, file.exists());
-//        assertEquals(true, file.canExecute());
-    }
 }

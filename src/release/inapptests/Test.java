@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands;
+package release.inapptests;
 
 import acidmanic.commandline.commands.CommandBase;
 import java.util.ArrayList;
@@ -22,7 +22,6 @@ import java.util.List;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-import release.Application;
 
 /**
  *
@@ -89,13 +88,17 @@ public class Test extends CommandBase {
         ArrayList<Class> ret = new ArrayList<>();
         for (String name : args) {
             try {
-                Class type = Class.forName(Application.getInAppTestPackage()
+                Class type = Class.forName(getInAppTestPackage()
                         + "." + name + "Test");
                 ret.add(type);
             } catch (Exception e) {
             }
         }
         return ret;
+    }
+
+    public String getInAppTestPackage() {
+        return InAppTestPackageAnchor.class.getPackage().getName();
     }
 
     private Result winFilter(Result result) {

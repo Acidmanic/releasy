@@ -21,7 +21,7 @@ import com.acidmanic.release.commands.Auto;
 import com.acidmanic.release.commands.Install;
 import com.acidmanic.release.commands.Manual;
 import com.acidmanic.release.commands.Status;
-import com.acidmanic.release.commands.Test;
+import release.inapptests.Test;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.versionables.Cocoapods;
@@ -32,7 +32,6 @@ import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versions.SemanticVersionFactory;
 import com.acidmanic.release.versions.VersionFactory;
 import com.acidmanic.utilities.ClassRegistery;
-import release.inapptests.PackageAnchor;
 
 /**
  *
@@ -73,8 +72,6 @@ public class Application {
         return versionFactory;
     }
 
-    public static String getInAppTestPackage() {
-        return PackageAnchor.class.getPackage().getName();
-    }
+    
 
 }
