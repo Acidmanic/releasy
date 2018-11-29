@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.fileeditors;
 
-import com.acidmanic.utilities.StringParseHelper;
+import com.acidmanic.parse.QuotationParser;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -72,7 +72,7 @@ public class SpecFileEditor {
     }
 
     public String getVerion() {
-        StringParseHelper helper = new StringParseHelper();
+        QuotationParser helper = new QuotationParser();
         if (this.specFile.exists()) {
             try {
                 List<String> lines = Files.readAllLines(this.specFile.toPath());

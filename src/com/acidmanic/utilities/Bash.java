@@ -16,6 +16,7 @@
  */
 package com.acidmanic.utilities;
 
+import com.acidmanic.parse.QuotationParser;
 import static com.acidmanic.release.logging.Logger.log;
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import static com.acidmanic.release.logging.Logger.log;
 
 /**
  *
@@ -173,7 +175,7 @@ public class Bash {
 
     public String bashEscape(String message) {
         char[] chars = message.toCharArray();
-        StringParseHelper helper = new StringParseHelper();
+        QuotationParser helper = new QuotationParser();
         StringBuilder sb = new StringBuilder();
         for (char c : chars) {
             if (helper.isEscape(c, bashEscapeChars)) {

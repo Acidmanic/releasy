@@ -16,6 +16,7 @@
  */
 package com.acidmanic.utilities;
 
+import com.acidmanic.parse.QuotationParser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,13 +99,13 @@ public class GitStdWrapper {
     }
 
     public void commit(String message) {
-        command("commit -m " + new StringParseHelper()
+        command("commit -m " + new QuotationParser()
                 .escapeAndQoute(message, '\''));
     }
 
     public void tag(String version, String message) {
         command("tag " + version + " -m "
-                + new StringParseHelper()
+                + new QuotationParser()
                 .escapeAndQoute(message, '\''));
     }
 

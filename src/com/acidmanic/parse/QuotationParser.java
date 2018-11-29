@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.utilities;
+package com.acidmanic.parse;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class StringParseHelper {
+public class QuotationParser {
 
     public boolean isWrappedIn(String value, String tag) {
         return (value.startsWith(tag) && value.endsWith(tag));

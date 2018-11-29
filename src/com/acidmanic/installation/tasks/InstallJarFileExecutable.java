@@ -20,7 +20,7 @@ import com.acidmanic.installation.models.Scription;
 import com.acidmanic.installation.utils.InstallationActions;
 import com.acidmanic.installation.models.ScriptParamSet;
 import com.acidmanic.installation.models.ScriptParamSets;
-import com.acidmanic.utilities.StringParseHelper;
+import com.acidmanic.parse.QuotationParser;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +70,7 @@ public class InstallJarFileExecutable extends InstallationTask<String, Void> {
             ScriptParamSet params) {
         String script = params.header + params.newLineSymbol;
         script += "java -jar ";
-        script += new StringParseHelper().escapeAndQoute(jarName, '\"');
+        script += new QuotationParser().escapeAndQoute(jarName, '\"');
         script += " " + params.allArgumentsSymbol;
         Scription s = new Scription(script, scriptname);
         return s;
