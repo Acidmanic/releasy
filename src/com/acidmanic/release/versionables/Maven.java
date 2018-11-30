@@ -20,6 +20,7 @@ import com.acidmanic.release.fileeditors.xmlinplace.XmlInPlaceEditor;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.release.versions.Version;
+import com.acidmanic.utilities.FileSearch;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,7 +44,7 @@ public class Maven implements Versionable {
     public void setup(File directory, int releaseType) {
         this.mavenPomFile = null;
         this.mavenPomPresent = false;
-        File pom = searchForPom(directory);
+        File pom = new FileSearch().search(directory,"pom.xml");
         if (pom != null && pom.exists()) {
             this.mavenPomFile = pom;
             this.mavenPomPresent = true;
@@ -74,18 +75,6 @@ public class Maven implements Versionable {
         }
         Files.write(this.mavenPomFile.toPath(), mavenFileContent.getBytes(), StandardOpenOption.CREATE);
         Logger.log("Maven Project Version set.", this);
-    }
-
-    private File searchForPom(File directory) {
-        File[] files = directory.listFiles((File dir, String name) -> compareFileNames(name, "pom.xml"));
-        if (files.length > 0) {
-            return files[0];
-        }
-        return null;
-    }
-
-    private boolean compareFileNames(String name, String pomxml) {
-        return name.toLowerCase().compareTo(pomxml.toLowerCase()) == 0;
     }
 
     @Override
