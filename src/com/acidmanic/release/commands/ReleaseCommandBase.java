@@ -69,6 +69,10 @@ public abstract class ReleaseCommandBase extends CommandBase {
         if (presetupRelease(parameters)) {
             Application.getReleaseStrategy()
                     .release(parameters);
+            String message = Application.getReleaseStrategy().message();
+            if (message != null) {
+                Logger.log(message);
+            }
         }
     }
 

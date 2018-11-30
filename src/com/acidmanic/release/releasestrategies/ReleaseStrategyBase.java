@@ -16,14 +16,21 @@
  */
 package com.acidmanic.release.releasestrategies;
 
-import com.acidmanic.release.models.ReleaseParameters;
-
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public interface ReleaseStrategy {
-    
-    String message();
-    void release(ReleaseParameters parameters);
+public abstract class ReleaseStrategyBase implements ReleaseStrategy {
+
+    private String logMessages;
+
+    @Override
+    public String message() {
+        return logMessages;
+    }
+
+    protected void log(String text) {
+        this.logMessages += text + "\r\n";
+    }
+
 }

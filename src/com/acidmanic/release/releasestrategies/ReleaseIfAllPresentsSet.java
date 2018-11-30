@@ -24,23 +24,23 @@ import com.acidmanic.release.versionables.Versionable;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class ReleaseIfAllPresentsSet implements ReleaseStrategy {
+public class ReleaseIfAllPresentsSet extends ReleaseStrategyBase {
 
     @Override
     public void release(ReleaseParameters parameters) {
         
         if (setAll(parameters)) {
-            Logger.log("INFO: 👍   All Versions set.");
+            log("INFO: 👍   All Versions set.");
             if (parameters.getReleaser().setVersion(parameters.getVersion())) {
-                Logger.log("INFO: 👍   Released Successfully.");
+                log("INFO: 👍   Released Successfully.");
             } else {
                 Logger.log("ERROR: Final release did not succeed.");
             }
 
         } else {
-            Logger.log("WARNING: Some present versionables encountered an error.");
-            Logger.log("WARNING: while setting the version.");
-            Logger.log("ERROR: Final Release will not be performed.");
+            log("WARNING: Some present versionables encountered an error.");
+            log("WARNING: while setting the version.");
+            log("ERROR: Final Release will not be performed.");
         }
     }
 
