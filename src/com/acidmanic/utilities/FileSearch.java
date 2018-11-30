@@ -16,6 +16,8 @@
  */
 package com.acidmanic.utilities;
 
+import com.acidmanic.parse.stringcomparison.StringComparisionFactory;
+import com.acidmanic.parse.stringcomparison.StringComparison;
 import java.io.File;
 
 /**
@@ -23,24 +25,24 @@ import java.io.File;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public class FileSearch {
-    
-    public File search(File directory, String forFile){
-        
+
+    public File search(File directory, String forFile, int stringComparision) {
+
         String fileNameLower = forFile.toLowerCase();
-        
-        File[] files = directory.listFiles((File dir, String name) -> compareFileNames(name, fileNameLower));
-        
+
+        StringComparison comparison = new StringComparisionFactory().make(stringComparision);
+
+        File[] files = directory.listFiles((File dir, String name) -> comparison.areEqual(name, fileNameLower));
+
         if (files.length > 0) {
             return files[0];
         }
-        
+
         return null;
     }
-    
-    private boolean compareFileNames(String file1, String file2) {
-        
-        return file1.toLowerCase().compareTo(file2.toLowerCase()) == 0;
-        
+
+    public File search(File directory, String forFile) {
+        return search(directory, forFile, StringComparison.COMPARE_CASE_SENSITIVE);
     }
-    
+
 }
