@@ -20,12 +20,10 @@ package com.acidmanic.release.releasestrategies;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class ReleaseIfAllPresentsSet extends ReleaseIfAllPresentsSetBase{
+public class ReleaseIfAnyPresentAndAllPass extends ReleaseIfAllPresentsSetBase {
 
-    public ReleaseIfAllPresentsSet() {
-        acceptReleaseOnly = true;
+    public ReleaseIfAnyPresentAndAllPass() {
+        acceptReleaseOnly = false;
     }
-    
-    
-    
+
 }
