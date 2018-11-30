@@ -27,6 +27,7 @@ import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.versionables.Cocoapods;
 import com.acidmanic.release.versionables.GitTag;
 import com.acidmanic.release.versionables.Maven;
+import com.acidmanic.release.versionables.NodeJs;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versions.SemanticVersionFactory;
@@ -47,6 +48,7 @@ public class Application {
         ClassRegistery.makeInstance().add(Cocoapods.class);
         ClassRegistery.makeInstance().add(Maven.class);
         ClassRegistery.makeInstance().add(XCode.class);
+        ClassRegistery.makeInstance().add(NodeJs.class);
 
         ApplicationWideTypeRegistery.makeInstance().registerClass(Manual.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Auto.class);
