@@ -56,7 +56,7 @@ public class SemanticVersionFactory implements VersionFactory<SemanticVersion> {
 
     @Override
     public SemanticVersion blank() {
-        return new SemanticVersion();
+        return new SemanticVersion(0,0,0,"");
     }
 
 }

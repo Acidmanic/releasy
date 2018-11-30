@@ -65,7 +65,8 @@ public class NodeJs implements Versionable {
         if (present) {
             try {
                 JsonEditor editor = new JsonEditor(packageFile);
-                ret.add(editor.readValue(VERSION_ADDRESS));
+                String version = editor.readValue(VERSION_ADDRESS);
+                ret.add(version);
             } catch (Exception e) {
             }
         }
