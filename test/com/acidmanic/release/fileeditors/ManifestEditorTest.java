@@ -35,7 +35,8 @@ public class ManifestEditorTest {
     private final String KEY2 = "Manifest-Version";
     private final String VALUE2 = "1.0";
     private final String MANIFEST_CONTENT = KEY1 + ": " + VALUE1
-            + "\n" + KEY2 + ": " +VALUE2;
+            + "\n" + KEY2 + ": " + VALUE2;
+    private final String MANIFEST_ONELINE = KEY1 + ": " + VALUE1;
 
     public ManifestEditorTest() {
         manifestFile = new File(".").toPath().resolve("manifest.mf").toFile();
@@ -43,11 +44,16 @@ public class ManifestEditorTest {
 
     private void makeManifestFile() throws Exception {
 
+        makeManifestFile(MANIFEST_CONTENT);
+    }
+
+    private void makeManifestFile(String content) throws Exception {
+
         if (manifestFile.exists()) {
             Files.delete(manifestFile.toPath());
         }
 
-        Files.write(manifestFile.toPath(), MANIFEST_CONTENT.getBytes(), StandardOpenOption.CREATE);
+        Files.write(manifestFile.toPath(), content.getBytes(), StandardOpenOption.CREATE);
     }
 
     @Test
@@ -84,9 +90,32 @@ public class ManifestEditorTest {
 
         String actual = readManifestFile();
 
-        actual = actual.replaceAll("\\\\s", "");
+        actual = actual.replaceAll("\\s", "");
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldAddNewKeyKeepingOldOnes() throws Exception {
+        System.out.println("---- shouldLoadBothKeyValues ----");
+
+        ManifestEditor instance = new ManifestEditor();
+
+        makeManifestFile(MANIFEST_ONELINE);
+
+        instance.load(manifestFile);
+        
+        instance.set(KEY2, VALUE2);
+
+        instance.save(manifestFile);
+
+        String result = readManifestFile();
+        
+        assertTrue(result.contains(KEY1+":"));
+        assertTrue(result.contains(VALUE1));
+        
+        assertTrue(result.contains(KEY2+":"));
+        assertTrue(result.contains(VALUE2));
     }
 
     private String readManifestFile() {
