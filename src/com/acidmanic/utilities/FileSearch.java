@@ -16,9 +16,19 @@
  */
 package com.acidmanic.utilities;
 
+import com.acidmanic.io.file.SimpleFileVisitor;
 import com.acidmanic.parse.stringcomparison.StringComparisionFactory;
 import com.acidmanic.parse.stringcomparison.StringComparison;
 import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.text.StringContent;
 
 /**
  *
@@ -26,6 +36,10 @@ import java.io.File;
  */
 public class FileSearch {
 
+    public interface ValidateName{
+        boolean validate(String name);
+    }
+    
     public File search(File directory, String forFile, int stringComparision) {
 
         String fileNameLower = forFile.toLowerCase();
@@ -43,6 +57,36 @@ public class FileSearch {
 
     public File search(File directory, String forFile) {
         return search(directory, forFile, StringComparison.COMPARE_CASE_SENSITIVE);
+    }
+    
+    public List<File> searchTree(Path src, ValidateName validator)  {
+        List<File> ret = new ArrayList<>();
+        try {
+            Files.walkFileTree(src, new SimpleFileVisitor() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    File f = file.toAbsolutePath().normalize().toFile();
+                    if (validator.validate(f.getName())){
+                        ret.add(f);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (Exception e) {
+        }
+        return ret;
+    }
+    
+    
+    public List<File> searchTree(Path src, String name,int stringComparision){
+        StringComparison comparison = new StringComparisionFactory().make(stringComparision);
+        return searchTree(src, (String fileName) -> comparison.areEqual(fileName, name));
+    }
+    
+    public List<File> searchTree(Path src, String name){
+        StringComparison comparison = new StringComparisionFactory()
+                .make(StringComparison.COMPARE_CASE_SENSITIVE);
+        return searchTree(src, (String fileName) -> comparison.areEqual(fileName, name));
     }
 
 }
