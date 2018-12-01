@@ -35,7 +35,8 @@ public class ReleaseParametersBuilder {
     public ReleaseParametersBuilder() {
         this.result = new ReleaseParameters(new ArrayList<>(),
                 Versionable.NULL, Version.NULL, ReleaseTypes.NIGHTLY,
-                new Change(false, false, false)
+                new Change(false, false, false),
+                () -> {}
         );
     }
 
@@ -61,6 +62,11 @@ public class ReleaseParametersBuilder {
 
     public ReleaseParametersBuilder version(Version version) {
         this.result.setVersion(version);
+        return this;
+    }
+
+    public ReleaseParametersBuilder preRelease(Runnable preRelease) {
+        this.result.setPreRelease(preRelease);
         return this;
     }
 
