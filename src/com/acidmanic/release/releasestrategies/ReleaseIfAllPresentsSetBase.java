@@ -19,7 +19,6 @@ package com.acidmanic.release.releasestrategies;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
-import java.applet.Applet;
 import release.Application;
 
 /**
@@ -46,7 +45,7 @@ public abstract class ReleaseIfAllPresentsSetBase extends ReleaseStrategyBase {
                             + " Release has been performed");
                 }
             } else {
-                Logger.log("ERROR: Final release did not succeed.");
+                log("ERROR: Final release did not succeed.");
             }
 
         } else {

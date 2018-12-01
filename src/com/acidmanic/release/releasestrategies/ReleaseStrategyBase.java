@@ -22,7 +22,7 @@ package com.acidmanic.release.releasestrategies;
  */
 public abstract class ReleaseStrategyBase implements ReleaseStrategy {
 
-    private String logMessages;
+    private String logMessages="";
 
     @Override
     public String message() {
@@ -30,7 +30,7 @@ public abstract class ReleaseStrategyBase implements ReleaseStrategy {
     }
 
     protected void log(String text) {
-        this.logMessages += text + "\r\n";
+        this.logMessages += text + "\n";
     }
 
 }
