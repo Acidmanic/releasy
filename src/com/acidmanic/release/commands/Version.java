@@ -51,7 +51,7 @@ public class Version extends CommandBase {
         StringBuilder sb = new StringBuilder();
         String sep = "";
         for (Versionable v : allVersionables) {
-            sb.append(v.getClass().getSimpleName()).append(sep);
+            sb.append(sep).append(v.getClass().getSimpleName());
             sep = ", ";
         }
         Logger.log(sb.toString());
