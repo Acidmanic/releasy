@@ -26,6 +26,7 @@ import release.inapptests.Test;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.versionables.Cocoapods;
 import com.acidmanic.release.versionables.GitTag;
+import com.acidmanic.release.versionables.JavaManifest;
 import com.acidmanic.release.versionables.Maven;
 import com.acidmanic.release.versionables.NodeJs;
 import com.acidmanic.release.versionables.NuGet;
@@ -51,6 +52,7 @@ public class Application {
         ClassRegistery.makeInstance().add(XCode.class);
         ClassRegistery.makeInstance().add(NodeJs.class);
         ClassRegistery.makeInstance().add(NuGet.class);
+        ClassRegistery.makeInstance().add(JavaManifest.class);
 
         ApplicationWideTypeRegistery.makeInstance().registerClass(Manual.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Auto.class);
