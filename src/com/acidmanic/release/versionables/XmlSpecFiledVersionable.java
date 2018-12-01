@@ -71,16 +71,19 @@ public abstract class XmlSpecFiledVersionable implements Versionable {
             this.specFile.delete();
         }
         Files.write(this.specFile.toPath(), nugetSpecContent.getBytes(), StandardOpenOption.CREATE);
-        Logger.log("Nuget Project Version set.", this);
+        Logger.log(" Project Version set.", this);
     }
 
     @Override
     public boolean setVersion(Version version) {
+        String myName = getClass().getSimpleName();
         try {
             String sVersion = getVersionString(version, releaseType);
             setXmlSpecFileVersion(sVersion);
+            Logger.log(myName + " Project Version set.", this);
             return true;
         } catch (Exception e) {
+            Logger.log("Unable to set Version: " + myName, this);
         }
         return false;
     }
