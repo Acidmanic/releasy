@@ -17,7 +17,6 @@
 package com.acidmanic.utilities;
 
 import com.acidmanic.parse.Replacement;
-import com.acidmanic.release.versions.Version;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,16 +57,15 @@ public class TextFileUpdater {
         this.tag = tag;
     }
 
-    public void updateFiles(List<String> files, String version) {
-        Path here = new File(".").toPath();
-        files.forEach((String path) -> updateFile(here.resolve(path).toFile(), version));
+    public void updateFiles(List<File> files, String withValue) {
+        files.forEach((File file) -> updateFile(file, withValue));
     }
 
-    public void updateFile(File file, String version) {
+    public void updateFile(File file, String withValue) {
         if (file.exists()) {
             try {
                 String content = new String(Files.readAllBytes(file.toPath()), charset);
-                content = new Replacement().replace(content, tag, version, escape);
+                content = new Replacement().replace(content, tag, withValue, escape);
                 file.delete();
                 Files.write(file.toPath(), content.getBytes(charset), StandardOpenOption.CREATE);
             } catch (Exception e) {
