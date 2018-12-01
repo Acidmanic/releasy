@@ -20,6 +20,7 @@ import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
 import com.acidmanic.release.versions.Version;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  *
@@ -32,18 +33,18 @@ public class ReleaseParameters {
     private Version version;
     private int releaseType;
     private Change changes;
+    private Runnable preRelease;
 
-    public ReleaseParameters(List<Versionable> versionables,
-            Versionable releaser,
-            Version version,
-            int releaseType,
-            Change changes) {
+    public ReleaseParameters(List<Versionable> versionables, Versionable releaser, Version version, int releaseType, Change changes, Runnable preRelease) {
         this.versionables = versionables;
         this.releaser = releaser;
         this.version = version;
         this.releaseType = releaseType;
         this.changes = changes;
+        this.preRelease = preRelease;
     }
+
+    
 
     public List<Versionable> getVersionables() {
         return versionables;
@@ -84,5 +85,15 @@ public class ReleaseParameters {
     public void setVersion(Version version) {
         this.version = version;
     }
+
+    public Runnable getPreRelease() {
+        return preRelease;
+    }
+
+    public void setPreRelease(Runnable preRelease) {
+        this.preRelease = preRelease;
+    }
+
+  
 
 }
