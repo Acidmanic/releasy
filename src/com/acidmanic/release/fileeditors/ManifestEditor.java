@@ -18,6 +18,7 @@ package com.acidmanic.release.fileeditors;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,10 +41,9 @@ public class ManifestEditor {
             for (String line : lines) {
                 String[] parts = line.split("\\:", 2); //Only First
                 if (parts.length == 2) {
-                    if (this.data.containsKey(parts[0])) {
-                        this.data.remove(parts[0]);
-                    }
-                    this.data.put(parts[0], parts[1]);
+                    String key = parts[0].trim();
+                    String value = parts[1].trim();
+                    set(key, value);
                 }
             }
         } catch (Exception e) {
@@ -62,6 +62,25 @@ public class ManifestEditor {
             this.data.remove(key);
         }
         this.data.put(key, value);
+    }
+
+    public void save(File file) {
+        try {
+
+            StringBuilder sb = new StringBuilder();
+            String sep = "";
+            for (String key : data.keySet()) {
+                sb.append(sep).append(key).append(":")
+                        .append(data.get(key));
+                sep = "\n";
+            }
+            if (file.exists()) {
+                file.delete();
+            }
+            Files.write(file.toPath(), sb.toString().getBytes(), StandardOpenOption.CREATE);
+        } catch (Exception e) {
+            System.err.println("");
+        }
     }
 
 }
