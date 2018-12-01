@@ -16,6 +16,8 @@
  */
 package com.acidmanic.release.fileeditors.inplaceediting;
 
+import com.acidmanic.parse.indexbased.TagLocation;
+
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)

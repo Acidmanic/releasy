@@ -16,8 +16,8 @@
  */
 package com.acidmanic.release.fileeditors.xmlinplace;
 
+import com.acidmanic.parse.indexbased.TagLocation;
 import com.acidmanic.release.fileeditors.inplaceediting.XmlTagFinder;
-import com.acidmanic.release.fileeditors.inplaceediting.TagLocation;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
