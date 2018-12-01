@@ -17,78 +17,19 @@
 package com.acidmanic.release.versionables;
 
 import com.acidmanic.parse.stringcomparison.StringComparison;
-import com.acidmanic.release.fileeditors.xmlinplace.XmlInPlaceEditor;
-import com.acidmanic.release.logging.Logger;
-import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.FileSearch;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class NuGet implements Versionable {
+public class NuGet extends XmlSpecFiledVersionable {
 
-    private int releaseType;
-    private File specFile;
-    private boolean present = false;
     private static final String PACKAGE_SPEC = "Package.nuspec";
     private static final String[] VERSION_ADDRESS = {"package", "metadata", "version"};
+    private static final int COMPARISON = StringComparison.COMPARE_CASE_SENSITIVE;
 
-    @Override
-    public void setup(File directory, int releaseType) {
-        this.releaseType = releaseType;
-        specFile = new FileSearch().search(directory,
-                PACKAGE_SPEC, StringComparison.COMPARE_CASE_INSENSITIVE);
-        if (specFile != null) {
-            this.present = specFile.exists();
-        }
-    }
-
-    @Override
-    public boolean isPresent() {
-        return present;
-    }
-
-    @Override
-    public boolean setVersion(Version version) {
-        try {
-            setNuGetProjectVersion(version, releaseType);
-            return true;
-        } catch (Exception e) {
-        }
-        return false;
-    }
-
-    private void setNuGetProjectVersion(Version version, int releaseType) throws IOException {
-        String nugetSpecContent = new String(Files.readAllBytes(this.specFile.toPath()));
-        XmlInPlaceEditor editor = new XmlInPlaceEditor();
-        nugetSpecContent = editor.setTagContent(VERSION_ADDRESS, nugetSpecContent, version.getVersionString());
-        if (this.specFile.exists()) {
-            this.specFile.delete();
-        }
-        Files.write(this.specFile.toPath(), nugetSpecContent.getBytes(), StandardOpenOption.CREATE);
-        Logger.log("Nuget Project Version set.", this);
-    }
-
-    @Override
-    public List<String> getVersions() {
-        ArrayList<String> ret = new ArrayList<>();
-        try {
-            String content = new String(Files.readAllBytes(this.specFile.toPath()));
-            XmlInPlaceEditor editor = new XmlInPlaceEditor();
-            String version = editor.getTagContent(VERSION_ADDRESS, content);
-            
-            ret.add(version);
-            return ret;
-        } catch (Exception e) {
-        }
-        return ret;
+    public NuGet() {
+        super(PACKAGE_SPEC, VERSION_ADDRESS, COMPARISON);
     }
 
 }
