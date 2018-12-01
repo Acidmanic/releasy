@@ -21,6 +21,7 @@ import com.acidmanic.release.commands.Auto;
 import com.acidmanic.release.commands.Install;
 import com.acidmanic.release.commands.Manual;
 import com.acidmanic.release.commands.Status;
+import com.acidmanic.release.commands.Version;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import release.inapptests.Test;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
@@ -59,6 +60,7 @@ public class Application {
         ApplicationWideTypeRegistery.makeInstance().registerClass(Test.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Install.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Status.class);
+        ApplicationWideTypeRegistery.makeInstance().registerClass(Version.class);
 
         releaser = new GitTag();
         releaseStrategy = new ReleaseIfAllPresentsSet();
@@ -77,7 +79,5 @@ public class Application {
     public static VersionFactory getVersionFactory() {
         return versionFactory;
     }
-
-    
 
 }
