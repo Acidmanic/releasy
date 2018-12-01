@@ -32,7 +32,7 @@ public class Manual extends ReleaseCommandBase {
         return "Will set given version into all present Versionable-Systems, "
                 + "then tries to perform a release. \n"
                 + "Optional parameter: "
-                + RELEASE_TYPE_DESCRIPTION + TEXTUPDATE_DESCRIPTIONS;
+                + RELEASE_TYPE_DESCRIPTION ;
     }
 
     @Override

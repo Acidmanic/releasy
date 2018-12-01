@@ -31,7 +31,7 @@ import release.Application;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public class Auto extends ReleaseCommandBase {
-    
+
     @Override
     protected String getUsageString() {
         return "This Will process previouse versions on all present "
@@ -44,7 +44,7 @@ public class Auto extends ReleaseCommandBase {
                 + " that the code changes include redesigns (major change). and "
                 + "the 'fix' parameter represents bug-fixed and patch builds."
                 + "\n*   "
-                + RELEASE_TYPE_DESCRIPTION+TEXTUPDATE_DESCRIPTIONS;
+                + RELEASE_TYPE_DESCRIPTION;
     }
 
     @Override
