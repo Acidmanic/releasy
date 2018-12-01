@@ -19,7 +19,6 @@ package com.acidmanic.release.versionables;
 import com.acidmanic.release.fileeditors.ManifestEditor;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.FileSearch;
-import com.sun.jndi.toolkit.dir.SearchFilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,7 @@ public class JavaManifest implements Versionable {
     public boolean setVersion(Version version) {
         if (present) {
             ManifestEditor editor = new ManifestEditor();
+            editor.load(manifest);
             editor.set(VERSION_KEY, version.getVersionString());
             editor.save(manifest);
             return true;
