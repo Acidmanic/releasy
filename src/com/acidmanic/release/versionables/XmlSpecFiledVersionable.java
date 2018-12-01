@@ -95,6 +95,7 @@ public abstract class XmlSpecFiledVersionable implements Versionable {
             String content = new String(Files.readAllBytes(this.specFile.toPath()));
             XmlInPlaceEditor editor = new XmlInPlaceEditor();
             String version = editor.getTagContent(versionAddress, content);
+            version = procesVersionStringBeforeDeliver(version);
             ret.add(version);
             return ret;
         } catch (Exception e) {
@@ -104,6 +105,10 @@ public abstract class XmlSpecFiledVersionable implements Versionable {
 
     private String getVersionString(Version version, int releaseType) {
         return version.getVersionString();
+    }
+
+    private String procesVersionStringBeforeDeliver(String version) {
+        return version;
     }
 
 }
