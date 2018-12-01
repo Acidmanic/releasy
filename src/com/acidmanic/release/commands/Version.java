@@ -49,7 +49,12 @@ public class Version extends CommandBase {
         List<Versionable> allVersionables
                 = ClassRegistery.makeInstance().all(Versionable.class);
         StringBuilder sb = new StringBuilder();
-        allVersionables.forEach((Versionable v) -> sb.append(v.getClass().getSimpleName()).append(" "));
+        String sep = "";
+        for (Versionable v : allVersionables) {
+            sb.append(v.getClass().getSimpleName()).append(sep);
+            sep = ", ";
+        }
+        Logger.log(sb.toString());
         Logger.log("");
 
     }
