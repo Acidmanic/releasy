@@ -19,10 +19,9 @@ package com.acidmanic.release.environment;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.utilities.ClassRegistery;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
+import com.acidmanic.utilities.FileSearch;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import release.Application;
 
@@ -91,6 +90,15 @@ public class ReleaseEnvironment {
         } catch (Exception e) {
         }
         return new ArrayList<>();
+    }
+
+    public List<File> getUpdatingFiles() {
+        return new FileSearch().searchTree(directory.toPath(), (String name) -> {
+            String low = name.toLowerCase();
+            return low.endsWith(".md")
+                    || low.endsWith(".txt")
+                    || low.compareTo("readme") == 0;
+        });
     }
 
 }
