@@ -16,7 +16,6 @@
  */
 package com.acidmanic.release.versionables;
 
-import com.acidmanic.parse.stringcomparison.StringComparison;
 import com.acidmanic.release.fileeditors.xmlinplace.XmlInPlaceEditor;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
@@ -77,13 +76,17 @@ public abstract class XmlSpecFiledVersionable implements Versionable {
     @Override
     public boolean setVersion(Version version) {
         String myName = getClass().getSimpleName();
-        try {
-            String sVersion = getVersionString(version, releaseType);
-            setXmlSpecFileVersion(sVersion);
-            Logger.log(myName + " Project Version set.", this);
-            return true;
-        } catch (Exception e) {
-            Logger.log("Unable to set Version: " + myName, this);
+        if (present) {
+            try {
+                String sVersion = getVersionString(version, releaseType);
+                setXmlSpecFileVersion(sVersion);
+                Logger.log(myName + " Project Version set.", this);
+                return true;
+            } catch (Exception e) {
+                Logger.log("Unable to set Version: " + myName, this);
+            }
+        } else {
+            Logger.log(myName + " spec file is not present.", this);
         }
         return false;
     }
@@ -103,11 +106,11 @@ public abstract class XmlSpecFiledVersionable implements Versionable {
         return ret;
     }
 
-    private String getVersionString(Version version, int releaseType) {
+    protected String getVersionString(Version version, int releaseType) {
         return version.getVersionString();
     }
 
-    private String procesVersionStringBeforeDeliver(String version) {
+    protected String procesVersionStringBeforeDeliver(String version) {
         return version;
     }
 
