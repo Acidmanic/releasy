@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.fileeditors.xmlinplace;
 
+import com.acidmanic.release.fileeditors.inplaceediting.XmlInPlaceEditor;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

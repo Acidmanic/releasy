@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.versionables;
 
-import com.acidmanic.release.fileeditors.xmlinplace.XmlInPlaceEditor;
+import com.acidmanic.release.fileeditors.inplaceediting.XmlInPlaceEditor;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.FileSearch;
