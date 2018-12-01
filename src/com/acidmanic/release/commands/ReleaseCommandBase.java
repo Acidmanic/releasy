@@ -24,6 +24,8 @@ import com.acidmanic.release.versionables.Versionable;
 import static com.acidmanic.release.versions.ReleaseTypes.*;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.utilities.ReleaseParametersBuilder;
+import com.acidmanic.utilities.TextFileUpdater;
+import java.io.File;
 import java.util.List;
 import release.Application;
 
@@ -40,6 +42,15 @@ public abstract class ReleaseCommandBase extends CommandBase {
             = "<release-type> will describe the level "
             + "of development for your release. it can be nightly (default),"
             + "alpha, beta, release-candidate (alternatively: rc) or stable.";
+    public static final String LATEST_VERSION_TAG = "LATEST_RELEASE_VERSION_TAG";
+    
+    protected final static String TEXTUPDATE_DESCRIPTIONS="\nThis command also "
+            + "updates all text files. it replaces " + LATEST_VERSION_TAG +
+            " in files, with performing release version. if you needed to use the "
+            + "string " +LATEST_VERSION_TAG + " in a text file whitout being replaced, "
+            + " which is odd by the way!, you can add escape character: \\ before the tag."
+            + " any occurrence of \\"+LATEST_VERSION_TAG+", will be replaced with "
+            + LATEST_VERSION_TAG+".";
 
     protected int getReleaseType() {
         String[] names = {"nightly", "alpha", "beta", "release-candidate", "rc", "stable"};
@@ -129,7 +140,19 @@ public abstract class ReleaseCommandBase extends CommandBase {
                 .type(getReleaseType())
                 .version(version)
                 .versionables(presents)
+                .preRelease(() -> updateTexts(version))
                 .build();
+    }
+
+    private void updateTexts(Version version) {
+        List<File> textFiles = new ReleaseEnvironment().getUpdatingFiles();
+
+        TextFileUpdater updater = new TextFileUpdater(LATEST_VERSION_TAG, '\\');
+
+        updater.updateFiles(textFiles, version.getVersionString());
+
+        textFiles.forEach((File f) -> Logger.log(f.getName()
+                + "checked for updating latest version tags."));
     }
 
 }

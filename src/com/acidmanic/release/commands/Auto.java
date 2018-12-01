@@ -44,7 +44,7 @@ public class Auto extends ReleaseCommandBase {
                 + " that the code changes include redesigns (major change). and "
                 + "the 'fix' parameter represents bug-fixed and patch builds."
                 + "\n*   "
-                + RELEASE_TYPE_DESCRIPTION;
+                + RELEASE_TYPE_DESCRIPTION+TEXTUPDATE_DESCRIPTIONS;
     }
 
     @Override
