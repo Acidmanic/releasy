@@ -16,7 +16,6 @@
  */
 package com.acidmanic.release.releasestrategies;
 
-import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
 import release.Application;
@@ -38,6 +37,7 @@ public abstract class ReleaseIfAllPresentsSetBase extends ReleaseStrategyBase {
 
         if (setAll(parameters)) {
             log("INFO: 👍   All Versions set.");
+            parameters.getPreRelease().run();
             if (parameters.getReleaser().setVersion(parameters.getVersion())) {
                 log("INFO: 👍   Released Successfully.");
                 if (parameters.getVersionables().isEmpty()) {
