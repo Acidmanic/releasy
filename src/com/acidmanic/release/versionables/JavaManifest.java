@@ -65,6 +65,7 @@ public class JavaManifest implements Versionable {
         ArrayList<String> ret = new ArrayList<>();
         try {
             ManifestEditor editor = new ManifestEditor();
+            editor.load(manifest);
             String version = editor.get(VERSION_KEY);
             if (version != null) {
                 ret.add(version);

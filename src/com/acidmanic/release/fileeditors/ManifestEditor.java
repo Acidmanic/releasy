@@ -70,7 +70,7 @@ public class ManifestEditor {
             StringBuilder sb = new StringBuilder();
             String sep = "";
             for (String key : data.keySet()) {
-                sb.append(sep).append(key).append(":")
+                sb.append(sep).append(key).append(": ")
                         .append(data.get(key));
                 sep = "\n";
             }
