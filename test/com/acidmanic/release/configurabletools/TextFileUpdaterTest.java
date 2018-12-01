@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.configurabletools;
 
+import com.acidmanic.utilities.TextFileUpdater;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
 import java.io.File;
@@ -31,20 +32,23 @@ import static org.junit.Assert.*;
  */
 public class TextFileUpdaterTest {
 
+    private String TAG = "REPLACING_TAG";
+    
+    
     private final Version version = new SemanticVersion(1, 2, 3, "latest-version");
 
     private final String rawContent = "This file contains two tags, "
-            + " first tag is this: " + TextFileUpdater.LATEST_RELEASE_VERSION_TAG
+            + " first tag is this: " + TAG
             + " whitch should be replaced. the second one is \\"
-            + TextFileUpdater.LATEST_RELEASE_VERSION_TAG + ", whitch is escaped "
+            + TAG + ", whitch is escaped "
             + "and should not be replaced. as a third (!) lets try this:"
-            + TextFileUpdater.LATEST_RELEASE_VERSION_TAG + ", which is contatinaed "
+            + TAG + ", which is contatinaed "
             + "in both sides but should be replaced.";
     
     private final String replacedContent = "This file contains two tags, "
             + " first tag is this: " + version.getVersionString()
             + " whitch should be replaced. the second one is "
-            + TextFileUpdater.LATEST_RELEASE_VERSION_TAG + ", whitch is escaped "
+            + TAG + ", whitch is escaped "
             + "and should not be replaced. as a third (!) lets try this:"
             + version.getVersionString() + ", which is contatinaed "
             + "in both sides but should be replaced.";
@@ -69,7 +73,7 @@ public class TextFileUpdaterTest {
     public void shouldReplaceFistAndThirdOccurencesOfTag() throws IOException {
         System.out.println("------- shouldReplaceFistAndThirdOccurencesOfTag ------- ");
         setupReadMeFile();
-        TextFileUpdater instance = new TextFileUpdater();
+        TextFileUpdater instance = new TextFileUpdater(TAG);
         instance.updateFile(readmeFile, version.getVersionString());
         String actual = new String(Files.readAllBytes(readmeFile.toPath()));
         assertEquals(replacedContent, actual);
