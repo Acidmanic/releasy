@@ -16,17 +16,78 @@
  */
 package com.acidmanic.release.readmeupdate.updaters;
 
+import com.acidmanic.parse.QuotationParser;
 import com.acidmanic.release.versions.Version;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class GradleReadMeUpdater implements ReadMeUpdater{
+public class GradleReadMeUpdater extends MavenInfoProvider implements ReadMeUpdater {
+
+    private class GradleProfile {
+
+        public String tag;
+        public String groupId;
+        public String artifactId;
+        public String version;
+        public char quote;
+    }
 
     @Override
     public String process(String readme, Version version, int releaseType) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        provideMavenIinfo();
+
+        if (isMaven) {
+            String sVers = version.getVersionString();
+            String[] lines = readme.split("\n");
+            StringBuilder sb = new StringBuilder();
+            String sep = "";
+            for (String line : lines) {
+                GradleProfile grad = readGradleProfile(line);
+                if (grad != null) {
+                    line = replaceVersionInGradleLine(grad, line, sVers);
+                }
+                sb.append(sep).append(line);
+                sep = "\n";
+            }
+            readme = sb.toString();
+        }
+
+        return readme;
     }
-    
+
+    private GradleProfile readGradleProfile(String line) {
+        String lineData = line.trim();
+        String[] outerparts = lineData.split("\\s");
+        if (outerparts.length > 1) {
+            if ("compile".compareTo(outerparts[0]) == 0) {
+                QuotationParser q = new QuotationParser();
+                if (q.isQuotedValues(outerparts[1])) {
+                    String data = q.unQoute(outerparts[1]);
+                    String[] segments = data.split(":");
+                    if (segments.length > 2) {
+                        GradleProfile ret = new GradleProfile();
+                        ret.groupId = segments[0];
+                        ret.artifactId = segments[1];
+                        ret.tag = "compile";
+                        ret.version = segments[2];
+                        ret.quote = outerparts[1].charAt(0);
+                        return ret;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private String replaceVersionInGradleLine(GradleProfile grad, String line, String sVers) {
+        int st = line.lastIndexOf(":");
+        String ret = line.substring(0, st) + ":" + sVers;
+        st = line.lastIndexOf(grad.quote);
+        ret += line.substring(st, line.length());
+        return ret;
+    }
+
 }
