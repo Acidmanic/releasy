@@ -25,7 +25,7 @@ import com.acidmanic.release.versions.Version;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class CocoapodReadmeUpdater implements ReadmeUpdater {
+public class CocoapodsReadmeUpdater implements ReadmeUpdater {
 
     private class Cocoa {
 
@@ -61,6 +61,8 @@ public class CocoapodReadmeUpdater implements ReadmeUpdater {
             line = line.substring(3, line.length()).trim();
             String[] segments = line.split(",");
             if (segments.length == 2) {
+                segments[0] = segments[0].trim();
+                segments[1] = segments[1].trim();
                 if (q.isQuotedValues(segments[0]) && q.isQuotedValues(segments[1])) {
                     String[] versionParts = q.unQoute(segments[1]).split("\\s");
                     if (versionParts.length > 0) {
