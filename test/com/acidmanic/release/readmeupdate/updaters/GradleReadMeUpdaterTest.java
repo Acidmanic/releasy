@@ -34,14 +34,14 @@ public class GradleReadMeUpdaterTest extends MavePomTestClass{
             + "compile 'com.acidmanic:fakeArtifactId:1.0.0'\n"
             + "and some texts after that.\n"
             + "maybe another gradle entry:\n"
-            + "\tcompile 'com.acidmanic:fakeArtifactId:1.0.0'\n"
+            + "\timplementation 'com.acidmanic:fakeArtifactId:1.0.0'\n"
             + "and end of descriptions.";
     
     private final String replacedContent = "Some line of text\n"
             + "compile 'com.acidmanic:fakeArtifactId:1.2.3-zangemadrese'\n"
             + "and some texts after that.\n"
             + "maybe another gradle entry:\n"
-            + "\tcompile 'com.acidmanic:fakeArtifactId:1.2.3-zangemadrese'\n"
+            + "\timplementation 'com.acidmanic:fakeArtifactId:1.2.3-zangemadrese'\n"
             + "and end of descriptions.";
     
     
