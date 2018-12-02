@@ -18,6 +18,8 @@ package com.acidmanic.release.fileeditors.inplaceediting;
 
 import com.acidmanic.parse.indexbased.SubString;
 import com.acidmanic.parse.indexbased.TagLocation;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -59,5 +61,28 @@ public class XmlTagFinder {
             }
         }
         return null;
+    }
+    
+    
+    public List<TagLocation> findAll(String content,String tagName){
+        
+        List<TagLocation> ret = new ArrayList<>();
+        
+        SubString clip = new SubString(0, content.length());
+        
+        XmlTagFinder finder = new XmlTagFinder();
+        
+        TagLocation result = finder.find(tagName, content, clip);
+        
+        while(result!=null){
+            
+            ret.add(result);
+            
+            clip = new SubString(result.getEndTag().getEndIndex(), content.length());
+            
+            result = finder.find(content, content, clip);
+        }
+        
+        return ret;
     }
 }

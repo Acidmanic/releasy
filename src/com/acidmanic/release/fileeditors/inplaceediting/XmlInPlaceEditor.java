@@ -17,6 +17,8 @@
 package com.acidmanic.release.fileeditors.inplaceediting;
 
 import com.acidmanic.parse.indexbased.TagLocation;
+import com.acidmanic.utilities.Plus;
+import java.util.List;
 
 /**
  *
@@ -56,12 +58,18 @@ public class XmlInPlaceEditor {
         }
         TagLocation location = getLocationOf(address, content);
         if (location != null) {
-            String newContent = content.substring(0, location.getStartTag().getEndIndex());
-            newContent += newValue;
-            newContent += content.substring(location.getEndTag().getBeginIndex(),
-                    content.length());
-            return newContent;
+            return setTagContent(location, content, newValue);
         }
         return content;
     }
+
+    public String setTagContent(TagLocation location, String content, String newValue) {
+        String newContent = content.substring(0, location.getStartTag().getEndIndex());
+        newContent += newValue;
+        newContent += content.substring(location.getEndTag().getBeginIndex(),
+                content.length());
+        return newContent;
+    }
+
+    
 }
