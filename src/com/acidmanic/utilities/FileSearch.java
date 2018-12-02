@@ -42,11 +42,10 @@ public class FileSearch {
     
     public File search(File directory, String forFile, int stringComparision) {
 
-        String fileNameLower = forFile.toLowerCase();
 
         StringComparison comparison = new StringComparisionFactory().make(stringComparision);
 
-        File[] files = directory.listFiles((File dir, String name) -> comparison.areEqual(name, fileNameLower));
+        File[] files = directory.listFiles((File dir, String name) -> comparison.areEqual(name, forFile));
 
         if (files.length > 0) {
             return files[0];
