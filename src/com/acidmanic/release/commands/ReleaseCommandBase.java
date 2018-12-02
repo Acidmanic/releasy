@@ -20,6 +20,7 @@ import acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.models.ReleaseParameters;
+import com.acidmanic.release.readmeupdate.ReadMeVersionSet;
 import com.acidmanic.release.versionables.Versionable;
 import static com.acidmanic.release.versions.ReleaseTypes.*;
 import com.acidmanic.release.versions.Version;
@@ -126,11 +127,15 @@ public abstract class ReleaseCommandBase extends CommandBase {
     }
 
     protected ReleaseParameters buildParameters(Version version, List<Versionable> presents) {
+
+        int releaseType = getReleaseType();
+
         return new ReleaseParametersBuilder()
                 .releaser(Application.getReleaser())
-                .type(getReleaseType())
+                .type(releaseType)
                 .version(version)
                 .versionables(presents)
+                .preRelease(() -> new ReadMeVersionSet().setVersion(version, releaseType))
                 .build();
     }
 
