@@ -23,7 +23,7 @@ import com.acidmanic.release.versions.Version;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class GradleReadMeUpdater extends MavenInfoProvider implements ReadMeUpdater {
+public class GradleReadmeUpdater extends MavenInfoProvider implements ReadmeUpdater {
 
     private class GradleProfile {
 

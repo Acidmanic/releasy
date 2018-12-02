@@ -22,7 +22,7 @@ import com.acidmanic.release.versions.Version;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public interface ReadMeUpdater {
+public interface ReadmeUpdater {
     
     String process(String readme,Version version,int releaseType);
     

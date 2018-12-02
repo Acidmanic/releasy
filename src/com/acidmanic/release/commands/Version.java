@@ -22,6 +22,7 @@ import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.utilities.ClassRegistery;
 import java.util.List;
 import release.Application;
+import com.acidmanic.release.readmeupdate.updaters.ReadmeUpdater;
 
 /**
  *
@@ -46,14 +47,43 @@ public class Version extends CommandBase {
         Logger.log("");
         Logger.log("Supported Versionable Systems:");
         Logger.log("");
+        
         List<Versionable> allVersionables
                 = ClassRegistery.makeInstance().all(Versionable.class);
+        
         StringBuilder sb = new StringBuilder();
+        
         String sep = "";
+        
         for (Versionable v : allVersionables) {
             sb.append(sep).append(v.getClass().getSimpleName());
+        
             sep = ", ";
         }
+        Logger.log(sb.toString());
+        Logger.log("");
+        Logger.log("Detectable Package Manager Dependency Snippets in Readme files:");
+        Logger.log("");
+        
+        sb = new StringBuilder();
+        
+        List<ReadmeUpdater> updaters = ClassRegistery.makeInstance().all(ReadmeUpdater.class);
+
+        sep = "";
+        
+        String baseName = ReadmeUpdater.class.getSimpleName();
+        
+        for (ReadmeUpdater updater : updaters) {
+            String name = updater.getClass().getSimpleName();
+           
+            if (name.endsWith(baseName)) {
+                name = name.substring(0, name.length() - baseName.length());
+            }
+            
+            sb.append(sep).append(name);
+            sep = ", ";
+        }
+
         Logger.log(sb.toString());
         Logger.log("");
 

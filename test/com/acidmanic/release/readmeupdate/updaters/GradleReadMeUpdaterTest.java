@@ -49,7 +49,7 @@ public class GradleReadMeUpdaterTest extends MavePomTestClass{
     public void shouldReplaceGradleVersionWithNewOne() {
         System.out.println("------------ shouldReplaceGradleVersionWithNewOne ------------");
         int releaseType = ReleaseTypes.STABLE;
-        GradleReadMeUpdater instance = new GradleReadMeUpdater();
+        GradleReadmeUpdater instance = new GradleReadmeUpdater();
         String result = instance.process(readmeContent, version, releaseType);
         assertEquals(replacedContent, result);
     }

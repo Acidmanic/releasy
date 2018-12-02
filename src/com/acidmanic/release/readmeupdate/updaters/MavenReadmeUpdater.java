@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class MavenReadmeUpdater extends MavenInfoProvider implements ReadMeUpdater {
+public class MavenReadmeUpdater extends MavenInfoProvider implements ReadmeUpdater {
 
     private static final String[] TAG_ARTIFACT_ADDRESS = {"artifactId"};
     private static final String[] TAG_GROUP_ADDRESS = {"groupId"};

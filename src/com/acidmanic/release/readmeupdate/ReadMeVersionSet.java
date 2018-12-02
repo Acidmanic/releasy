@@ -19,13 +19,13 @@ package com.acidmanic.release.readmeupdate;
 import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.parse.stringcomparison.StringComparison;
 import com.acidmanic.release.logging.Logger;
-import com.acidmanic.release.readmeupdate.updaters.ReadMeUpdater;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.utilities.ClassRegistery;
 import com.acidmanic.utilities.FileSearch;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import com.acidmanic.release.readmeupdate.updaters.ReadmeUpdater;
 
 /**
  *
@@ -53,19 +53,19 @@ public class ReadMeVersionSet {
     }
 
     public void setVersion(Version version, int releaseType) {
-        List<ReadMeUpdater> updaters = ClassRegistery.makeInstance().all(ReadMeUpdater.class);
+        List<ReadmeUpdater> updaters = ClassRegistery.makeInstance().all(ReadmeUpdater.class);
         for (File readme : readmes) {
             setVersion(readme, version, updaters, releaseType);
         }
     }
 
-    private void setVersion(File readme, Version version, List<ReadMeUpdater> updaters, int releaseType) {
+    private void setVersion(File readme, Version version, List<ReadmeUpdater> updaters, int releaseType) {
         String content = new FileIOHelper().tryReadAllText(readme);
         if (content == null || content.isEmpty()) {
             return;
         }
         Logger.log("INFO: 🆗  Checking " + readme.getName() + " for version mentions.");
-        for (ReadMeUpdater updater : updaters) {
+        for (ReadmeUpdater updater : updaters) {
             content = updater.process(content, version, releaseType);
         }
         new FileIOHelper().tryWriteAll(readme, content);
