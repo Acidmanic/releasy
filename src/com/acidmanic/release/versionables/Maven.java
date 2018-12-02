@@ -17,7 +17,7 @@
 package com.acidmanic.release.versionables;
 
 import com.acidmanic.parse.stringcomparison.StringComparison;
-import com.acidmanic.release.versions.ReleaseTypes;
+import com.acidmanic.release.utilities.MavenPomVersionAdapter;
 import com.acidmanic.release.versions.Version;
 
 /**
@@ -26,7 +26,7 @@ import com.acidmanic.release.versions.Version;
  */
 public class Maven extends XmlSpecFiledVersionable {
 
-    private static final String MAVEN_SNAPSHOT_POSTFIX = "-SNAPSHOT";
+    
     private static final String MAVEN_SPEC_FILE = "pom.xml";
     private static final String[] VERSION_ADDRESS = {"project", "version"};
     private static final int COMPARISON = StringComparison.COMPARE_CASE_SENSITIVE;
@@ -37,20 +37,13 @@ public class Maven extends XmlSpecFiledVersionable {
 
     @Override
     protected String getVersionString(Version version, int releaseType) {
-        String ret = version.getVersionString();
-        if (releaseType != ReleaseTypes.STABLE) {
-            ret += MAVEN_SNAPSHOT_POSTFIX;
-        }
-        return ret;
+        return new MavenPomVersionAdapter()
+                .versionToPomFileVersion(version, releaseType);
     }
 
     @Override
     protected String procesVersionStringBeforeDeliver(String version) {
-        if (version.endsWith(MAVEN_SNAPSHOT_POSTFIX)) {
-            version = version.substring(0,
-                    version.lastIndexOf(MAVEN_SNAPSHOT_POSTFIX));
-        }
-        return version;
+        return new MavenPomVersionAdapter().pomFileVersionToVersion(version);
     }
 
 }
