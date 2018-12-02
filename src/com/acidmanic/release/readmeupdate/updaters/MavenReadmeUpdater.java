@@ -16,7 +16,6 @@
  */
 package com.acidmanic.release.readmeupdate.updaters;
 
-import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.parse.indexbased.IndexBasedParser;
 import com.acidmanic.parse.indexbased.SubString;
 import com.acidmanic.parse.indexbased.TagLocation;
@@ -24,8 +23,6 @@ import com.acidmanic.release.fileeditors.inplaceediting.XmlInPlaceEditor;
 import com.acidmanic.release.fileeditors.inplaceediting.XmlTagFinder;
 import com.acidmanic.release.utilities.MavenPomVersionAdapter;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.FileSearch;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,16 +30,11 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class MavenReadmeUpdater implements ReadMeUpdater {
+public class MavenReadmeUpdater extends MavenInfoProvider implements ReadMeUpdater {
 
-    private static final String[] PROJECT_ARTIFACT_ADDRESS = {"project", "artifactId"};
-    private static final String[] PROJECT_GROUP_ADDRESS = {"project", "groupId"};
     private static final String[] TAG_ARTIFACT_ADDRESS = {"artifactId"};
     private static final String[] TAG_GROUP_ADDRESS = {"groupId"};
 
-    private String artifactId;
-    private String groupId;
-    private boolean isMaven;
     private static final String MAVEN_DEPENDENCY = "dependency";
     private static final String TAG_VERSION = "version";
 
@@ -68,20 +60,6 @@ public class MavenReadmeUpdater implements ReadMeUpdater {
         return readme;
     }
 
-    private void provideMavenIinfo() {
-        File here = new File(".");
-        File pomFile = new FileSearch().search(here, "pom.xml");
-
-        if (pomFile != null && pomFile.exists()) {
-            String mavenContent = new FileIOHelper().tryReadAllText(pomFile);
-            if (mavenContent != null && mavenContent.length() > 0) {
-                this.isMaven = true;
-                XmlInPlaceEditor xmlEditor = new XmlInPlaceEditor();
-                this.artifactId = xmlEditor.getTagContent(PROJECT_ARTIFACT_ADDRESS, mavenContent);
-                this.groupId = xmlEditor.getTagContent(PROJECT_GROUP_ADDRESS, mavenContent);
-            }
-        }
-    }
 
     private List<TagLocation> filterUnrelateds(String content, List<TagLocation> tags) {
 
@@ -94,15 +72,15 @@ public class MavenReadmeUpdater implements ReadMeUpdater {
             String artifact = editor.getTagContent(TAG_ARTIFACT_ADDRESS, content);
             String group = editor.getTagContent(TAG_GROUP_ADDRESS, content);
 
-            if (equalsNoTull(artifact, this.artifactId)
-                    && equalsNoTull(group, this.groupId)) {
+            if (equalsNotNull(artifact, this.artifactId)
+                    && equalsNotNull(group, this.groupId)) {
                 ret.add(tag);
             }
         }
         return ret;
     }
 
-    private boolean equalsNoTull(String value1, String value2) {
+    private boolean equalsNotNull(String value1, String value2) {
         if (value1 == null || value2 == null) {
             return false;
         }
