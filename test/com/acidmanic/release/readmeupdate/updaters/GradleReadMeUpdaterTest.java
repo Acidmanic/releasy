@@ -17,7 +17,6 @@
 package com.acidmanic.release.readmeupdate.updaters;
 
 import com.acidmanic.release.versions.ReleaseTypes;
-import com.acidmanic.release.versions.Version;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
