@@ -31,6 +31,7 @@ public class GradleReadmeUpdater extends MavenInfoProvider implements ReadmeUpda
         public String groupId;
         public String artifactId;
         public String version;
+        public String command;
         public char quote;
     }
 
@@ -61,7 +62,7 @@ public class GradleReadmeUpdater extends MavenInfoProvider implements ReadmeUpda
         String lineData = line.trim();
         String[] outerparts = lineData.split("\\s");
         if (outerparts.length > 1) {
-            if ("compile".compareTo(outerparts[0]) == 0) {
+            if (isGradleDependencyCommand(outerparts[0])) {
                 QuotationParser q = new QuotationParser();
                 if (q.isQuotedValues(outerparts[1])) {
                     String data = q.unQoute(outerparts[1]);
@@ -72,6 +73,7 @@ public class GradleReadmeUpdater extends MavenInfoProvider implements ReadmeUpda
                         ret.artifactId = segments[1];
                         ret.tag = "compile";
                         ret.version = segments[2];
+                        ret.command = outerparts[0];
                         ret.quote = outerparts[1].charAt(0);
                         return ret;
                     }
@@ -88,6 +90,11 @@ public class GradleReadmeUpdater extends MavenInfoProvider implements ReadmeUpda
         st = line.lastIndexOf(grad.quote);
         ret += line.substring(st, line.length());
         return ret;
+    }
+
+    private boolean isGradleDependencyCommand(String lineStart) {
+        return "compile".compareTo(lineStart) == 0
+                || "implementation".compareTo(lineStart) == 0;
     }
 
 }
