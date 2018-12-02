@@ -39,7 +39,16 @@ public class MavenReadmeUpdaterTest extends MavePomTestClass {
             + "            <version>1.0.0</version>\n"
             + "        </dependency>\n"
             + "```"
-            + "just like a readme.md file!";
+            + "just like a readme.md file!\n"
+            + "but lets add second one\n"
+            + "```xml\n"
+            + "        <dependency>\n"
+            + "            <artifactId>fakeArtifactId</artifactId>\n"
+            + "            <groupId>com.acidmanic</groupId>\n"
+            + "            <version>1.0.0</version>\n"
+            + "        </dependency>\n"
+            + "```\n"
+            + "and see if works for two.";
 
     private final String replacedContent = "These are some text here"
             + "\nin several lines!"
@@ -51,7 +60,16 @@ public class MavenReadmeUpdaterTest extends MavePomTestClass {
             + "            <version>1.2.3-zangemadrese</version>\n"
             + "        </dependency>\n"
             + "```"
-            + "just like a readme.md file!";
+            + "just like a readme.md file!\n"
+            + "but lets add second one\n"
+            + "```xml\n"
+            + "        <dependency>\n"
+            + "            <artifactId>fakeArtifactId</artifactId>\n"
+            + "            <groupId>com.acidmanic</groupId>\n"
+            + "            <version>1.2.3-zangemadrese</version>\n"
+            + "        </dependency>\n"
+            + "```\n"
+            + "and see if works for two.";
 
     public MavenReadmeUpdaterTest() {
         

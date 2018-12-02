@@ -80,7 +80,7 @@ public class XmlTagFinder {
             
             clip = new SubString(result.getEndTag().getEndIndex(), content.length());
             
-            result = finder.find(content, content, clip);
+            result = finder.find(tagName, content, clip);
         }
         
         return ret;
