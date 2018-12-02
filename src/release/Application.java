@@ -23,6 +23,7 @@ import com.acidmanic.release.commands.Manual;
 import com.acidmanic.release.commands.Status;
 import com.acidmanic.release.commands.Version;
 import com.acidmanic.release.readmeupdate.updaters.CarthageReadmeUpdater;
+import com.acidmanic.release.readmeupdate.updaters.CocoapodReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.GradleReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.MavenReadmeUpdater;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
@@ -61,6 +62,7 @@ public class Application {
         ClassRegistery.makeInstance().add(MavenReadmeUpdater.class);
         ClassRegistery.makeInstance().add(GradleReadmeUpdater.class);
         ClassRegistery.makeInstance().add(CarthageReadmeUpdater.class);
+        ClassRegistery.makeInstance().add(CocoapodReadmeUpdater.class);
 
         ApplicationWideTypeRegistery.makeInstance().registerClass(Manual.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Auto.class);
