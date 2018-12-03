@@ -30,7 +30,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem {
         Git git = tryGetGit(directory);
         if (git != null) {
             try {
-                git.add().call();
+                git.add().addFilepattern(".").call();
                 git.commit().setMessage(description).call();
             } catch (Exception ex) {
             }
