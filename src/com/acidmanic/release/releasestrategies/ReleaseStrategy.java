@@ -17,6 +17,8 @@
 package com.acidmanic.release.releasestrategies;
 
 import com.acidmanic.release.models.ReleaseParameters;
+import com.acidmanic.release.versionables.Versionable;
+import java.util.List;
 
 /**
  *
@@ -26,4 +28,7 @@ public interface ReleaseStrategy {
     
     String message();
     void release(ReleaseParameters parameters);
+
+    boolean grantContinue(List<Versionable> versionables, List<Boolean> setResults);
+    
 }

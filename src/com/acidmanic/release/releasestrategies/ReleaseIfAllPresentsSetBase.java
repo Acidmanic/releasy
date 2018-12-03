@@ -18,6 +18,7 @@ package com.acidmanic.release.releasestrategies;
 
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
+import java.util.List;
 import release.Application;
 
 /**
@@ -61,6 +62,16 @@ public abstract class ReleaseIfAllPresentsSetBase extends ReleaseStrategyBase {
             ret = ret && versionable.setVersion(parameters.getVersion());
         }
         return ret;
+    }
+
+    @Override
+    public boolean grantContinue(List<Versionable> versionables, List<Boolean> setResults) {
+        for (boolean result : setResults) {
+            if (!result) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
