@@ -40,7 +40,7 @@ public abstract class ReleaseBase extends CommandBase {
         Releaser r = new Releaser();
 
         int releaseType = getReleaseType();
-
+        
         r.setAfterVersionsSet((com.acidmanic.release.versions.Version v)
                 -> new ReadMeVersionSet().setVersion(v, releaseType));
 

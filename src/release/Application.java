@@ -30,6 +30,7 @@ import com.acidmanic.release.readmeupdate.updaters.VisualStudio;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import release.inapptests.Test;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
+import com.acidmanic.release.sourcecontrols.JGitFacadeSourceControl;
 import com.acidmanic.release.sourcecontrols.SourceControlSystem;
 import com.acidmanic.release.versionables.Cocoapods;
 import com.acidmanic.release.versionables.GitTag;
@@ -81,17 +82,7 @@ public class Application {
 
         versionFactory = new SemanticVersionFactory();
 
-        sourceControlSystem = new SourceControlSystem() {
-            @Override
-            public void acceptLocalChanges(File directory, String description) {
-                System.out.println("Mocking acceptLocalChanges: " + description);
-            }
-
-            @Override
-            public boolean isPresent(File directory) {
-                return true;
-            }
-        };
+        sourceControlSystem = new JGitFacadeSourceControl();
     }
 
     public static Versionable getReleaser() {

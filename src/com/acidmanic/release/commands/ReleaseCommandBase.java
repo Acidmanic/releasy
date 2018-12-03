@@ -25,8 +25,6 @@ import com.acidmanic.release.versionables.Versionable;
 import static com.acidmanic.release.versions.ReleaseTypes.*;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.utilities.ReleaseParametersBuilder;
-import com.acidmanic.utilities.TextFileUpdater;
-import java.io.File;
 import java.util.List;
 import release.Application;
 

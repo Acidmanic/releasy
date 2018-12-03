@@ -48,8 +48,6 @@ public class Releaser {
      */
     private Consumer<Version> afterVersionsSet;
 
-    private ReleaseStrategy releaseStrategy;
-
     public Releaser() {
 
         initialize();
@@ -75,15 +73,25 @@ public class Releaser {
         this.release(ReleaseTypes.NIGHTLY);
     }
 
+    public void release(Version version) {
+        this.release(ReleaseTypes.NIGHTLY, version);
+    }
+
     public void release(int releaseType) {
 
         Version version = getLatesVersion();
+
+        release(releaseType, version);
+
+    }
+
+    public void release(int releaseType, Version version) {
 
         List<Boolean> setResults = setAllVersions(version, releaseType);
 
         this.afterVersionsSet.accept(version);
 
-        if (this.releaseStrategy.grantContinue(this.versionables, setResults)) {
+        if (Application.getReleaseStrategy().grantContinue(this.versionables, setResults)) {
 
             if (Application.getSourceControlSystem().isPresent(directory)) {
 
@@ -145,14 +153,6 @@ public class Releaser {
 
     public void setAfterVersionsSet(Consumer<Version> afterVersionsSet) {
         this.afterVersionsSet = afterVersionsSet;
-    }
-
-    public ReleaseStrategy getReleaseStrategy() {
-        return releaseStrategy;
-    }
-
-    public void setReleaseStrategy(ReleaseStrategy releaseStrategy) {
-        this.releaseStrategy = releaseStrategy;
     }
 
     public File getDirectory() {
