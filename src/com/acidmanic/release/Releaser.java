@@ -41,6 +41,7 @@ public class Releaser {
      */
     private List<Versionable> versionables;
 
+    private File directory;
     /**
      *
      * properties
@@ -55,12 +56,19 @@ public class Releaser {
 
     }
 
+    public Releaser(File directory) {
+
+        this.directory = directory;
+
+        initialize();
+    }
+
     private void initialize() {
 
         this.afterVersionsSet = (Version version) -> {
         };
 
-        this.versionables = new ReleaseEnvironment().getPresentVersionables();
+        this.versionables = new ReleaseEnvironment(directory).getPresentVersionables();
     }
 
     public void release() {
@@ -77,10 +85,10 @@ public class Releaser {
 
         if (this.releaseStrategy.grantContinue(this.versionables, setResults)) {
 
-            if (Application.getSourceControlSystem().isPresent()) {
+            if (Application.getSourceControlSystem().isPresent(directory)) {
 
                 Application.getSourceControlSystem()
-                        .acceptLocalChanges(getDescription(version));
+                        .acceptLocalChanges(directory, getDescription(version));
 
             }
 
@@ -94,7 +102,7 @@ public class Releaser {
         VersionProcessor processor
                 = new VersionProcessor(Application.getVersionFactory());
 
-        List<String> versionStrings = new ReleaseEnvironment().enumAllVersions();
+        List<String> versionStrings = new ReleaseEnvironment(directory).enumAllVersions();
 
         List<Version> versions = processor.toVersionList(versionStrings);
 
@@ -106,11 +114,9 @@ public class Releaser {
 
         List<Boolean> ret = new ArrayList<>();
 
-        File here = new ReleaseEnvironment().getDirectory();
-
         for (Versionable versionable : this.versionables) {
 
-            versionable.setup(here, releaseType);
+            versionable.setup(directory, releaseType);
 
             ret.add(versionable.setVersion(version));
 
@@ -120,7 +126,7 @@ public class Releaser {
     }
 
     private String getDescription(Version version) {
-        return "Release to version: " + version.getVersionString()
+        return "Release version: " + version.getVersionString()
                 + ", " + new Date().toString();
     }
 
@@ -128,7 +134,7 @@ public class Releaser {
 
         Versionable releaser = Application.getReleaser();
 
-        releaser.setup(new ReleaseEnvironment().getDirectory(), releaseType);
+        releaser.setup(directory, releaseType);
 
         releaser.setVersion(version);
     }
@@ -147,6 +153,14 @@ public class Releaser {
 
     public void setReleaseStrategy(ReleaseStrategy releaseStrategy) {
         this.releaseStrategy = releaseStrategy;
+    }
+
+    public File getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(File directory) {
+        this.directory = directory;
     }
 
 }
