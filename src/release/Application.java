@@ -30,6 +30,7 @@ import com.acidmanic.release.readmeupdate.updaters.VisualStudio;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import release.inapptests.Test;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
+import com.acidmanic.release.sourcecontrols.SourceControlSystem;
 import com.acidmanic.release.versionables.Cocoapods;
 import com.acidmanic.release.versionables.GitTag;
 import com.acidmanic.release.versionables.JavaManifest;
@@ -51,6 +52,7 @@ public class Application {
     private static Versionable releaser;
     private static ReleaseStrategy releaseStrategy;
     private static VersionFactory versionFactory;
+    private static SourceControlSystem sourceControlSystem;
 
     public static void initialize() {
         ClassRegistery.makeInstance().add(Cocoapods.class);
@@ -77,6 +79,18 @@ public class Application {
         releaseStrategy = new ReleaseIfAllPresentsSet();
 
         versionFactory = new SemanticVersionFactory();
+
+        sourceControlSystem = new SourceControlSystem() {
+            @Override
+            public void acceptLocalChanges(String description) {
+                System.out.println("Mocking acceptLocalChanges: " + description);
+            }
+
+            @Override
+            public boolean isPresent() {
+                return true;
+            }
+        };
     }
 
     public static Versionable getReleaser() {
@@ -89,6 +103,10 @@ public class Application {
 
     public static VersionFactory getVersionFactory() {
         return versionFactory;
+    }
+
+    public static SourceControlSystem getSourceControlSystem() {
+        return sourceControlSystem;
     }
 
 }
