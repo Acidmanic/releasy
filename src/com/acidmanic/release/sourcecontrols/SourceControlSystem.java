@@ -16,14 +16,16 @@
  */
 package com.acidmanic.release.sourcecontrols;
 
+import java.io.File;
+
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public interface SourceControlSystem {
+   
+    void acceptLocalChanges(File directory,String description);
 
-    void acceptLocalChanges(String description);
-
-    boolean isPresent();
+    boolean isPresent(File directory);
 
 }

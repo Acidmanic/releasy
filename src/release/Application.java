@@ -42,6 +42,7 @@ import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versions.SemanticVersionFactory;
 import com.acidmanic.release.versions.VersionFactory;
 import com.acidmanic.utilities.ClassRegistery;
+import java.io.File;
 
 /**
  *
@@ -82,12 +83,12 @@ public class Application {
 
         sourceControlSystem = new SourceControlSystem() {
             @Override
-            public void acceptLocalChanges(String description) {
+            public void acceptLocalChanges(File directory, String description) {
                 System.out.println("Mocking acceptLocalChanges: " + description);
             }
 
             @Override
-            public boolean isPresent() {
+            public boolean isPresent(File directory) {
                 return true;
             }
         };
