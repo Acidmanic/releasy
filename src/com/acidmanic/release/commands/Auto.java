@@ -16,21 +16,13 @@
  */
 package com.acidmanic.release.commands;
 
-import com.acidmanic.release.environment.ReleaseEnvironment;
-import com.acidmanic.release.logging.Logger;
-import com.acidmanic.release.models.ReleaseParameters;
-import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
-import com.acidmanic.release.versions.Version;
-import com.acidmanic.release.utilities.VersionProcessor;
-import java.util.List;
-import release.Application;
 
 /**
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class Auto extends ReleaseCommandBase {
+public class Auto extends ReleaseBase {
 
     @Override
     protected String getUsageString() {
@@ -54,23 +46,11 @@ public class Auto extends ReleaseCommandBase {
 
     @Override
     public void execute() {
-        Change change = getChanges();
-        int releaseType = getReleaseType();
-        List<String> versions = new ReleaseEnvironment().enumAllVersions();
-        VersionProcessor processor = new VersionProcessor(Application.getVersionFactory());
-        Version version = processor.generateVersionFromStrings(versions, change, releaseType);
-        Logger.log("Releasing version: " + version.getVersionString(), this);
-
-        performRelease(version);
+        
+        release(getChanges());
 
     }
 
-    @Override
-    protected ReleaseParameters buildParameters(Version version, List<Versionable> presents) {
-        ReleaseParameters ret = super.buildParameters(version, presents);
-        ret.setChanges(getChanges());
-        return ret;
-    }
 
     private Change getChanges() {
         Change ret = new Change(false, false, false);
