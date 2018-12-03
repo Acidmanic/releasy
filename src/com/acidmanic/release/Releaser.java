@@ -20,6 +20,7 @@ import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.utilities.VersionProcessor;
 import com.acidmanic.release.versionables.Versionable;
+import com.acidmanic.release.versions.Change;
 import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.release.versions.Version;
 import java.io.File;
@@ -48,6 +49,8 @@ public class Releaser {
      */
     private Consumer<Version> afterVersionsSet;
 
+    private Change change;
+
     public Releaser() {
 
         initialize();
@@ -67,6 +70,8 @@ public class Releaser {
         };
 
         this.versionables = new ReleaseEnvironment(directory).getPresentVersionables();
+
+        this.change = new Change(false, false, false);
     }
 
     public void release() {
@@ -79,7 +84,7 @@ public class Releaser {
 
     public void release(int releaseType) {
 
-        Version version = getLatesVersion();
+        Version version = getLatesVersion(releaseType);
 
         release(releaseType, version);
 
@@ -105,16 +110,14 @@ public class Releaser {
 
     }
 
-    private Version getLatesVersion() {
+    private Version getLatesVersion(int releaseType) {
 
         VersionProcessor processor
                 = new VersionProcessor(Application.getVersionFactory());
 
         List<String> versionStrings = new ReleaseEnvironment(directory).enumAllVersions();
 
-        List<Version> versions = processor.toVersionList(versionStrings);
-
-        return processor.getLatest(versions);
+        return processor.generateVersionFromStrings(versionStrings, change, releaseType);
 
     }
 
