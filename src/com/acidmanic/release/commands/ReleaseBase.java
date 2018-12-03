@@ -19,6 +19,7 @@ package com.acidmanic.release.commands;
 import acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.Releaser;
 import com.acidmanic.release.readmeupdate.ReadMeVersionSet;
+import com.acidmanic.release.versions.Change;
 
 import static com.acidmanic.release.versions.ReleaseTypes.ALPHA;
 import static com.acidmanic.release.versions.ReleaseTypes.BETA;
@@ -32,22 +33,45 @@ import static com.acidmanic.release.versions.ReleaseTypes.STABLE;
  */
 public abstract class ReleaseBase extends CommandBase {
 
-   
+    protected final static String RELEASE_TYPE_ARG_DEC = "<release-type>";
+    protected final static String RELEASE_TYPE_DESCRIPTION
+            = "<release-type> will describe the level "
+            + "of development for your release. it can be nightly (default),"
+            + "alpha, beta, release-candidate (alternatively: rc) or stable.";
 
     @Override
     public void execute() {
 
+    }
+
+    private int releaseType;
+
+    public void setArgs(String[] args) {
+        this.args = args;
+        this.releaseType = getReleaseType();
+    }
+
+    private Releaser makeReleaser() {
         Releaser r = new Releaser();
 
-        int releaseType = getReleaseType();
-        
         r.setAfterVersionsSet((com.acidmanic.release.versions.Version v)
                 -> new ReadMeVersionSet().setVersion(v, releaseType));
 
-        r.release(releaseType);
+        return r;
     }
 
-    protected int getReleaseType() {
+     /**
+     * Auto create version
+     */
+    protected void release(Change change) {
+        makeReleaser().release(releaseType,change);
+    }
+    
+    protected void release(com.acidmanic.release.versions.Version version){
+        makeReleaser().release(releaseType, version);
+    }
+
+    private int getReleaseType() {
         String[] names = {"nightly", "alpha", "beta", "release-candidate", "rc", "stable"};
         int[] values = {NIGHTLY, ALPHA, BETA, RELEASE_CANDIDATE, RELEASE_CANDIDATE, STABLE};
         for (int i = 0; i < names.length; i++) {
