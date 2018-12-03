@@ -49,8 +49,6 @@ public class Releaser {
      */
     private Consumer<Version> afterVersionsSet;
 
-    private Change change;
-
     public Releaser() {
 
         initialize();
@@ -71,20 +69,11 @@ public class Releaser {
 
         this.versionables = new ReleaseEnvironment(directory).getPresentVersionables();
 
-        this.change = new Change(false, false, false);
     }
 
-    public void release() {
-        this.release(ReleaseTypes.NIGHTLY);
-    }
+    public void release(int releaseType, Change change) {
 
-    public void release(Version version) {
-        this.release(ReleaseTypes.NIGHTLY, version);
-    }
-
-    public void release(int releaseType) {
-
-        Version version = getLatesVersion(releaseType);
+        Version version = getLatesVersion(releaseType, change);
 
         release(releaseType, version);
 
@@ -110,7 +99,7 @@ public class Releaser {
 
     }
 
-    private Version getLatesVersion(int releaseType) {
+    private Version getLatesVersion(int releaseType, Change change) {
 
         VersionProcessor processor
                 = new VersionProcessor(Application.getVersionFactory());
