@@ -26,6 +26,7 @@ import com.acidmanic.release.readmeupdate.updaters.CarthageReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.CocoapodsReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.GradleReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.MavenReadmeUpdater;
+import com.acidmanic.release.readmeupdate.updaters.VisualStudio;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import release.inapptests.Test;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
@@ -58,6 +59,7 @@ public class Application {
         ClassRegistery.makeInstance().add(NodeJs.class);
         ClassRegistery.makeInstance().add(NuGet.class);
         ClassRegistery.makeInstance().add(JavaManifest.class);
+        ClassRegistery.makeInstance().add(VisualStudio.class);
 
         ClassRegistery.makeInstance().add(MavenReadmeUpdater.class);
         ClassRegistery.makeInstance().add(GradleReadmeUpdater.class);
