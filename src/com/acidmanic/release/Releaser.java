@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 import release.Application;
 
 /**
@@ -44,7 +45,7 @@ public class Releaser {
      *
      * properties
      */
-    private Runnable afterVersionsSet;
+    private Consumer<Version> afterVersionsSet;
 
     private ReleaseStrategy releaseStrategy;
 
@@ -56,7 +57,7 @@ public class Releaser {
 
     private void initialize() {
 
-        this.afterVersionsSet = () -> {
+        this.afterVersionsSet = (Version version) -> {
         };
 
         this.versionables = new ReleaseEnvironment().getPresentVersionables();
@@ -72,7 +73,7 @@ public class Releaser {
 
         List<Boolean> setResults = setAllVersions(version, releaseType);
 
-        this.afterVersionsSet.run();
+        this.afterVersionsSet.accept(version);
 
         if (this.releaseStrategy.grantContinue(this.versionables, setResults)) {
 
@@ -132,11 +133,11 @@ public class Releaser {
         releaser.setVersion(version);
     }
 
-    public Runnable getAfterVersionsSet() {
+    public Consumer<Version> getAfterVersionsSet() {
         return afterVersionsSet;
     }
 
-    public void setAfterVersionsSet(Runnable afterVersionsSet) {
+    public void setAfterVersionsSet(Consumer<Version> afterVersionsSet) {
         this.afterVersionsSet = afterVersionsSet;
     }
 

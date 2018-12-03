@@ -20,7 +20,6 @@ import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
 import com.acidmanic.release.versions.Version;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  *
