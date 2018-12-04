@@ -18,6 +18,7 @@ package com.acidmanic.release.commands;
 
 import acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.Releaser;
+import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.readmeupdate.ReadMeVersionSet;
 import com.acidmanic.release.versions.Change;
 
@@ -26,6 +27,7 @@ import static com.acidmanic.release.versions.ReleaseTypes.BETA;
 import static com.acidmanic.release.versions.ReleaseTypes.NIGHTLY;
 import static com.acidmanic.release.versions.ReleaseTypes.RELEASE_CANDIDATE;
 import static com.acidmanic.release.versions.ReleaseTypes.STABLE;
+import java.io.File;
 
 /**
  *
@@ -52,22 +54,25 @@ public abstract class ReleaseBase extends CommandBase {
     }
 
     private Releaser makeReleaser() {
-        Releaser r = new Releaser();
+        Releaser r = new Releaser(new ReleaseEnvironment().getDirectory());
 
         r.setAfterVersionsSet((com.acidmanic.release.versions.Version v)
-                -> new ReadMeVersionSet().setVersion(v, releaseType));
+                -> {
+            log("INFO: Setting version to: " + v.getVersionString());
+            new ReadMeVersionSet().setVersion(v, releaseType);
+        });
 
         return r;
     }
 
-     /**
+    /**
      * Auto create version
      */
     protected void release(Change change) {
-        makeReleaser().release(releaseType,change);
+        makeReleaser().release(releaseType, change);
     }
-    
-    protected void release(com.acidmanic.release.versions.Version version){
+
+    protected void release(com.acidmanic.release.versions.Version version) {
         makeReleaser().release(releaseType, version);
     }
 

@@ -17,11 +17,9 @@
 package com.acidmanic.release;
 
 import com.acidmanic.release.environment.ReleaseEnvironment;
-import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.utilities.VersionProcessor;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
-import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.release.versions.Version;
 import java.io.File;
 import java.util.ArrayList;
@@ -49,12 +47,7 @@ public class Releaser {
      */
     private Consumer<Version> afterVersionsSet;
 
-    public Releaser() {
-
-        initialize();
-
-    }
-
+  
     public Releaser(File directory) {
 
         this.directory = directory;
