@@ -70,7 +70,6 @@ public abstract class XmlSpecFiledVersionable implements Versionable {
             this.specFile.delete();
         }
         Files.write(this.specFile.toPath(), nugetSpecContent.getBytes(), StandardOpenOption.CREATE);
-        Logger.log(" Project Version set.", this);
     }
 
     @Override
