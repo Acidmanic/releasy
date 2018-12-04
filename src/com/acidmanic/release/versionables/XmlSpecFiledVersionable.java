@@ -80,14 +80,10 @@ public abstract class XmlSpecFiledVersionable implements Versionable {
             try {
                 String sVersion = getVersionString(version, releaseType);
                 setXmlSpecFileVersion(sVersion);
-                Logger.log(myName + " Project Version set.", this);
                 return true;
             } catch (Exception e) {
-                Logger.log("Unable to set Version: " + myName, this);
             }
-        } else {
-            Logger.log(myName + " spec file is not present.", this);
-        }
+        } 
         return false;
     }
 

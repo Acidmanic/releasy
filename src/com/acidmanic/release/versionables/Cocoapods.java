@@ -47,13 +47,10 @@ public class Cocoapods implements Versionable {
             try {
                 new SpecFileEditor(this.specsFile)
                         .setVerion(version.getVersionString());
-                Logger.log("Podspec version has been set.", this);
                 return true;
             } catch (Exception e) {
-                Logger.log("Unable to set Version: " + e.getClass().getSimpleName(), this);
             }
         } else {
-            Logger.log("No Cocoapods project found.", this);
         }
         return false;
     }

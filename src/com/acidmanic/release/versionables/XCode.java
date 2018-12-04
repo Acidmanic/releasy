@@ -36,7 +36,7 @@ public class XCode implements Versionable {
     private boolean isAGVPresent = false;
 
     @Override
-    public void setup(File directory,int releaseType) {
+    public void setup(File directory, int releaseType) {
         this.projectName = new XCodeProjectDirectoryInfo().getProjectName(directory);
         this.isXcodeProject = this.projectName != null;
         this.isAGVPresent = new AgvtoolStdWrapper().checkAGV();
@@ -48,14 +48,10 @@ public class XCode implements Versionable {
             if (isAGVPresent) {
                 try {
                     setVersionOnXCode(version);
-                    Logger.log("XCode version has been set using agvtool.", this);
                     return true;
                 } catch (Exception e) {
                     Logger.log("Unable to set Version: " + e.getClass().getSimpleName(), this);
                 }
-            } else {
-                Logger.log("Can not set the version.", this);
-                Logger.log("Apple-generic versioning tool for Xcode projects is not available.", this);
             }
         }
         return false;
@@ -67,8 +63,6 @@ public class XCode implements Versionable {
             patch = Integer.toString(((SemanticVersion) version).getPatch());
         } else {
             patch = "0";
-            Logger.log("WARNING: "
-                    + "Patch version defaulted to zero due to choosed version format.", this);
         }
         full = version.getVersionString();
         new AgvtoolStdWrapper().setVersion(full, patch);
