@@ -64,11 +64,23 @@ public class ReadMeVersionSet {
         if (content == null || content.isEmpty()) {
             return;
         }
-        Logger.log("INFO: 🆗  Checking " + readme.getName() + " for version mentions.");
+        Logger.write("INFO: Checking " + readme.getName() + " for version mentions ");
+        String sep = ":   ";
         for (ReadmeUpdater updater : updaters) {
+            String backup = content;
             content = updater.process(content, version, releaseType);
+            if (backup.compareTo(content) != 0) {
+                Logger.write(sep + getUpdaterName(updater) + ":👍");
+                sep = ", ";
+            }
         }
+        Logger.log("");
         new FileIOHelper().tryWriteAll(readme, content);
+    }
+
+    private String getUpdaterName(ReadmeUpdater u) {
+        String base = ReadmeUpdater.class.getSimpleName();
+        return u.getClass().getSimpleName().replace(base, "");
     }
 
 }

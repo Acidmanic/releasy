@@ -21,9 +21,11 @@ import com.acidmanic.release.utilities.VersionProcessor;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
 import com.acidmanic.release.versions.Version;
+import com.acidmanic.utilities.Plus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 import release.Application;
@@ -45,9 +47,10 @@ public class Releaser {
      *
      * properties
      */
-    private Consumer<Version> afterVersionsSet;
+    private Consumer<Version> afterVersionSelect;
 
-  
+    private Consumer<HashMap<Versionable, Boolean>> afterVersionSet;
+
     public Releaser(File directory) {
 
         this.directory = directory;
@@ -57,26 +60,31 @@ public class Releaser {
 
     private void initialize() {
 
-        this.afterVersionsSet = (Version version) -> {
+        this.afterVersionSelect = (Version version) -> {
+        };
+
+        this.afterVersionSet = (HashMap<Versionable, Boolean> t) -> {
         };
 
         this.versionables = new ReleaseEnvironment(directory).getPresentVersionables();
 
     }
 
-    public void release(int releaseType, Change change) {
+    public boolean release(int releaseType, Change change) {
 
         Version version = getLatesVersion(releaseType, change);
 
-        release(releaseType, version);
+        return release(releaseType, version);
 
     }
 
-    public void release(int releaseType, Version version) {
+    public boolean release(int releaseType, Version version) {
+
+        this.afterVersionSelect.accept(version);
 
         List<Boolean> setResults = setAllVersions(version, releaseType);
 
-        this.afterVersionsSet.accept(version);
+        this.afterVersionSet.accept(hashResult(this.versionables, setResults));
 
         if (Application.getReleaseStrategy().grantContinue(this.versionables, setResults)) {
 
@@ -87,9 +95,10 @@ public class Releaser {
 
             }
 
-            performRelease(version, releaseType);
+            return performRelease(version, releaseType);
         }
-
+        
+        return false;
     }
 
     private Version getLatesVersion(int releaseType, Change change) {
@@ -123,21 +132,21 @@ public class Releaser {
                 + ", " + new Date().toString();
     }
 
-    private void performRelease(Version version, int releaseType) {
+    private boolean performRelease(Version version, int releaseType) {
 
         Versionable releaser = Application.getReleaser();
 
         releaser.setup(directory, releaseType);
 
-        releaser.setVersion(version);
+        return releaser.setVersion(version);
     }
 
-    public Consumer<Version> getAfterVersionsSet() {
-        return afterVersionsSet;
+    public void setAfterVersionSet(Consumer<HashMap<Versionable, Boolean>> afterVersionSet) {
+        this.afterVersionSet = afterVersionSet;
     }
 
-    public void setAfterVersionsSet(Consumer<Version> afterVersionsSet) {
-        this.afterVersionsSet = afterVersionsSet;
+    public void setAfterVersionSelect(Consumer<Version> afterVersionSelect) {
+        this.afterVersionSelect = afterVersionSelect;
     }
 
     public File getDirectory() {
@@ -146,6 +155,17 @@ public class Releaser {
 
     public void setDirectory(File directory) {
         this.directory = directory;
+    }
+
+    private HashMap<Versionable, Boolean> hashResult(List<Versionable> versionables, List<Boolean> setResults) {
+
+        HashMap<Versionable, Boolean> ret = new HashMap<>();
+
+        for (int i = 0; i < versionables.size(); i++) {
+            ret.put(versionables.get(i), setResults.get(i));
+        }
+
+        return ret;
     }
 
 }

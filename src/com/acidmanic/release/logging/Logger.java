@@ -29,4 +29,12 @@ public class Logger {
     public static void log(String text, Object env) {
         System.out.println("At " + env.getClass().getSimpleName() + ": " + text);
     }
+
+    public static void write(String text) {
+        System.out.print(text);
+    }
+
+    public static void write(String text, Object env) {
+        System.out.print("At " + env.getClass().getSimpleName() + ": " + text);
+    }
 }

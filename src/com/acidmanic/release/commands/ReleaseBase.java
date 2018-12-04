@@ -17,9 +17,12 @@
 package com.acidmanic.release.commands;
 
 import acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.consoletools.table.builders.TableBuilder;
 import com.acidmanic.release.Releaser;
 import com.acidmanic.release.environment.ReleaseEnvironment;
+import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.readmeupdate.ReadMeVersionSet;
+import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
 
 import static com.acidmanic.release.versions.ReleaseTypes.ALPHA;
@@ -28,6 +31,7 @@ import static com.acidmanic.release.versions.ReleaseTypes.NIGHTLY;
 import static com.acidmanic.release.versions.ReleaseTypes.RELEASE_CANDIDATE;
 import static com.acidmanic.release.versions.ReleaseTypes.STABLE;
 import java.io.File;
+import java.util.HashMap;
 
 /**
  *
@@ -56,11 +60,13 @@ public abstract class ReleaseBase extends CommandBase {
     private Releaser makeReleaser() {
         Releaser r = new Releaser(new ReleaseEnvironment().getDirectory());
 
-        r.setAfterVersionsSet((com.acidmanic.release.versions.Version v)
+        r.setAfterVersionSelect((com.acidmanic.release.versions.Version v)
                 -> {
             log("INFO: Setting version to: " + v.getVersionString());
             new ReadMeVersionSet().setVersion(v, releaseType);
         });
+
+        r.setAfterVersionSet((HashMap<Versionable, Boolean> hash) -> printResultTable(hash));
 
         return r;
     }
@@ -69,11 +75,11 @@ public abstract class ReleaseBase extends CommandBase {
      * Auto create version
      */
     protected void release(Change change) {
-        makeReleaser().release(releaseType, change);
+        logRelease(makeReleaser().release(releaseType, change));
     }
 
     protected void release(com.acidmanic.release.versions.Version version) {
-        makeReleaser().release(releaseType, version);
+        logRelease(makeReleaser().release(releaseType, version));
     }
 
     private int getReleaseType() {
@@ -95,6 +101,34 @@ public abstract class ReleaseBase extends CommandBase {
             }
         }
         return false;
+    }
+
+    private void printResultTable(HashMap<Versionable, Boolean> hash) {
+
+        TableBuilder builder = new TableBuilder();
+
+        for (Versionable versionable : hash.keySet()) {
+            Boolean result = hash.get(versionable);
+
+            builder.row()
+                    .cell(versionable.getClass().getSimpleName())
+                    .maximumWidth(30)
+                    .cell(result ? "🆗 Done" : "🚫 Failed")
+                    .maximumWidth(20);
+        }
+
+        builder.tableBorder().marginAll(1, 0);
+
+        Logger.log(builder.build().render());
+    }
+
+    private void logRelease(boolean release) {
+        if (release) {
+            Logger.log(" 👍    Successfully released.");
+        } else {
+            Logger.log(" 🧐    Release has not been completed..");
+        }
+        Logger.log("");
     }
 
 }
