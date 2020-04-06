@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.commands;
 
-import acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.installation.BasicInstaller;
 import com.acidmanic.installation.models.DeploymentMetadata;
 

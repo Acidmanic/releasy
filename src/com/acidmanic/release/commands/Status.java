@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.commands;
 
-import acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.environment.ReleaseEnvironment;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Version;

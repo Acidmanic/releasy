@@ -16,7 +16,7 @@
  */
 package release;
 
-import acidmanic.commandline.commands.ApplicationWideTypeRegistery;
+import com.acidmanic.commandline.commands.ApplicationWideTypeRegistery;
 import com.acidmanic.release.commands.Auto;
 import com.acidmanic.release.commands.Install;
 import com.acidmanic.release.commands.Manual;

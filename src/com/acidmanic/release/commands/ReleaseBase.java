@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.commands;
 
-import acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.consoletools.table.builders.TableBuilder;
 import com.acidmanic.release.Releaser;
 import com.acidmanic.release.environment.ReleaseEnvironment;

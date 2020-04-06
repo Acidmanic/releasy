@@ -36,7 +36,7 @@ public class Manual extends ReleaseCommandBase {
     }
 
     @Override
-    protected String declareArguments() {
+    protected String argumentsDesciption() {
         return "<version-string> [" + RELEASE_TYPE_ARG_DEC + "]";
     }
 

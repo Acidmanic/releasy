@@ -16,9 +16,8 @@
  */
 package release;
 
-import acidmanic.commandline.commands.ApplicationWideCommandFactory;
-import acidmanic.commandline.commands.HelpCommand;
-import acidmanic.commandline.commands.ICommand;
+import com.acidmanic.commandline.application.ExecutionEnvironment;
+
 
 /**
  *
@@ -32,13 +31,11 @@ public class Release {
     public static void main(String[] args) {
 
         Application.initialize();
+        
+        ExecutionEnvironment environment = new ExecutionEnvironment();
 
-        ICommand command = ApplicationWideCommandFactory
-                .makeInstance().makeCommand(args);
-        if (command == ICommand.NULLCOMMAND) {
-            command = new HelpCommand();
-        }
-        command.execute();
+        environment.execute(args);
+        
     }
 
 }

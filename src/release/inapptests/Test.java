@@ -16,7 +16,7 @@
  */
 package release.inapptests;
 
-import acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.commandline.commands.CommandBase;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.runner.JUnitCore;

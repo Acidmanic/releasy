@@ -40,9 +40,11 @@ public class Auto extends ReleaseBase {
     }
 
     @Override
-    protected String declareArguments() {
+    protected String argumentsDesciption() {
         return "[feat] [des] [fix] [" + RELEASE_TYPE_ARG_DEC + "]";
     }
+    
+    
 
     @Override
     public void execute() {
