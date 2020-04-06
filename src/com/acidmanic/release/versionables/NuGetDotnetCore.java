@@ -22,13 +22,13 @@ import com.acidmanic.parse.stringcomparison.StringComparison;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class NuGet extends XmlSpecFiledVersionable {
+public class NuGetDotnetCore extends XmlSpecFiledVersionable {
 
-    private static final String PACKAGE_SPEC = "Package.nuspec";
-    private static final String[] VERSION_ADDRESS = {"package", "metadata", "version"};
-    private static final int COMPARISON = StringComparison.COMPARE_CASE_SENSITIVE;
+    private static final String PACKAGE_SPEC = ".+\\.csproj";
+    private static final String[] VERSION_ADDRESS = {"Project","PropertyGroup", "Version"};
+    private static final int COMPARISON = StringComparison.COMPARE_REGEX_MATCH;
 
-    public NuGet() {
+    public NuGetDotnetCore() {
         super(PACKAGE_SPEC, VERSION_ADDRESS, COMPARISON);
     }
 
