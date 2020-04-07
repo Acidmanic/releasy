@@ -89,7 +89,7 @@ public class GitStdWrapper {
                 result = result.replaceAll("\\d", "");
                 result = result.replaceAll("\\.", "");
                 result = result.trim();
-                return result.compareTo("git version") == 0;
+                return result.startsWith("git version") ;
             }
         }
         return false;
