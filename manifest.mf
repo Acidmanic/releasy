@@ -1,1 +1,3 @@
 Implementation-Version: 0.4.4
+X-COMMENT: Main-Class will be added automatically by build
+Manifest-Version: 1.0
