@@ -4,8 +4,7 @@
     <groupId>com.acidmanic</groupId>
     <artifactId>releasy</artifactId>
     <packaging>jar</packaging>
-    <version>2.2.2-test-default</version>
-    <name>hello-maven</name>
+    <version>0.4.4</version>
     <url>https://github.com/Acidmanic/</url>
     <scm>
         <connection>scm:git:git@github.com:Acidmanic/releasy.git</connection>
