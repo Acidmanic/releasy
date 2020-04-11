@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acidmanic</groupId>
     <artifactId>releasy</artifactId>
@@ -6,14 +7,6 @@
     <version>2.2.2-test-default</version>
     <name>hello-maven</name>
     <url>https://github.com/Acidmanic/</url>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
     <scm>
         <connection>scm:git:git@github.com:Acidmanic/releasy.git</connection>
         <developerConnection>scm:git:https://github.com/Acidmanic/releasy.git</developerConnection>
@@ -28,6 +21,7 @@
         </developer>
     </developers>
     <description>Release Easy! This is a java command-line application, aimed to automatically detect any package manager used for a given project (current directory) and set version onto responsible files. it finally commits and tags the changes due the version.</description>
+    
     <build>
         <plugins>
             <plugin>
@@ -168,7 +162,22 @@
             <version>4.13</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.acidmanic</groupId>
+            <artifactId>commandline-base</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.acidmanic</groupId>
+            <artifactId>installation</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
+        
     </dependencies>
+    
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
