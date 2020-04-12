@@ -20,8 +20,13 @@
         </developer>
     </developers>
     <description>Release Easy! This is a java command-line application, aimed to automatically detect any package manager used for a given project (current directory) and set version onto responsible files. it finally commits and tags the changes due the version.</description>
-    
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
     <build>
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -56,6 +61,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <manifestFile>manifest.mf</manifestFile>
@@ -165,13 +171,13 @@
         <dependency>
             <groupId>com.acidmanic</groupId>
             <artifactId>commandline-base</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1</version>
         </dependency>
         
         <dependency>
             <groupId>com.acidmanic</groupId>
             <artifactId>installation</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         
         
