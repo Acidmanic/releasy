@@ -1,12 +1,17 @@
 ![Releasy](icon/icon.png)
 
-Releasy!
+RelEasy!
 ========
 
 
 Releasy, is a simple command line application for performing software releases, 
 easier and managed. It manipulates version string in your source code, and sets this 
 version on available version control.
+
+You might have one or more source files int your project containing a version. Like 
+a Manifest.mf file or YourProject.csproj file. These file are where version are read and 
+will be written to. This will be the procedure of (reading and) setting a version. In the other 
+hand, a release procedure is applying this version on a version control system like Git (tags).
 
 Releasy can detect/modify versions on:
 
@@ -42,9 +47,9 @@ Detects latest version, increments this version and sets the new version in your
 version control and updates your source files. You can modify how it increments 
 the version by using arguments:
 
-*   feat: Meaning you added some __feature__s.
-*   fix: Meaning you had some bugs __fix__ed
-*   des: Meaning you had changes in your __Design__.
+*   feat: Meaning you added some **feature**s.
+*   fix: Meaning you had some bugs **fix**ed
+*   des: Meaning you had changes in your **Design**.
 
 you can also follow these arguments with a release type term like rc, nightly, 
 dev, etc.
