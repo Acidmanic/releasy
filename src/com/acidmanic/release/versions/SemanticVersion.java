@@ -51,27 +51,33 @@ public class SemanticVersion implements Version {
         this.identifiers = identifiers;
     }
 
-    public int getMajor() {
+    @Override
+    public int getNumericMajor() {
         return major;
     }
 
-    public void setMajor(int major) {
+    @Override
+    public void setNumericMajor(int major) {
         this.major = major;
     }
 
-    public int getMinor() {
+    @Override
+    public int getNumericMinor() {
         return minor;
     }
 
-    public void setMinor(int minor) {
+    @Override
+    public void setNumericMinor(int minor) {
         this.minor = minor;
     }
 
-    public int getPatch() {
+    @Override
+    public int getNumericPatch() {
         return patch;
     }
 
-    public void setPatch(int patch) {
+    @Override
+    public void setNumericPatch(int patch) {
         this.patch = patch;
     }
 
@@ -150,5 +156,4 @@ public class SemanticVersion implements Version {
         }
         return value1 > value2 ? -1 : 1;
     }
-
 }

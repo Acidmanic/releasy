@@ -18,7 +18,6 @@ package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.projectdirectory.XCodeProjectDirectoryInfo;
 import com.acidmanic.release.logging.Logger;
-import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.utilities.AgvtoolStdWrapper;
 import java.io.File;
@@ -58,14 +57,19 @@ public class XCode implements Versionable {
     }
 
     private void setVersionOnXCode(Version version) {
-        String full, patch;
-        if (version instanceof SemanticVersion) {
-            patch = Integer.toString(((SemanticVersion) version).getPatch());
-        } else {
-            patch = "0";
+        String full;
+        
+        int patch;
+        
+        patch = version.getNumericPatch();
+        
+        if (patch == Version.VERSION_VALUE_NOT_SUPPORTED){
+            patch = 0;
         }
+        
         full = version.getVersionString();
-        new AgvtoolStdWrapper().setVersion(full, patch);
+        
+        new AgvtoolStdWrapper().setVersion(full, Integer.toString(patch));
     }
 
     @Override

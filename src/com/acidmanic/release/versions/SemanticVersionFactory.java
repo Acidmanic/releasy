@@ -25,10 +25,10 @@ public class SemanticVersionFactory implements VersionFactory<SemanticVersion> {
     @Override
     public SemanticVersion make(SemanticVersion base, Change changes, int releaseType) {
         if (changes.changeDesign) {
-            return new SemanticVersion(base.getMajor() + 1, 0, 0);
+            return new SemanticVersion(base.getNumericMajor() + 1, 0, 0);
         }
-        int minor = base.getMinor();
-        int patch = base.getPatch();
+        int minor = base.getNumericMinor();
+        int patch = base.getNumericPatch();
         if (changes.addFeature) {
             minor += 1;
         }
@@ -37,9 +37,9 @@ public class SemanticVersionFactory implements VersionFactory<SemanticVersion> {
         }
         String identifier = getIdentifier(releaseType);
         if (identifier == null) {
-            return new SemanticVersion(base.getMajor(), minor, patch);
+            return new SemanticVersion(base.getNumericMajor(), minor, patch);
         }
-        return new SemanticVersion(base.getMajor(), minor, patch, identifier);
+        return new SemanticVersion(base.getNumericMajor(), minor, patch, identifier);
     }
 
     private String getIdentifier(int releaseType) {

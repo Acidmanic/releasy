@@ -22,11 +22,25 @@ package com.acidmanic.release.versions;
  */
 public interface Version {
 
+    public static final int VERSION_VALUE_NOT_SUPPORTED = -1;
+
     String getVersionString();
 
     public boolean tryParse(String versionString);
 
     public int compare(Version v);
+
+    public int getNumericPatch();
+
+    public int getNumericMajor();
+
+    public int getNumericMinor();
+
+    public void setNumericPatch(int value);
+
+    public void setNumericMajor(int value);
+
+    public void setNumericMinor(int value);
 
     public static final Version NULL = new Version() {
         @Override
@@ -42,6 +56,33 @@ public interface Version {
         @Override
         public int compare(Version v) {
             return -1;
+        }
+
+        @Override
+        public int getNumericPatch() {
+            return VERSION_VALUE_NOT_SUPPORTED;
+        }
+
+        @Override
+        public int getNumericMajor() {
+            return VERSION_VALUE_NOT_SUPPORTED;
+        }
+
+        @Override
+        public int getNumericMinor() {
+            return VERSION_VALUE_NOT_SUPPORTED;
+        }
+
+        @Override
+        public void setNumericPatch(int value) {
+        }
+
+        @Override
+        public void setNumericMajor(int value) {
+        }
+
+        @Override
+        public void setNumericMinor(int value) {
         }
     };
 }
