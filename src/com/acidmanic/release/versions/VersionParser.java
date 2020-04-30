@@ -28,11 +28,9 @@ import java.util.List;
 public class VersionParser {
 
     private final VersionStandard standard;
-    private final long[] weights;
 
     public VersionParser(VersionStandard standard) {
         this.standard = standard;
-        this.weights = calculateWeights(standard);
     }
 
     private String getVersionString(VersionModel version, boolean asTag) {
@@ -96,6 +94,8 @@ public class VersionParser {
         
         ProgressResult ret = new ProgressResult();
         
+        ret.newIndex = index;
+        
         for(int grow=0;grow<searchChars.length;grow++){
             
             int versionIndex = index + grow;
@@ -158,19 +158,23 @@ public class VersionParser {
 
         char[] chars = versionString.toCharArray();
         ProgressResult ret = new ProgressResult();
-
+        
+        boolean changed = false;
+        
         if (index < chars.length) {
 
             char currentChar = chars[index];
 
             ret.newIndex = index;
             ret.value = "";
-            boolean available = false;
+            boolean available = true;
 
             while (Character.isDigit(currentChar) && available) {
 
                 ret.value += currentChar;
 
+                changed = true;
+                
                 index += 1;
 
                 ret.newIndex = index;
@@ -182,29 +186,9 @@ public class VersionParser {
                 }
             }
         }
-        if (!(ret.newIndex > index)) {
+        if (!changed) {
             throw new ParsingException();
         }
-        return ret;
-    }
-
-    private long[] calculateWeights(VersionStandard standard) {
-
-        int count = standard.getSections().size();
-        
-        long[] ret = new long[count];
-
-        long weight = 1;
-
-        for (int i = count-1;i>=0;i--){
-            
-            long current = 10^standard.getSections().get(i).getGlobalWeightOrder();
-            
-            weight*=current;
-            
-            ret[i] = weight;
-        }
-        
         return ret;
     }
 
@@ -272,9 +256,9 @@ public class VersionParser {
             }
             ret.setValue(sectionIndex, value);
 
-            long weight = this.weights[sectionIndex];
+            long order = section.getGlobalWeightOrder();
 
-            ret.setWeight(sectionIndex, weight);
+            ret.setOrder(sectionIndex, order);
 
             if (asTag) {
 
@@ -293,9 +277,9 @@ public class VersionParser {
 
             ret.setValue(i, def);
 
-            long weight = this.weights[i];
+            long order = section.getGlobalWeightOrder();
 
-            ret.setWeight(i, weight);
+            ret.setOrder(i, order);
         }
         return ret;
     }
@@ -309,7 +293,9 @@ public class VersionParser {
             VersionSection section = standard.getSections().get(i);
 
             if (i > 0) {
-                sb.append(section.getSeparator());
+                String seprator = sepratorString(section.getSeparator());
+                
+                sb.append(seprator);
             }
             if (asTag) {
                 sb.append(section.getTagPrefix());

@@ -27,12 +27,14 @@ import java.util.List;
 public class VersionModel {
 
     private final int[] sectionValues;
+    private final long[] sectionOrders;
     private final long[] sectionWeights;
     private final int numberOfSections;
     
 
     public VersionModel(int numberOfSections) {
         this.sectionValues = new int[numberOfSections];
+        this.sectionOrders = new long[numberOfSections];
         this.sectionWeights = new long[numberOfSections];
         this.numberOfSections = numberOfSections;
     }
@@ -63,7 +65,7 @@ public class VersionModel {
         for(int i =0;i<this.numberOfSections;i++){
             long value = (long)sectionValues[i];
             
-            value *= sectionWeights[i];
+            value *= sectionOrders[i];
             
             ret += value;
         }
@@ -79,8 +81,28 @@ public class VersionModel {
         this.sectionValues[index]=value;
     }
     
-    public void setWeight(int index , long value){
-        this.sectionWeights[index]=value;
+    public void setOrder(int index , long value){
+        
+        calculateWeights();
+        
+        this.sectionOrders[index]=value;
+    }
+    
+    private void calculateWeights(){
+        long weight =1;
+        
+        int bound = sectionOrders.length-1;
+        
+        for(int i=bound;i>=0;i--){
+            
+            long order = this.sectionOrders[i];
+            
+            long factor = pow(10, order);
+            
+            weight = weight*factor;
+            
+            this.sectionWeights[i] = weight;
+        }
     }
     
     public static int compare(VersionModel v1, VersionModel v2){
@@ -91,6 +113,16 @@ public class VersionModel {
         if(res<0) return -1;
         
         return 0;
+    }
+
+    private long pow(long base, long power) {
+
+        long ret = base;
+        
+        for(int i=0;i<power;i++){
+            ret *=base;
+        }
+        return ret;
     }
 
 }
