@@ -34,6 +34,23 @@ public class JsonEditor {
         this.file = file;
     }
 
+    public <T> T load(Class<T> type){
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+        
+        T ret = mapper.readValue(file,type);
+        
+        return ret;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public void save(Object object) throws IOException{
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(file, object);
+    }
+    
     public String readValue(String[] address) {
         try {
             Map<String, Object> mapped = readAsObjectMap(file);
