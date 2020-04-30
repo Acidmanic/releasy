@@ -63,6 +63,30 @@ public class GitTagTest {
             public int compare(Version v) {
                 return 0;
             }
+
+            @Override
+            public int getNumericPatch() {
+                return 0;
+            }
+
+            @Override
+            public int getNumericMajor() {
+                return 1;
+            }
+
+            @Override
+            public int getNumericMinor() {
+                return 0;
+            }
+
+            @Override
+            public void setNumericPatch(int value) {            }
+
+            @Override
+            public void setNumericMajor(int value) {}
+
+            @Override
+            public void setNumericMinor(int value) {}
         };
 
         File here = new File(".");
