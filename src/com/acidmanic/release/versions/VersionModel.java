@@ -65,7 +65,7 @@ public class VersionModel {
         for(int i =0;i<this.numberOfSections;i++){
             long value = (long)sectionValues[i];
             
-            value *= sectionOrders[i];
+            value *= this.sectionWeights[i];
             
             ret += value;
         }
@@ -83,9 +83,9 @@ public class VersionModel {
     
     public void setOrder(int index , long value){
         
-        calculateWeights();
-        
         this.sectionOrders[index]=value;
+        
+        calculateWeights();
     }
     
     private void calculateWeights(){
@@ -117,7 +117,7 @@ public class VersionModel {
 
     private long pow(long base, long power) {
 
-        long ret = base;
+        long ret = 1;
         
         for(int i=0;i<power;i++){
             ret *=base;
