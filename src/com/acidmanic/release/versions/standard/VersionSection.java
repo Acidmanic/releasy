@@ -30,7 +30,7 @@ public class VersionSection {
     public static final int SECTION_SEPARATOR_DOT = 0;
     public static final int SECTION_SEPARATOR_DASH = 1;
 
-    public static final String RESET_BY_ANY_BEFORE = "any-before";
+    public static final String RESET_BY_PREDECESSORS = "predecessors";
     public static final String RESET_BY_PREVIOUS = "previous";
     public static final String RESET_BY_ANY = "any";
     public static final String RESET_BY_NONE = "none";
@@ -43,7 +43,7 @@ public class VersionSection {
     private boolean defaultValueHidden = false;
     private String sectionName;
     private int separator = SECTION_SEPARATOR_DOT;
-    private String reseters = RESET_BY_ANY_BEFORE;
+    private String reseters = RESET_BY_PREDECESSORS;
     private long globalWeightOrder = 3;
 
     public VersionSection() {
