@@ -28,66 +28,16 @@ import static org.junit.Assert.*;
  *
  * @author Acidmanic
  */
-public class VersionIncrementorTest {
+public class VersionIncrementorTest extends VersionTestBase{
 
-    private VersionStandard standard;
+    
 
     public VersionIncrementorTest() {
-
-        VersionStandardBuilder builder = new VersionStandardBuilder();
         
-        builder.standardName("Testandard")
-                .sectionName("Major").alwaysVisible().defaultValue(1)
-                .dotDelimited().mandatory().tagPrefix("v").weightOrder(3)
-                .wountReset();
-
-        builder.nextSection()
-                .sectionName("Minor").alwaysVisible().defaultValue(0)
-                .dotDelimited().mandatory().weightOrder(2)
-                .resetsByPredecessors();
-        
-        builder.nextSection()
-                .sectionName("Patch").alwaysVisible().defaultValue(0)
-                .dotDelimited().mandatory().weightOrder(0)
-                .addNamed("alpha").addNamed("beta").addNamed("rc").addNamed("lts")
-                .resetsByPredecessors();
-        
-        this.standard = builder.build();
-        
+        this.standard = createTestandard();
     }
 
-    private VersionModel createVersion(int... values) {
-
-        VersionModel version = new VersionModel(standard.getSections().size());
-        for (int i = 0; i < values.length; i++) {
-            version.setValue(i, values[i]);
-        }
-        for (int i = values.length; i < standard.getSections().size(); i++) {
-            version.setValue(i, 0);
-        }
-        for (int i = 0; i < standard.getSections().size(); i++) {
-            version.setOrder(i, standard.getSections().get(i).getGlobalWeightOrder());
-        }
-        return version;
-    }
     
-    private void assertEqual(String expected,VersionModel version){
-        String[] parts = expected.split("\\.");
-        
-        for(int i=0;i<parts.length;i++){
-            int value = Integer.parseInt(parts[i]);
-            
-            if(value!=version.getValue(i)){
-                String sep="";
-                String actual = "";
-                for(int j=0;j<standard.getSections().size();j++){
-                    actual += sep+version.getValue(j);
-                    sep=".";
-                }
-                fail("Expected '" + expected + "' But was: '" + actual+"'");
-            }
-        }
-    }
 
     @Test
     public void shouldIncrementLastSection() {
@@ -133,6 +83,35 @@ public class VersionIncrementorTest {
         VersionIncrementor instance = new VersionIncrementor(standard);
         VersionModel result = instance.increment(version, 1);
         assertEqual("1.2.0",result);
+    }
+    
+    
+    @Test
+    public void majorIncrementationShouldResetMinorAndPatch() {
+        System.out.println("shouldResetPatchByMinorIncrementation");
+        VersionModel version =  createVersion(1,1,1);
+        VersionIncrementor instance = new VersionIncrementor(standard);
+        VersionModel result = instance.increment(version, "major");
+        assertEqual("2.0.0",result);
+    }
+    
+    
+    @Test
+    public void minorIncrementationShouldResetPath() {
+        System.out.println("shouldResetPatchByMinorIncrementation");
+        VersionModel version =  createVersion(1,1,1);
+        VersionIncrementor instance = new VersionIncrementor(standard);
+        VersionModel result = instance.increment(version, "minor");
+        assertEqual("1.2.0",result);
+    }
+    
+    @Test
+    public void patchIncrementationShoulOnlyIncrementPatch() {
+        System.out.println("shouldResetPatchByMinorIncrementation");
+        VersionModel version =  createVersion(1,1,1);
+        VersionIncrementor instance = new VersionIncrementor(standard);
+        VersionModel result = instance.increment(version, "patch");
+        assertEqual("1.1.2",result);
     }
 
 }

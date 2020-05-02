@@ -26,20 +26,13 @@ import static org.junit.Assert.*;
  *
  * @author Acidmanic
  */
-public class VersionParserTest {
+public class VersionParserTest extends VersionTestBase{
     
     
-    private final VersionModel versionModel = new VersionModel(2);
-    private final String versionString = "1.0";
-    private final String versionTagString = "v1.0";
-    private final VersionStandard standard = new TestVersionStandardGenerator().makeTestandard();
     
     public VersionParserTest() {
-        versionModel.setValue(0, 1);
-        versionModel.setValue(1, 0);
         
-        versionModel.setOrder(0, standard.getSections().get(0).getGlobalWeightOrder());
-        versionModel.setOrder(1, standard.getSections().get(1).getGlobalWeightOrder());
+        this.standard = createTestandard();
         
     }
     
@@ -48,9 +41,9 @@ public class VersionParserTest {
     @Test
     public void testGetVersionString() {
         System.out.println("getVersionString");
-        VersionModel version = versionModel;
+        VersionModel version = createVersion(1,2,2);
         VersionParser instance = new VersionParser(standard);
-        String expResult = versionString;
+        String expResult = "1.2-rc";
         String result = instance.getVersionString(version);
         assertEquals(expResult, result);
     }
@@ -58,9 +51,9 @@ public class VersionParserTest {
     @Test
     public void testGetTagString() {
         System.out.println("getTagString");
-        VersionModel version = versionModel;
+        VersionModel version = createVersion(1,2,3);
         VersionParser instance = new VersionParser(standard);
-        String expResult = versionTagString;
+        String expResult = "v1.2-lts";
         String result = instance.getTagString(version);
         assertEquals(expResult, result);
     }
@@ -68,28 +61,28 @@ public class VersionParserTest {
     @Test
     public void testParse() throws Exception {
         System.out.println("parse");
-        String versionString = this.versionString;
+        String versionString = "3.0-alpha";
         VersionParser instance = new VersionParser(standard);
-        VersionModel expResult = versionModel;
+        VersionModel expResult = createVersion(3,0,0);
         VersionModel result = instance.parse(versionString);
-        assertEquals(expResult.toRawValue(), result.toRawValue());
+        versionsEqual(expResult,result);
     }
 
     @Test
     public void testParseTag() throws Exception {
         System.out.println("parseTag");
-        String versionString = this.versionTagString;
+        String versionString = "v1.1-beta";
         VersionParser instance = new VersionParser(standard);
-        VersionModel expResult = versionModel;
+        VersionModel expResult = createVersion(1,1,1);
         VersionModel result = instance.parseTag(versionString);
-        assertEquals(expResult.toRawValue(), result.toRawValue());
+        versionsEqual(expResult, result);
     }
 
     @Test
     public void testGetTemplateAsTag() {
         System.out.println("getTemplate");
         VersionParser instance = new VersionParser(standard);
-        String expResult = "v<Major>.<Minor>";
+        String expResult = "v<Major>.<Minor>-<Patch>";
         String result = instance.getTemplate(true);
         assertEquals(expResult, result);
     }
@@ -98,9 +91,11 @@ public class VersionParserTest {
     public void testGetTemplateNormal() {
         System.out.println("getTemplate");
         VersionParser instance = new VersionParser(standard);
-        String expResult = "<Major>.<Minor>";
+        String expResult = "<Major>.<Minor>-<Patch>";
         String result = instance.getTemplate(false);
         assertEquals(expResult, result);
     }
+
+    
     
 }

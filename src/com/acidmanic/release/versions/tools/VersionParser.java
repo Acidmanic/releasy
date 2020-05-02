@@ -91,9 +91,9 @@ public class VersionParser {
             String searchString,
             String versionString) throws ParsingException {
                 
-        char[] searchChars = searchString.toCharArray();
+        char[] searchChars = searchString.toLowerCase().toCharArray();
         
-        char[] versionChars = versionString.toCharArray();
+        char[] versionChars = versionString.toLowerCase().toCharArray();
         
         ProgressResult ret = new ProgressResult();
         
@@ -111,6 +111,7 @@ public class VersionParser {
             }
             ret.newIndex = versionIndex +1;
         }
+        ret.value = searchString;
         return ret;
     }
 
