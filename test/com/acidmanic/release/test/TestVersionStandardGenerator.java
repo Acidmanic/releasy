@@ -16,8 +16,8 @@
  */
 package com.acidmanic.release.test;
 
-import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;
+import com.acidmanic.release.versions.standard.VersionStandardBuilder;
 
 /**
  *
@@ -27,52 +27,20 @@ public class TestVersionStandardGenerator {
     
     
     public VersionStandard makeTestandard(){
-        VersionSection major = new VersionSection();
         
-        major.setDefaultValue(1);
+        VersionStandardBuilder builder = new VersionStandardBuilder();
         
-        major.setDefaultValueHidden(false);
+        builder.standardName("Testandard")
+                .sectionName("Major").alwaysVisible().defaultValue(1)
+                .dotDelimited().mandatory().tagPrefix("v").weightOrder(3)
+                .wountReset();
+
+        builder.nextSection()
+                .sectionName("Minor").alwaysVisible().defaultValue(0)
+                .dotDelimited().mandatory().weightOrder(2)
+                .resetsByPredecessors();
         
-        major.setMandatory(true);
-        
-        major.setSectionName("Major");
-        
-        major.setTagPostfix("");
-        
-        major.setTagPrefix("v");
-        
-        major.setSeparator(VersionSection.SECTION_SEPARATOR_DOT);
-        
-        major.setReseters(VersionSection.RESET_BY_NONE);
-        
-        major.setReseters(VersionSection.RESET_BY_NONE);
-        
-        VersionSection minor = new VersionSection();
-        
-        minor.setDefaultValue(1);
-        
-        minor.setDefaultValueHidden(false);
-        
-        minor.setMandatory(true);
-        
-        minor.setSectionName("Minor");
-        
-        minor.setTagPostfix("");
-        
-        minor.setTagPrefix("");
-        
-        minor.setSeparator(VersionSection.SECTION_SEPARATOR_DOT);
-        
-        
-        minor.setReseters(VersionSection.RESET_BY_PREVIOUS);
-        
-        VersionStandard testandard = new VersionStandard();
-        
-        testandard.setName("Testandard");
-        
-        testandard.getSections().add(major);
-        
-        testandard.getSections().add(minor);
+        VersionStandard testandard = builder.build();
         
         return testandard;
     }

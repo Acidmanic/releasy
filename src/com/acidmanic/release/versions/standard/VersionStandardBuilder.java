@@ -174,6 +174,8 @@ public class VersionStandardBuilder {
     
     public VersionStandard build(){
         
+        this.standard.getSections().add(currentSection);
+        
         return standard;
     }
 }

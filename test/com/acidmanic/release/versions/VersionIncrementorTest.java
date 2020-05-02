@@ -20,6 +20,7 @@ import com.acidmanic.release.versions.tools.VersionIncrementor;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.test.TestVersionStandardGenerator;
+import com.acidmanic.release.versions.standard.VersionStandardBuilder;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -29,25 +30,30 @@ import static org.junit.Assert.*;
  */
 public class VersionIncrementorTest {
 
-    private VersionStandard standard = new TestVersionStandardGenerator().makeTestandard();
+    private VersionStandard standard;
 
     public VersionIncrementorTest() {
 
-        VersionSection patch = new VersionSection();
+        VersionStandardBuilder builder = new VersionStandardBuilder();
+        
+        builder.standardName("Testandard")
+                .sectionName("Major").alwaysVisible().defaultValue(1)
+                .dotDelimited().mandatory().tagPrefix("v").weightOrder(3)
+                .wountReset();
 
-        patch.setSectionName("Patch");
-        patch.setDefaultValue(0);
-        patch.setGlobalWeightOrder(0);
-        patch.setMandatory(true);
-        patch.setReseters(VersionSection.RESET_BY_ANY_BEFORE);
-        patch.setSeparator(VersionSection.SECTION_SEPARATOR_DOT);
-        patch.getNamedValues().put(0, "alpha");
-        patch.getNamedValues().put(1, "beta");
-        patch.getNamedValues().put(2, "rc");
-        patch.getNamedValues().put(3, "lts");
-
-        standard.getSections().add(patch);
-
+        builder.nextSection()
+                .sectionName("Minor").alwaysVisible().defaultValue(0)
+                .dotDelimited().mandatory().weightOrder(2)
+                .resetsByPredecessors();
+        
+        builder.nextSection()
+                .sectionName("Patsh").alwaysVisible().defaultValue(0)
+                .dotDelimited().mandatory().weightOrder(0)
+                .addNamed("alpha").addNamed("beta").addNamed("rc").addNamed("lts")
+                .resetsByPredecessors();
+        
+        this.standard = builder.build();
+        
     }
 
     private VersionModel createVersion(int... values) {
