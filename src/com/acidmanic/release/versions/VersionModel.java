@@ -125,4 +125,8 @@ public class VersionModel {
         return ret;
     }
 
+    public int getValue(int index) {
+        return this.sectionValues[index];
+    }
+
 }

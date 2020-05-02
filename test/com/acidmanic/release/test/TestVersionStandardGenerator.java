@@ -43,6 +43,10 @@ public class TestVersionStandardGenerator {
         
         major.setSeparator(VersionSection.SECTION_SEPARATOR_DOT);
         
+        major.setReseters(VersionSection.RESET_BY_NONE);
+        
+        major.setReseters(VersionSection.RESET_BY_NONE);
+        
         VersionSection minor = new VersionSection();
         
         minor.setDefaultValue(1);
@@ -58,6 +62,9 @@ public class TestVersionStandardGenerator {
         minor.setTagPrefix("");
         
         minor.setSeparator(VersionSection.SECTION_SEPARATOR_DOT);
+        
+        
+        minor.setReseters(VersionSection.RESET_BY_PREVIOUS);
         
         VersionStandard testandard = new VersionStandard();
         

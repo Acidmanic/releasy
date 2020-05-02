@@ -17,25 +17,33 @@
 package com.acidmanic.release.versions;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
- * This class is model to represent properties of a section in a version standard.
+ * This class is model to represent properties of a section in a version
+ * standard.
+ *
  * @author Acidmanic
  */
 public class VersionSection {
-    
-    public static final int SECTION_SEPARATOR_DOT =0;
-    public static final int SECTION_SEPARATOR_DASH =1;
-    
-    private boolean mandatory=true;
-    private String tagPrefix="";
-    private String tagPostfix="";
-    private HashMap<Integer,String> namedValues;
-    private int defaultValue=0;
-    private boolean defaultValueHidden=false;
+
+    public static final int SECTION_SEPARATOR_DOT = 0;
+    public static final int SECTION_SEPARATOR_DASH = 1;
+
+    public static final String RESET_BY_ANY_BEFORE = "any-before";
+    public static final String RESET_BY_PREVIOUS = "previous";
+    public static final String RESET_BY_ANY = "any";
+    public static final String RESET_BY_NONE = "none";
+
+    private boolean mandatory = true;
+    private String tagPrefix = "";
+    private String tagPostfix = "";
+    private HashMap<Integer, String> namedValues;
+    private int defaultValue = 0;
+    private boolean defaultValueHidden = false;
     private String sectionName;
     private int separator = SECTION_SEPARATOR_DOT;
-    private boolean resetable = false;
+    private String reseters = RESET_BY_ANY_BEFORE;
     private long globalWeightOrder = 3;
 
     public VersionSection() {
@@ -106,14 +114,6 @@ public class VersionSection {
         this.separator = separator;
     }
 
-    public boolean isResetable() {
-        return resetable;
-    }
-
-    public void setResetable(boolean resetable) {
-        this.resetable = resetable;
-    }
-
     public long getGlobalWeightOrder() {
         return globalWeightOrder;
     }
@@ -122,5 +122,19 @@ public class VersionSection {
         this.globalWeightOrder = globalWeightOrder;
     }
 
-    
+    public String getReseters() {
+        return reseters;
+    }
+
+    /**
+     * sets the reseter string
+     *
+     * @param reseters list of names of sections that their incrementation will
+     * reset this section. it also can take values: any-before,previous,
+     * any,none. You can use constants VersionSection.RESET_BY_*
+     */
+    public void setReseters(String reseters) {
+        this.reseters = reseters;
+    }
+
 }
