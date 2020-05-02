@@ -141,7 +141,7 @@ public class VersionIncrementor {
         if(contains(resets,VersionSection.RESET_BY_ANY)){
             return true;
         }
-        if(contains(resets, VersionSection.RESET_BY_ANY_BEFORE)){
+        if(contains(resets, VersionSection.RESET_BY_PREDECESSORS)){
             if(incrementedIndex<checkingIndex){
                 return true;
             }
