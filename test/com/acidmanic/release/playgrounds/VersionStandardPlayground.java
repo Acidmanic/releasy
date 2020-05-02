@@ -18,8 +18,9 @@ package com.acidmanic.release.playgrounds;
 
 import com.acidmanic.release.fileeditors.JsonEditor;
 import com.acidmanic.release.test.TestVersionStandardGenerator;
-import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;
+import com.acidmanic.release.versions.standard.VersionStandards;
+import com.acidmanic.release.versions.tools.VersionParser;
 import java.io.File;
 import java.io.IOException;
 
@@ -41,6 +42,18 @@ public class VersionStandardPlayground {
         
         j.save(testandard);
         
+        
+        file = new File("semantic.json");
+        
+        j = new JsonEditor(file);
+        
+        j.save(VersionStandards.SIMPLE_SEMANTIC);
+        
+        VersionParser parser = new VersionParser(VersionStandards.SIMPLE_SEMANTIC);
+        
+        System.out.println("As Version: " + parser.getTemplate(false));
+        
+        System.out.println("As Tag: " + parser.getTemplate(true));
     
     }
 }

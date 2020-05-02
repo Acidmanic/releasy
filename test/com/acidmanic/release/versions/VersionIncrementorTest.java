@@ -47,7 +47,7 @@ public class VersionIncrementorTest {
                 .resetsByPredecessors();
         
         builder.nextSection()
-                .sectionName("Patsh").alwaysVisible().defaultValue(0)
+                .sectionName("Patch").alwaysVisible().defaultValue(0)
                 .dotDelimited().mandatory().weightOrder(0)
                 .addNamed("alpha").addNamed("beta").addNamed("rc").addNamed("lts")
                 .resetsByPredecessors();
