@@ -16,6 +16,8 @@
  */
 package com.acidmanic.release.versions;
 
+import com.acidmanic.release.versions.tools.VersionParser;
+import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.test.TestVersionStandardGenerator;
 import org.junit.Test;
 import static org.junit.Assert.*;

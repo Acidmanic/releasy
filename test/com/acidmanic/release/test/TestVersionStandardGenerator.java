@@ -16,8 +16,8 @@
  */
 package com.acidmanic.release.test;
 
-import com.acidmanic.release.versions.VersionSection;
-import com.acidmanic.release.versions.VersionStandard;
+import com.acidmanic.release.versions.standard.VersionSection;
+import com.acidmanic.release.versions.standard.VersionStandard;
 
 /**
  *

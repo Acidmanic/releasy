@@ -14,8 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.versions;
+package com.acidmanic.release.versions.tools;
 
+import com.acidmanic.release.versions.VersionModel;
+import com.acidmanic.release.versions.standard.VersionStandard;
+import com.acidmanic.release.versions.standard.VersionSection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

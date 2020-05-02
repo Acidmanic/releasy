@@ -18,8 +18,8 @@ package com.acidmanic.release.playgrounds;
 
 import com.acidmanic.release.fileeditors.JsonEditor;
 import com.acidmanic.release.test.TestVersionStandardGenerator;
-import com.acidmanic.release.versions.VersionSection;
-import com.acidmanic.release.versions.VersionStandard;
+import com.acidmanic.release.versions.standard.VersionSection;
+import com.acidmanic.release.versions.standard.VersionStandard;
 import java.io.File;
 import java.io.IOException;
 
