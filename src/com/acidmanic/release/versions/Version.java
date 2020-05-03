@@ -20,6 +20,7 @@ package com.acidmanic.release.versions;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public interface Version {
 
     public static final int VERSION_VALUE_NOT_SUPPORTED = -1;
