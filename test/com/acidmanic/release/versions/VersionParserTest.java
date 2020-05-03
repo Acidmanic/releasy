@@ -39,8 +39,8 @@ public class VersionParserTest extends VersionTestBase{
     
 
     @Test
-    public void testGetVersionString() {
-        System.out.println("getVersionString");
+    public void shouldRepresentVersionWithAValidVersionString() {
+        System.out.println("shouldRepresentVersionWithAValidVersionString");
         VersionModel version = createVersion(1,2,2);
         VersionParser instance = new VersionParser(standard);
         String expResult = "1.2-rc";
@@ -49,8 +49,8 @@ public class VersionParserTest extends VersionTestBase{
     }
 
     @Test
-    public void testGetTagString() {
-        System.out.println("getTagString");
+    public void shouldRepresentVersionWithAValidTagString() {
+        System.out.println("shouldRepresentVersionWithAValidTagString");
         VersionModel version = createVersion(1,2,3);
         VersionParser instance = new VersionParser(standard);
         String expResult = "v1.2-lts";
@@ -59,8 +59,8 @@ public class VersionParserTest extends VersionTestBase{
     }
 
     @Test
-    public void testParse() throws Exception {
-        System.out.println("parse");
+    public void shouldParseTheStringToCorrectVersion() throws Exception {
+        System.out.println("shouldParseTheStringToCorrectVersion");
         String versionString = "3.0-alpha";
         VersionParser instance = new VersionParser(standard);
         VersionModel expResult = createVersion(3,0,0);
@@ -69,8 +69,8 @@ public class VersionParserTest extends VersionTestBase{
     }
 
     @Test
-    public void testParseTag() throws Exception {
-        System.out.println("parseTag");
+    public void shouldParseTheTagToCorrectVersion() throws Exception {
+        System.out.println("shouldParseTheTagToCorrectVersion");
         String versionString = "v1.1-beta";
         VersionParser instance = new VersionParser(standard);
         VersionModel expResult = createVersion(1,1,1);
@@ -79,8 +79,8 @@ public class VersionParserTest extends VersionTestBase{
     }
 
     @Test
-    public void testGetTemplateAsTag() {
-        System.out.println("getTemplate");
+    public void shouldGetCorrectTemplateForVersion() {
+        System.out.println("shouldGetCorrectTemplateForVersion");
         VersionParser instance = new VersionParser(standard);
         String expResult = "v<Major>.<Minor>-<Patch>";
         String result = instance.getTemplate(true);
@@ -88,8 +88,8 @@ public class VersionParserTest extends VersionTestBase{
     }
     
     @Test
-    public void testGetTemplateNormal() {
-        System.out.println("getTemplate");
+    public void shouldGetCorrectTemplateForTag() {
+        System.out.println("shouldGetCorrectTemplateForTag");
         VersionParser instance = new VersionParser(standard);
         String expResult = "<Major>.<Minor>-<Patch>";
         String result = instance.getTemplate(false);

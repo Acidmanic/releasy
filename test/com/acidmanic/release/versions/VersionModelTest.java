@@ -16,7 +16,6 @@
  */
 package com.acidmanic.release.versions;
 
-import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -29,8 +28,8 @@ public class VersionModelTest {
 
 
     @Test
-    public void testToArray() {
-        System.out.println("toArray");
+    public void shouldConvertToValidArray() {
+        System.out.println("shouldConvertToValidArray");
         VersionModel instance = new VersionModel(4);
         instance.setValue(0, 1);
         instance.setValue(1, 0);
@@ -43,8 +42,8 @@ public class VersionModelTest {
 
     
     @Test
-    public void testToRawValue() {
-        System.out.println("toRawValue");
+    public void shouldConvertToValidGlobalValue() {
+        System.out.println("shouldConvertToValidGlobalValue");
         VersionModel instance = new VersionModel(3);
         instance.setValue(0, 1);
         instance.setValue(1, 2);
