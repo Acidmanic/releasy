@@ -27,7 +27,7 @@ public final class VersionStandards {
     private VersionStandards(){}
     
     public static final VersionStandard SIMPLE_SEMANTIC = new VersionStandardBuilder()
-            .standardName("Semantic Versioning")
+            .standardName("Semantic")
                 .sectionName("Major").alwaysVisible().defaultValue(1)
                 .dotDelimited().mandatory().tagPrefix("v").weightOrder(3)
                 .wountReset()
