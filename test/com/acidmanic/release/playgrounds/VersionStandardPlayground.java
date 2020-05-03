@@ -21,39 +21,48 @@ import com.acidmanic.release.test.TestVersionStandardGenerator;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versions.standard.VersionStandards;
 import com.acidmanic.release.versions.tools.VersionParser;
+import com.acidmanic.release.versionstandard.StandardProvider;
+import com.acidmanic.utilities.ApplicationInfo;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  *
  * @author Acidmanic
  */
 public class VersionStandardPlayground {
-    
-        
-    public static void main(String[] args) throws IOException{
-    
-        
-        File file = new File("testandard.json");
-        
+
+    public static void main(String[] args) throws IOException {
+
+        File file = new ApplicationInfo().getExecutionDirectory()
+                .toPath().resolve("testandard.json").toFile();
+
         JsonEditor j = new JsonEditor(file);
-        
+
         VersionStandard testandard = new TestVersionStandardGenerator().makeTestandard();
-        
+
         j.save(testandard);
-        
-        
+
         file = new File("semantic.json");
-        
+
         j = new JsonEditor(file);
-        
+
         j.save(VersionStandards.SIMPLE_SEMANTIC);
-        
+
         VersionParser parser = new VersionParser(VersionStandards.SIMPLE_SEMANTIC);
-        
+
         System.out.println("As Version: " + parser.getTemplate(false));
-        
+
         System.out.println("As Tag: " + parser.getTemplate(true));
-    
+
+        StandardProvider provider = new StandardProvider();
+
+        List<String> standardNames = provider.availableStandards();
+
+        standardNames.forEach(name -> System.out.println("Found: " + name
+                + " Tag Template: " + new VersionParser(provider.getStandard(name))
+                        .getTemplate(true)));
+
     }
 }
