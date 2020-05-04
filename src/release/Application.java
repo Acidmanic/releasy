@@ -41,6 +41,7 @@ import com.acidmanic.release.versionables.NuGetSpec;
 import com.acidmanic.release.versionables.NuGetDotnetCore;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versionables.XCode;
+import com.acidmanic.release.versioncontrols.VersionControl;
 import com.acidmanic.release.versions.SemanticVersionFactory;
 import com.acidmanic.release.versions.VersionFactory;
 import com.acidmanic.utilities.ClassRegistery;
@@ -56,6 +57,7 @@ public class Application {
     private static ReleaseStrategy releaseStrategy;
     private static VersionFactory versionFactory;
     private static SourceControlSystem sourceControlSystem;
+    private static VersionControl versionControl;
 
     public static void initialize() {
         ClassRegistery.makeInstance().add(Cocoapods.class);
@@ -80,11 +82,14 @@ public class Application {
         ApplicationWideTypeRegistery.makeInstance().registerClass(Version.class);
 
         releaser = new GitTag();
+        
         releaseStrategy = new ReleaseIfAllPresentsSet();
 
         versionFactory = new SemanticVersionFactory();
 
         sourceControlSystem = new JGitFacadeSourceControl();
+        
+        versionControl = new JGitFacadeSourceControl();
     }
 
     public static Versionable getReleaser() {
@@ -101,6 +106,10 @@ public class Application {
 
     public static SourceControlSystem getSourceControlSystem() {
         return sourceControlSystem;
+    }
+
+    public static VersionControl getVersionControl() {
+        return versionControl;
     }
 
 }

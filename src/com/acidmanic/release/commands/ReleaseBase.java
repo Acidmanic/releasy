@@ -17,6 +17,7 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.commandline.commands.parameters.ParameterBuilder;
 import com.acidmanic.consoletools.table.builders.TableBuilder;
 import com.acidmanic.release.Releaser;
 import com.acidmanic.release.environment.ReleaseEnvironment;
@@ -30,7 +31,9 @@ import static com.acidmanic.release.versions.ReleaseTypes.BETA;
 import static com.acidmanic.release.versions.ReleaseTypes.NIGHTLY;
 import static com.acidmanic.release.versions.ReleaseTypes.RELEASE_CANDIDATE;
 import static com.acidmanic.release.versions.ReleaseTypes.STABLE;
-import java.io.File;
+import com.acidmanic.release.versions.standard.VersionStandard;
+import com.acidmanic.release.versionstandard.StandardProvider;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -45,9 +48,17 @@ public abstract class ReleaseBase extends CommandBase {
             + "of development for your release. it can be nightly (default),"
             + "alpha, beta, release-candidate (alternatively: rc) or stable.";
 
+    private VersionStandard standard;
+
+    protected VersionStandard getStandard() {
+
+        return this.standard;
+    }
+
     @Override
     public void execute() {
 
+        this.standard = provideStandard();
     }
 
     private int releaseType;
@@ -55,6 +66,15 @@ public abstract class ReleaseBase extends CommandBase {
     public void setArgs(String[] args) {
         this.args = args;
         this.releaseType = getReleaseType();
+    }
+
+    @Override
+    protected void defineParameters(ParameterBuilder builder) {
+        builder.described("This parameter is the name of the version standard being used "
+                + "with current command. This standard can be a built-in standard "
+                + "within the application or a standard from a version standard "
+                + "json file alongside with the application executable file.")
+                .named("version-standard").ofType(String.class).optional();
     }
 
     private Releaser makeReleaser() {
@@ -71,17 +91,28 @@ public abstract class ReleaseBase extends CommandBase {
         return r;
     }
 
+    protected void release(ArrayList<String> changes) {
+
+        Releaser releaser = makeReleaser();
+
+        boolean success = releaser.release(standard, changes);
+        
+        logRelease(success);
+    }
+
     /**
      * Auto create version
      */
+    @Deprecated
     protected void release(Change change) {
         logRelease(makeReleaser().release(releaseType, change));
     }
-
+    @Deprecated
     protected void release(com.acidmanic.release.versions.Version version) {
         logRelease(makeReleaser().release(releaseType, version));
     }
 
+    @Deprecated
     private int getReleaseType() {
         String[] names = {"nightly", "alpha", "beta", "release-candidate", "rc", "stable"};
         int[] values = {NIGHTLY, ALPHA, BETA, RELEASE_CANDIDATE, RELEASE_CANDIDATE, STABLE};
@@ -129,6 +160,18 @@ public abstract class ReleaseBase extends CommandBase {
             Logger.log(" 🧐    Release has not been completed..");
         }
         Logger.log("");
+    }
+
+    protected VersionStandard provideStandard() {
+
+        String name = getParameterValue("version-standard");
+
+        if (name == null) {
+            name = "semantic";
+        }
+        VersionStandard standard = new StandardProvider().getStandard(name);
+
+        return standard;
     }
 
 }

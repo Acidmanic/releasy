@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Mani Moayedi (acidmanic.moayedi@gmail.com)
+ * Copyright (C) 2020 Acidmanic
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,26 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.versions;
+package com.acidmanic.release.versionables;
+
+import java.io.File;
+import java.util.List;
 
 /**
  *
- * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
+ * @author Acidmanic
  */
-@Deprecated
-public class Change {
-    public boolean changeDesign;
-    public boolean addFeature;
-    public boolean fixBugs;
+public interface VersionSourceFile {
 
-    public Change(boolean changeDesign, boolean addFeature, boolean fixBugs) {
-        this.changeDesign = changeDesign;
-        this.addFeature = addFeature;
-        this.fixBugs = fixBugs;
-    }
+    // Perform any action needed before using fuctionalities
+    void setup(File directory);
 
-    public Change() {
-    }
-    
-    
+    // Returns if there is any instances of this VersoinSourceFile present in PWD
+    boolean isPresent();
+
+    // Sets the given versionString in all instances of this VersionSourceFile in PWD
+    boolean setVersion(String versionString);
+
+    // Lists all version Strings apeared in all instances of this VersionSourceFile
+    List<String> getVersions();
+
 }

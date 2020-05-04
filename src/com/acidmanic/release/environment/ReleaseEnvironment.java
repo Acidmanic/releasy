@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.environment;
 
+import com.acidmanic.release.versionables.VersionSourceFile;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.ReleaseTypes;
 import com.acidmanic.utilities.ClassRegistery;
@@ -90,5 +91,47 @@ public class ReleaseEnvironment {
         }
         return new ArrayList<>();
     }
+    
+    
+    
+    public List<VersionSourceFile> getAvailableVersionSourceFiles(){
+        
+        List<VersionSourceFile> allAvailable = ClassRegistery.makeInstance()
+                .all(VersionSourceFile.class);
+        
+        return allAvailable;
+    }
 
+    public List<VersionSourceFile> getPresentVersionSourceFiles(){
+        
+        List<VersionSourceFile> allAvailable = getAvailableVersionSourceFiles();
+        
+        List<VersionSourceFile> allPresent = new ArrayList<>();
+        
+        for(VersionSourceFile src:allAvailable){
+            
+            src.setup(directory);
+            
+            if(src.isPresent()){
+                
+                allPresent.add(src);
+            }
+        }
+        return allPresent;
+    }
+    
+    public List<String> getAllPresentedVersionStrings(){
+        
+        List<VersionSourceFile> allPresent = getPresentVersionSourceFiles();
+        
+        List<String> ret = new ArrayList<>();
+        
+        for(VersionSourceFile source: allPresent){
+            
+            List<String> versions = source.getVersions();
+            
+            ret.addAll(versions);
+        }
+        return ret;
+    }
 }

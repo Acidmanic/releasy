@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.sourcecontrols;
 
+import com.acidmanic.release.versioncontrols.VersionControl;
 import java.io.File;
 import org.eclipse.jgit.api.Git;
 
@@ -23,7 +24,7 @@ import org.eclipse.jgit.api.Git;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class JGitFacadeSourceControl implements SourceControlSystem {
+public class JGitFacadeSourceControl implements SourceControlSystem,VersionControl {
 
     @Override
     public void acceptLocalChanges(File directory, String description) {
@@ -56,6 +57,28 @@ public class JGitFacadeSourceControl implements SourceControlSystem {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    @Override
+    public void markVersion(File directory, String versionString, String message) {
+        Git git = tryGetGit(directory);
+        
+        if(git!=null){
+            String tag = normalizeForTag(versionString);
+            
+            try {
+                
+                git.tag().setName(tag).setMessage(message).call();
+                
+            } catch (Exception e) {}
+        }
+    }
+    
+    private String normalizeForTag(String value){
+        
+        value = value.replaceAll("\\s+", "-");
+        
+        return value;
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Mani Moayedi (acidmanic.moayedi@gmail.com)
+ * Copyright (C) 2020 Acidmanic
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,26 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.versions;
+package com.acidmanic.release.versioncontrols;
+
+import java.io.File;
 
 /**
  *
- * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
+ * @author Acidmanic
  */
-@Deprecated
-public class Change {
-    public boolean changeDesign;
-    public boolean addFeature;
-    public boolean fixBugs;
-
-    public Change(boolean changeDesign, boolean addFeature, boolean fixBugs) {
-        this.changeDesign = changeDesign;
-        this.addFeature = addFeature;
-        this.fixBugs = fixBugs;
-    }
-
-    public Change() {
-    }
+public interface VersionControl {
     
     
+    void markVersion(File directory,String versionString,String message);
+
 }
