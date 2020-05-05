@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 diego
+ * Copyright (C) 2020 Acidmanic
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,35 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.functionaltests;
-
-import com.acidmanic.commandline.commands.CommandBase;
-import com.acidmanic.release.commands.Auto;
-import org.junit.Test;
-import release.Application;
+package com.acidmanic.utilities;
 
 /**
  *
- * @author diego
+ * @author Acidmanic
  */
-public class AutoCommand {
-    
-    
-    
-    
-    
-    @Test
-    public void autoShouldIncrementSemanticMajor(){
-        
-        Application.initialize();
-        
-        CommandBase auto = new Auto();
-        
-        String[] args = {"version-standard","semantic"};
-        
-        auto.setArguments(args);
-        
-        auto.execute();
+public abstract class Emojies {
+
+    private Emojies() {
     }
-   
+
+    public abstract class SmileysAndPeople {
+
+        private SmileysAndPeople() {
+        }
+
+    }
+
+    public abstract class Symbols {
+
+        private Symbols() {
+        }
+
+        public static final char INFORMATION = 'ℹ';
+        
+        public static final char WARNING = '⚠';
+        
+        public static final String OK_BUTTON = "🆗";
+        
+        public static final char NO_ENTRY = '⛔';
+
+    }
+
 }

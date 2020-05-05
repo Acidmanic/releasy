@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.releasestrategies;
 
+import com.acidmanic.release.SetVersionResult;
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
 import java.util.List;
@@ -74,4 +75,36 @@ public abstract class ReleaseIfAllPresentsSetBase extends ReleaseStrategyBase {
         return true;
     }
 
+    @Override
+    public GrantResult grantContinue(SetVersionResult result) {
+        
+        GrantResult ret = new GrantResult(true, "");
+        
+        if(result.getTotalCount()==0){
+            
+            ret.warning("No Source File Was Present");
+            
+            return ret;
+        }
+        
+        for(Class sourceType : result.getSourceFiles()){
+            
+            String sourceName = sourceType.getSimpleName();
+            
+            if(result.getResult(sourceType)){
+                
+                ret.info(sourceName + " has been set.");
+                
+            }else{
+                
+                ret.error(sourceName + " has NOT been set.");
+                
+                ret.setGrant(false);
+            }
+        }
+        return ret;
+    }
+
+    
+    
 }

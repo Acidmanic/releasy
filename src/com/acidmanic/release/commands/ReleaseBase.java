@@ -50,6 +50,12 @@ public abstract class ReleaseBase extends CommandBase {
 
     private VersionStandard standard;
 
+    public ReleaseBase() {
+        this.standard = provideStandard();
+    }
+    
+    
+
     protected VersionStandard getStandard() {
 
         return this.standard;
@@ -169,9 +175,9 @@ public abstract class ReleaseBase extends CommandBase {
         if (name == null) {
             name = "semantic";
         }
-        VersionStandard standard = new StandardProvider().getStandard(name);
+        VersionStandard ret = new StandardProvider().getStandard(name);
 
-        return standard;
+        return ret;
     }
 
 }

@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.releasestrategies;
 
+import com.acidmanic.release.SetVersionResult;
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
 import java.util.List;
@@ -27,8 +28,11 @@ import java.util.List;
 public interface ReleaseStrategy {
     
     String message();
+    
+    @Deprecated
     void release(ReleaseParameters parameters);
-
+    @Deprecated
     boolean grantContinue(List<Versionable> versionables, List<Boolean> setResults);
     
+    GrantResult grantContinue(SetVersionResult result);
 }

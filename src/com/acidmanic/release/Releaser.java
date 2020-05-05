@@ -17,6 +17,8 @@
 package com.acidmanic.release;
 
 import com.acidmanic.release.environment.ReleaseEnvironment;
+import com.acidmanic.release.releasestrategies.GrantResult;
+import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.utilities.VersionProcessor;
 import com.acidmanic.release.versionables.VersionSourceFile;
 import com.acidmanic.release.versionables.Versionable;
@@ -124,6 +126,7 @@ public class Releaser {
 
     }
 
+    @Deprecated
     private List<Boolean> setAllVersions(Version version, int releaseType) {
 
         List<Boolean> ret = new ArrayList<>();
@@ -193,7 +196,14 @@ public class Releaser {
         // Set new version everywhere
         SetVersionResult results = setAllVersions(version);
         // Check if is it ok to continue the release, regarding the result
-        if (Application.getReleaseStrategy().grantContinue(this.versionables, results.getResults())) {
+        
+        ReleaseStrategy strategy = Application.getReleaseStrategy();
+        
+        GrantResult grantResult = strategy.grantContinue(results);
+        
+        System.out.println(grantResult.getMessage());
+        
+        if (grantResult.isGrant()) {
             // Commit changes on source control
             commitSourceChangesIntoSourceControl(version);
             // Mark release on Version Control

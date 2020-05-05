@@ -20,48 +20,93 @@ import com.acidmanic.release.versionables.VersionSourceFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.lang.model.SourceVersion;
 
 /**
  *
  * @author Acidmanic
  */
 public class SetVersionResult {
-    
-    
-    private final HashMap<VersionSourceFile,Boolean> results;
+
+    private final HashMap<Class, Boolean> results;
+    private int totalCount;
+    private int failures;
+    private int succeeds;
 
     public SetVersionResult() {
         this.results = new HashMap<>();
+        this.totalCount = 0;
+        this.failures = 0;
+        this.succeeds = 0;
     }
-    
-    public void fail(VersionSourceFile source){
-        this.results.put(source, Boolean.FALSE);
+
+    public void fail(VersionSourceFile source) {
+        add(source.getClass(), Boolean.FALSE);
     }
-    
-    public void succeed(VersionSourceFile source){
-        this.results.put(source, Boolean.TRUE);
+
+    public void succeed(VersionSourceFile source) {
+        add(source.getClass(), Boolean.TRUE);
     }
-    
-    public void add(VersionSourceFile source, boolean success){
-        this.results.put(source, success);
+
+    public void fail(Class sourceType) {
+        add(sourceType, Boolean.FALSE);
     }
-    
-    public List<VersionSourceFile> getSourceFiles(){
-        
-        List<VersionSourceFile> ret = new ArrayList<>();
-        
+
+    public void succeed(Class sourceType) {
+        add(sourceType, Boolean.TRUE);
+    }
+
+    public void add(VersionSourceFile source, boolean success) {
+        add(source.getClass(), success);
+    }
+
+    public void add(Class sourceType, boolean success) {
+
+        this.failures += success ? 0 : 1;
+
+        this.failures += success ? 1 : 0;
+
+        this.totalCount += 1;
+
+        this.results.put(sourceType, success);
+    }
+
+    public List<Class> getSourceFiles() {
+
+        List<Class> ret = new ArrayList<>();
+
         ret.addAll(this.results.keySet());
-        
+
         return ret;
     }
-    
-    public List<Boolean> getResults(){
-        
+
+    public List<Boolean> getResults() {
+
         List<Boolean> ret = new ArrayList<>();
-        
+
         ret.addAll(this.results.values());
-        
+
         return ret;
     }
+
+    public boolean getResult(Class sourceType) {
+
+        if (results.containsKey(sourceType)) {
+
+            return results.get(sourceType);
+        }
+        return false;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public int getFailures() {
+        return failures;
+    }
+
+    public int getSucceeds() {
+        return succeeds;
+    }
+
 }
