@@ -16,8 +16,6 @@
  */
 package com.acidmanic.release.versionstandard;
 
-import com.acidmanic.io.file.FileIOHelper;
-import com.acidmanic.io.file.FileSystemHelper;
 import com.acidmanic.release.fileeditors.JsonEditor;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versions.standard.VersionStandards;
@@ -37,7 +35,11 @@ public class StandardProvider {
 
     private HashMap<String, VersionStandard> standards;
 
-    public StandardProvider() {
+    public StandardProvider(){
+        this(DirectoryHelper.SCANE_MODE_CURRENT_DIRECTORY);
+    }
+    
+    public StandardProvider(int scanMode) {
 
         this.standards = new HashMap<>();
 
@@ -45,7 +47,7 @@ public class StandardProvider {
 
         result.forEach(s -> standards.put(s.getName().toLowerCase(), s));
 
-        result = listJsons();
+        result = listJsons(scanMode);
 
         result.forEach(s -> standards.put(s.getName().toLowerCase(), s));
     }
@@ -85,7 +87,7 @@ public class StandardProvider {
         return ret;
     }
 
-    private List<VersionStandard> listJsons() {
+    private List<VersionStandard> listJsons(int scanMode) {
         
         List<VersionStandard> ret = new ArrayList<>();
 
@@ -93,7 +95,7 @@ public class StandardProvider {
 
         new DirectoryHelper().scanFiles(dir,
                  f -> f.getName().toLowerCase().endsWith(".json"),
-                 f -> addValidStandard(ret, f));
+                 f -> addValidStandard(ret, f),scanMode);
         
         return ret;
     }

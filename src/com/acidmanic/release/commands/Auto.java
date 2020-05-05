@@ -17,9 +17,6 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.release.versions.Change;
-import com.acidmanic.release.versions.standard.VersionSection;
-import com.acidmanic.release.versions.standard.VersionStandard;
-import java.util.ArrayList;
 
 /**
  *
@@ -51,15 +48,12 @@ public class Auto extends ReleaseBase {
 
     @Override
     public void execute() {
-        VersionStandard standard = getStandard();
         
-        ArrayList<String> changes = extractChanges(standard);
-        
-        release(changes);
+        release(getChanges());
+
     }
 
 
-    @Deprecated
     private Change getChanges() {
         Change ret = new Change(false, false, false);
         for (String arg : args) {
@@ -76,31 +70,5 @@ public class Auto extends ReleaseBase {
         }
         return ret;
     }
-    
-    private ArrayList<String> extractChanges(VersionStandard standard) {
-        
-        ArrayList<String> changes = new ArrayList<>();
-        
-        for(String arg: this.args){
-            
-            if(isVersionSectionName(standard,arg)){
-                
-                changes.add(arg);
-            }
-        }
-        return changes;
-    }
 
-    private boolean isVersionSectionName(VersionStandard standard, String name) {
-        
-        name = name.toLowerCase();
-        
-        for(VersionSection section : standard.getSections()){
-            
-            if(section.getSectionName().toLowerCase().compareTo(name)==0){
-                return true;
-            }
-        }
-        return false;
-    }
 }

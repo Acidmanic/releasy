@@ -14,29 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.versionables;
+package com.acidmanic.release.commands.directoryscanning;
 
-import com.acidmanic.release.commands.directoryscanning.DirectoryScanner;
-import com.acidmanic.release.commands.directoryscanning.Workspace;
+import com.acidmanic.utilities.DirectoryHelper;
 import java.io.File;
-import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  *
  * @author Acidmanic
  */
-public interface VersionSourceFile {
+public class CurrentDirectoryScanner implements DirectoryScanner{
 
-    // Perform any action needed before using fuctionalities
-    void setup(Workspace workspace);
-
-    // Returns if there is any instances of this VersoinSourceFile present in PWD
-    boolean isPresent();
-
-    // Sets the given versionString in all instances of this VersionSourceFile in PWD
-    boolean setVersion(String versionString);
-
-    // Lists all version Strings apeared in all instances of this VersionSourceFile
-    List<String> getVersions();
-
+    @Override
+    public void scan(File directory, Function<File, Boolean> validator, Consumer<File> scanner) {
+        
+        new DirectoryHelper().scanCurrentDirectoryFiles(directory, validator, scanner);
+    }
+    
 }

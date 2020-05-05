@@ -17,19 +17,11 @@
 package com.acidmanic.release;
 
 import com.acidmanic.release.environment.ReleaseEnvironment;
-import com.acidmanic.release.releasestrategies.GrantResult;
-import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.utilities.VersionProcessor;
-import com.acidmanic.release.versionables.VersionSourceFile;
 import com.acidmanic.release.versionables.Versionable;
-import com.acidmanic.release.versioncontrols.VersionControl;
 import com.acidmanic.release.versions.Change;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.release.versions.VersionModel;
-import com.acidmanic.release.versions.standard.VersionStandard;
-import com.acidmanic.release.versions.standard.VersionStandards;
-import com.acidmanic.release.versions.tools.VersionIncrementor;
-import com.acidmanic.release.versions.tools.VersionParser;
+import com.acidmanic.utilities.Plus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,13 +51,9 @@ public class Releaser {
 
     private Consumer<HashMap<Versionable, Boolean>> afterVersionSet;
 
-    private final VersionStandard standard;
-
     public Releaser(File directory) {
 
         this.directory = directory;
-        // TODO: make it a consrtuctor dependency
-        this.standard = VersionStandards.SIMPLE_SEMANTIC;
 
         initialize();
     }
@@ -82,7 +70,6 @@ public class Releaser {
 
     }
 
-    @Deprecated
     public boolean release(int releaseType, Change change) {
 
         Version version = getLatesVersion(releaseType, change);
@@ -91,7 +78,6 @@ public class Releaser {
 
     }
 
-    @Deprecated
     public boolean release(int releaseType, Version version) {
 
         this.afterVersionSelect.accept(version);
@@ -109,9 +95,9 @@ public class Releaser {
 
             }
 
-            return markReleaseOnVersionControl(version, releaseType);
+            return performRelease(version, releaseType);
         }
-
+        
         return false;
     }
 
@@ -126,7 +112,6 @@ public class Releaser {
 
     }
 
-    @Deprecated
     private List<Boolean> setAllVersions(Version version, int releaseType) {
 
         List<Boolean> ret = new ArrayList<>();
@@ -142,14 +127,12 @@ public class Releaser {
         return ret;
     }
 
-    @Deprecated
     private String getDescription(Version version) {
         return "Release version: " + version.getVersionString()
                 + ", " + new Date().toString();
     }
 
-    @Deprecated
-    private boolean markReleaseOnVersionControl(Version version, int releaseType) {
+    private boolean performRelease(Version version, int releaseType) {
 
         Versionable releaser = Application.getReleaser();
 
@@ -174,7 +157,6 @@ public class Releaser {
         this.directory = directory;
     }
 
-    @Deprecated
     private HashMap<Versionable, Boolean> hashResult(List<Versionable> versionables, List<Boolean> setResults) {
 
         HashMap<Versionable, Boolean> ret = new HashMap<>();
@@ -184,133 +166,6 @@ public class Releaser {
         }
 
         return ret;
-    }
-
-    public boolean release(VersionStandard standard, ArrayList<String> changes) {
-        // Get Latest version from the source
-        VersionModel version = getLatesVersion();
-        // Increment the way it should
-        VersionIncrementor inc = new VersionIncrementor(standard);
-
-        changes.forEach(name -> inc.increment(version, name));
-        // Set new version everywhere
-        SetVersionResult results = setAllVersions(version);
-        // Check if is it ok to continue the release, regarding the result
-        
-        ReleaseStrategy strategy = Application.getReleaseStrategy();
-        
-        GrantResult grantResult = strategy.grantContinue(results);
-        
-        System.out.println(grantResult.getMessage());
-        
-        if (grantResult.isGrant()) {
-            // Commit changes on source control
-            commitSourceChangesIntoSourceControl(version);
-            // Mark release on Version Control
-            markReleaseOnVersionControl(version);
-        }
-        return false;
-    }
-
-    private void commitSourceChangesIntoSourceControl(VersionModel version) {
-
-        if (Application.getSourceControlSystem().isPresent(directory)) {
-
-            String commitMessage = getDescription(version);
-
-            Application.getSourceControlSystem()
-                    .acceptLocalChanges(directory, commitMessage);
-        }
-    }
-
-    private VersionModel getLatesVersion() {
-
-        List<String> allVersionStrings = new ReleaseEnvironment(this.directory)
-                .getAllPresentedVersionStrings();
-
-        VersionModel latest = zeroVersion();
-
-        for (String versionString : allVersionStrings) {
-
-            VersionModel model = tryParse(versionString);
-
-            if (model.toRawValue() > latest.toRawValue()) {
-
-                latest = model;
-            }
-        }
-        return latest;
-    }
-
-    private SetVersionResult setAllVersions(VersionModel version) {
-
-        List<VersionSourceFile> sourceFiles = new ReleaseEnvironment(this.directory)
-                .getPresentVersionSourceFiles();
-
-        SetVersionResult ret = new SetVersionResult();
-
-        VersionParser parser = new VersionParser(this.standard);
-
-        String versionString = parser.getVersionString(version);
-
-        for (VersionSourceFile source : sourceFiles) {
-
-            boolean res = source.setVersion(versionString);
-
-            ret.add(source, res);
-        }
-        return ret;
-    }
-
-    private String getDescription(VersionModel version) {
-
-        VersionParser parser = new VersionParser(this.standard);
-
-        return "Release version: " + parser.getVersionString(version)
-                + ", " + new Date().toString();
-    }
-
-    private void markReleaseOnVersionControl(VersionModel version) {
-
-        VersionControl versionControl = Application.getVersionControl();
-
-        VersionParser parser = new VersionParser(this.standard);
-
-        String message = "Release version " + parser.getVersionString(version);
-
-        String versionString = parser.getTagString(version);
-
-        versionControl.markVersion(this.directory, versionString, message);
-    }
-
-    private VersionModel zeroVersion() {
-
-        int length = this.standard.getSections().size();
-
-        VersionModel ret = new VersionModel(length);
-
-        for (int i = 0; i < length; i++) {
-
-            ret.setValue(i, 0);
-
-            long order = this.standard.getSections().get(i).getGlobalWeightOrder();
-
-            ret.setOrder(i, order);
-        }
-        return ret;
-    }
-
-    private VersionModel tryParse(String versionStringn) {
-
-        VersionParser parser = new VersionParser(this.standard);
-
-        try {
-
-            return parser.parse(versionStringn);
-
-        } catch (Exception e) {
-            return zeroVersion();
-        }
     }
 
 }

@@ -14,29 +14,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.versionables;
+package com.acidmanic.release.commands;
 
-import com.acidmanic.release.commands.directoryscanning.DirectoryScanner;
+import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.directoryscanning.Workspace;
-import java.io.File;
-import java.util.List;
 
 /**
  *
  * @author Acidmanic
  */
-public interface VersionSourceFile {
+public class ReleaseBase2 extends CommandBase {
 
-    // Perform any action needed before using fuctionalities
-    void setup(Workspace workspace);
+    
+    
+    private Workspace workspace;
+    
+    
+    
+    @Override
+    protected String getUsageString() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-    // Returns if there is any instances of this VersoinSourceFile present in PWD
-    boolean isPresent();
+    @Override
+    public void execute() {
+        this.workspace = provideWorkspace();
+    }
 
-    // Sets the given versionString in all instances of this VersionSourceFile in PWD
-    boolean setVersion(String versionString);
-
-    // Lists all version Strings apeared in all instances of this VersionSourceFile
-    List<String> getVersions();
-
+    private Workspace provideWorkspace() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+   
 }

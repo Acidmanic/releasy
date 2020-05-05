@@ -16,7 +16,6 @@
  */
 package com.acidmanic.utilities;
 
-import com.acidmanic.release.versions.standard.VersionStandard;
 import java.io.File;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,6 +25,11 @@ import java.util.function.Function;
  * @author Acidmanic
  */
 public class DirectoryHelper {
+    
+    
+    public static final int SCANE_MODE_CURRENT_DIRECTORY =0;
+    public static final int SCANE_MODE_TREE =1;
+    public static final int SCANE_MODE_RADICALLY =2;
 
     public void scan(File directory, Function<File, Boolean> validator, Consumer<File> scanner) {
         
@@ -40,7 +44,7 @@ public class DirectoryHelper {
         }
     }
     
-    public void scanFiles(File directory,Function<File, Boolean> validator, Consumer<File> scanner){
+    public void scanCurrentDirectoryFiles(File directory,Function<File, Boolean> validator, Consumer<File> scanner){
         
         scan(directory, f -> !f.isDirectory() && validator.apply(f),scanner);
     }
@@ -52,8 +56,32 @@ public class DirectoryHelper {
     
     public void scanTreeFiles(File directory, Function<File, Boolean> validator, Consumer<File> scanner){
         
-        scanFiles(directory, validator, scanner);
+        scanCurrentDirectoryFiles(directory, validator, scanner);
         
         scanDirectories(directory, d -> scanTreeFiles(d, validator, scanner));
+    }
+    
+    
+    public void scanRadicallyFiles(File directory, Function<File,Boolean> validator, Consumer<File> scanner){
+        File parent = directory;
+        
+        while(parent != null){
+            
+            scanCurrentDirectoryFiles(parent, validator, scanner);
+            
+            parent = parent.getParentFile();
+        }
+    }
+    
+    public void scanFiles(File directory, Function<File,Boolean> validator, Consumer<File> scanner,int mode){
+        if(mode == SCANE_MODE_CURRENT_DIRECTORY){
+            scanCurrentDirectoryFiles(directory, validator, scanner);
+        }
+        if(mode == SCANE_MODE_TREE){
+            scanTreeFiles(directory, validator, scanner);
+        }
+        if(mode == SCANE_MODE_RADICALLY){
+            scanRadicallyFiles(directory, validator, scanner);
+        }
     }
 }
