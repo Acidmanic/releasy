@@ -38,7 +38,7 @@ import com.acidmanic.release.versionables.JavaManifest;
 import com.acidmanic.release.versionables.Maven;
 import com.acidmanic.release.versionables.NodeJs;
 import com.acidmanic.release.versionables.NuGetSpec;
-import com.acidmanic.release.versionables.NuGetDotnetCore;
+import com.acidmanic.release.versionsources.NuGetDotnetCore;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versioncontrols.VersionControl;

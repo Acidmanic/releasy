@@ -14,11 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.versionables.versionsources;
+package com.acidmanic.release.versionsources;
 
-import com.acidmanic.release.commands.directoryscanning.DirectoryScanner;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
-import java.io.File;
 import java.util.List;
 
 /**
@@ -28,7 +26,7 @@ import java.util.List;
 public interface VersionSourceFile {
 
     // Perform any action needed before using fuctionalities
-    void setup(DirectoryScannerBundle workspace);
+    void setup(DirectoryScannerBundle scanners);
 
     // Returns if there is any instances of this VersoinSourceFile present in PWD
     boolean isPresent();

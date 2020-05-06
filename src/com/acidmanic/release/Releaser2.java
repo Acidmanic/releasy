@@ -20,7 +20,7 @@ import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.environment.Inspector;
 import com.acidmanic.release.releasestrategies.GrantResult;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
-import com.acidmanic.release.versionables.versionsources.VersionSourceFile;
+import com.acidmanic.release.versionsources.VersionSourceFile;
 import com.acidmanic.release.versioncontrols.VersionControl;
 import com.acidmanic.release.versions.VersionModel;
 import com.acidmanic.release.versions.standard.VersionStandard;
