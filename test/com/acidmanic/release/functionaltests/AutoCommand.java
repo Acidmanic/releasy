@@ -38,7 +38,7 @@ public class AutoCommand {
         
         CommandBase auto = new Auto();
         
-        String[] args = {"version-standard","semantic"};
+        String[] args = {"feat","fix"};
         
         auto.setArguments(args);
         
