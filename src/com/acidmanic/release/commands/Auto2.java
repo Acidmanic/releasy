@@ -16,6 +16,9 @@
  */
 package com.acidmanic.release.commands;
 
+import com.acidmanic.commandline.application.ExecutionDataRepository;
+import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase2;
 import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.utilities.Emojies;
@@ -66,5 +69,15 @@ public class Auto2 extends ReleaseCommandBase2{
             warning("     Release has not been completed.");
         }
         log("");
+    }
+
+    @Override
+    protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ExecutionDataRepository dataRepository) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected String getUsageString() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

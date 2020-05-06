@@ -14,36 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands;
+package com.acidmanic.release.commands.releasecommandbase;
 
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
+import static com.acidmanic.release.commands.releasecommandbase.ReleaseParametersExecutionEnvironment.FixedArgument.SCANNERS;
+import java.io.File;
 
 /**
  *
  * @author Acidmanic
  */
-public class ReleaseCommandBase2 extends CommandBase {
-
-    
-    
-    private DirectoryScannerBundle workspace;
-    
-    
-    
+public class DirectoryRadical extends CommandBase implements ReleaseParametersExecutionEnvironment.FixedArgument{
     @Override
     protected String getUsageString() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "";
     }
 
     @Override
     public void execute() {
-        this.workspace = provideWorkspace();
+        
+        DirectoryScannerBundle bundle = getExecutionEnvironment().getDataRepository().get(SCANNERS);
+        
+        bundle.addRadically(new File(args[0]));
     }
 
-    private DirectoryScannerBundle provideWorkspace() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public int numberOfArguments() {
+        return 1;
     }
     
-   
 }
