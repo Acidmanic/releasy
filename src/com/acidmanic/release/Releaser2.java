@@ -74,11 +74,11 @@ public class Releaser2 {
         this.afterVersionSet = afterVersionSet;
     }
 
-    public boolean release(VersionStandard standard, ArrayList<String> changes) {
+    public boolean release(List<String> changes) {
         // Get Latest version from the source
         VersionModel version = getLatesVersion();
         // Increment the way it should
-        VersionIncrementor inc = new VersionIncrementor(standard);
+        VersionIncrementor inc = new VersionIncrementor(this.standard);
 
         changes.forEach(name -> inc.increment(version, name));
         // Set new version everywhere

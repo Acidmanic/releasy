@@ -17,23 +17,20 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.application.ExecutionDataRepository;
+import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase2;
 import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.utilities.Emojies;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Acidmanic
  */
 public class Auto2 extends ReleaseCommandBase2{
-    
-    
-    
-    
-    
     
     private ArrayList<String> extractChanges(VersionStandard standard) {
         
@@ -62,8 +59,8 @@ public class Auto2 extends ReleaseCommandBase2{
         return false;
     }
     
-    private void logRelease(boolean release) {
-        if (release) {
+    private void logRelease(boolean success) {
+        if (success) {
             log(" "+Emojies.Symbols.CHECK_MARK+"    Successfully released.");
         } else {
             warning("     Release has not been completed.");
@@ -73,11 +70,18 @@ public class Auto2 extends ReleaseCommandBase2{
 
     @Override
     protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ExecutionDataRepository dataRepository) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        Releaser2 releaser = new Releaser2(workspace, standard);
+        
+        List<String> changes = extractChanges(standard);
+        
+        boolean success = releaser.release(changes);
+        
+        logRelease(success);
     }
 
     @Override
     protected String getUsageString() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "";
     }
 }
