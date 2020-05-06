@@ -14,36 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands;
-
-import com.acidmanic.commandline.commands.CommandBase;
-import com.acidmanic.release.commands.directoryscanning.Workspace;
+package com.acidmanic.release.versionables.versionsources;
 
 /**
  *
  * @author Acidmanic
  */
-public class ReleaseBase2 extends CommandBase {
+public abstract class VersionSourceFileBase implements VersionSourceFile{
 
     
     
-    private Workspace workspace;
     
-    
-    
-    @Override
-    protected String getUsageString() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void execute() {
-        this.workspace = provideWorkspace();
-    }
-
-    private Workspace provideWorkspace() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-   
 }

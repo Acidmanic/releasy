@@ -25,17 +25,17 @@ import java.util.function.Function;
  *
  * @author Acidmanic
  */
-public class Workspace {
+public class DirectoryScannerBundle {
 
     
     private final HashMap<File,DirectoryScanner> scanners;
     
-    public Workspace(){
+    public DirectoryScannerBundle(){
         
         scanners = new HashMap<>();
     }
     
-    public Workspace addCurrentDirectory(File directory){
+    public DirectoryScannerBundle addCurrentDirectory(File directory){
         
         DirectoryScanner scanner = new CurrentDirectoryScanner();
         
@@ -44,7 +44,7 @@ public class Workspace {
         return this;
     }
     
-    public Workspace addRadically(File directory){
+    public DirectoryScannerBundle addRadically(File directory){
         
         DirectoryScanner scanner = new RadicallyScanner();
         
@@ -53,7 +53,7 @@ public class Workspace {
         return this;
     }
     
-    public Workspace addTree(File directory){
+    public DirectoryScannerBundle addTree(File directory){
         
         DirectoryScanner scanner = new TreeScanner();
         
@@ -62,7 +62,7 @@ public class Workspace {
         return this;
     }
     
-    public Workspace add(File directory,DirectoryScanner scanner){
+    public DirectoryScannerBundle add(File directory,DirectoryScanner scanner){
         
         scanners.put(directory, scanner);
         

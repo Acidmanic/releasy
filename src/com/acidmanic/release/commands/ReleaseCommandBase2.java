@@ -14,38 +14,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.versionables;
+package com.acidmanic.release.commands;
 
-import java.io.File;
-import java.util.List;
+import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 
 /**
  *
  * @author Acidmanic
  */
-public abstract class VersionSourceFileBase implements VersionSourceFile{
+public class ReleaseCommandBase2 extends CommandBase {
 
-    @Override
-    public void setup(File directory,int scanMode) {
-        
-    }
     
     
-    protected abstract String versionFileExtension();
-
+    private DirectoryScannerBundle workspace;
+    
+    
+    
     @Override
-    public boolean isPresent() {
+    protected String getUsageString() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean setVersion(String versionString) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void execute() {
+        this.workspace = provideWorkspace();
     }
 
-    @Override
-    public List<String> getVersions() {
+    private DirectoryScannerBundle provideWorkspace() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+   
 }

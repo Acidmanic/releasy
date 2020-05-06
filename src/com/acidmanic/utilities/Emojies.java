@@ -27,6 +27,9 @@ public abstract class Emojies {
 
     public abstract class SmileysAndPeople {
 
+        public static final  String THUMBS_UP = "👍";
+        public static final  String FACE_WITH_MONOCLE = "🧐";
+
         private SmileysAndPeople() {
         }
 
@@ -38,11 +41,9 @@ public abstract class Emojies {
         }
 
         public static final char INFORMATION = 'ℹ';
-        
+        public static final  String CHECK_MARK = "✔";
         public static final char WARNING = '⚠';
-        
         public static final String OK_BUTTON = "🆗";
-        
         public static final char NO_ENTRY = '⛔';
 
     }

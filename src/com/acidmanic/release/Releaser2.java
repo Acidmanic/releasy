@@ -16,25 +16,19 @@
  */
 package com.acidmanic.release;
 
-import com.acidmanic.release.commands.directoryscanning.DirectoryScanner;
-import com.acidmanic.release.environment.ReleaseEnvironment;
+import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.environment.Inspector;
 import com.acidmanic.release.releasestrategies.GrantResult;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
-import com.acidmanic.release.utilities.VersionProcessor;
-import com.acidmanic.release.versionables.VersionSourceFile;
-import com.acidmanic.release.versionables.Versionable;
+import com.acidmanic.release.versionables.versionsources.VersionSourceFile;
 import com.acidmanic.release.versioncontrols.VersionControl;
-import com.acidmanic.release.versions.Change;
-import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.versions.VersionModel;
 import com.acidmanic.release.versions.standard.VersionStandard;
-import com.acidmanic.release.versions.standard.VersionStandards;
 import com.acidmanic.release.versions.tools.VersionIncrementor;
 import com.acidmanic.release.versions.tools.VersionParser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 import release.Application;
@@ -45,151 +39,39 @@ import release.Application;
  */
 public class Releaser2 {
 
-    /**
-     *
-     * states
-     */
-    private List<Versionable> versionables;
+    private Consumer<VersionModel> afterVersionSelect;
 
-    /**
-     *
-     * properties
-     */
-    private File directory;
-    
-    private final DirectoryScanner directoryScanner;
-    
-    private Consumer<Version> afterVersionSelect;
-
-    private Consumer<HashMap<Versionable, Boolean>> afterVersionSet;
+    private Consumer<SetVersionResult> afterVersionSet;
 
     private final VersionStandard standard;
 
-    public Releaser(File directory,DirectoryScanner directoryScanner) {
+    private final ReleaseWorkspace workspace;
 
-        this.directory = directory;
-        // TODO: make it a consrtuctor dependency
-        this.standard = VersionStandards.SIMPLE_SEMANTIC;
+    public Releaser2(ReleaseWorkspace workspace, VersionStandard standard) {
 
-        this.directoryScanner = directoryScanner;
-        
+        this.workspace = workspace;
+
+        this.standard = standard;
+
         initialize();
     }
 
     private void initialize() {
 
-        this.afterVersionSelect = (Version version) -> {
+        this.afterVersionSelect = (VersionModel version) -> {
         };
 
-        this.afterVersionSet = (HashMap<Versionable, Boolean> t) -> {
+        this.afterVersionSet = (SetVersionResult r) -> {
         };
 
-        this.versionables = new ReleaseEnvironment(directory).getPresentVersionables();
-
     }
 
-    @Deprecated
-    public boolean release(int releaseType, Change change) {
-
-        Version version = getLatesVersion(releaseType, change);
-
-        return release(releaseType, version);
-
-    }
-
-    @Deprecated
-    public boolean release(int releaseType, Version version) {
-
-        this.afterVersionSelect.accept(version);
-
-        List<Boolean> setResults = setAllVersions(version, releaseType);
-
-        this.afterVersionSet.accept(hashResult(this.versionables, setResults));
-
-        if (Application.getReleaseStrategy().grantContinue(this.versionables, setResults)) {
-
-            if (Application.getSourceControlSystem().isPresent(directory)) {
-
-                Application.getSourceControlSystem()
-                        .acceptLocalChanges(directory, getDescription(version));
-
-            }
-
-            return markReleaseOnVersionControl(version, releaseType);
-        }
-
-        return false;
-    }
-
-    private Version getLatesVersion(int releaseType, Change change) {
-
-        VersionProcessor processor
-                = new VersionProcessor(Application.getVersionFactory());
-
-        List<String> versionStrings = new ReleaseEnvironment(directory).enumAllVersions();
-
-        return processor.generateVersionFromStrings(versionStrings, change, releaseType);
-
-    }
-
-    @Deprecated
-    private List<Boolean> setAllVersions(Version version, int releaseType) {
-
-        List<Boolean> ret = new ArrayList<>();
-
-        for (Versionable versionable : this.versionables) {
-
-            versionable.setup(directory, releaseType);
-
-            ret.add(versionable.setVersion(version));
-
-        }
-
-        return ret;
-    }
-
-    @Deprecated
-    private String getDescription(Version version) {
-        return "Release version: " + version.getVersionString()
-                + ", " + new Date().toString();
-    }
-
-    @Deprecated
-    private boolean markReleaseOnVersionControl(Version version, int releaseType) {
-
-        Versionable releaser = Application.getReleaser();
-
-        releaser.setup(directory, releaseType);
-
-        return releaser.setVersion(version);
-    }
-
-    public void setAfterVersionSet(Consumer<HashMap<Versionable, Boolean>> afterVersionSet) {
-        this.afterVersionSet = afterVersionSet;
-    }
-
-    public void setAfterVersionSelect(Consumer<Version> afterVersionSelect) {
+    public void setAfterVersionSelect(Consumer<VersionModel> afterVersionSelect) {
         this.afterVersionSelect = afterVersionSelect;
     }
 
-    public File getDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(File directory) {
-        this.directory = directory;
-    }
-
-    @Deprecated
-    private HashMap<Versionable, Boolean> hashResult(List<Versionable> versionables, List<Boolean> setResults) {
-
-        HashMap<Versionable, Boolean> ret = new HashMap<>();
-
-        for (int i = 0; i < versionables.size(); i++) {
-            ret.put(versionables.get(i), setResults.get(i));
-        }
-
-        return ret;
+    public void setAfterVersionSet(Consumer<SetVersionResult> afterVersionSet) {
+        this.afterVersionSet = afterVersionSet;
     }
 
     public boolean release(VersionStandard standard, ArrayList<String> changes) {
@@ -202,13 +84,13 @@ public class Releaser2 {
         // Set new version everywhere
         SetVersionResult results = setAllVersions(version);
         // Check if is it ok to continue the release, regarding the result
-        
+
         ReleaseStrategy strategy = Application.getReleaseStrategy();
-        
+
         GrantResult grantResult = strategy.grantContinue(results);
-        
+
         System.out.println(grantResult.getMessage());
-        
+
         if (grantResult.isGrant()) {
             // Commit changes on source control
             commitSourceChangesIntoSourceControl(version);
@@ -220,19 +102,22 @@ public class Releaser2 {
 
     private void commitSourceChangesIntoSourceControl(VersionModel version) {
 
-        if (Application.getSourceControlSystem().isPresent(directory)) {
+        File sourcesRoot = this.workspace.getSourceControlRoot();
+
+        if (Application.getSourceControlSystem().isPresent(sourcesRoot)) {
 
             String commitMessage = getDescription(version);
 
             Application.getSourceControlSystem()
-                    .acceptLocalChanges(directory, commitMessage);
+                    .acceptLocalChanges(sourcesRoot, commitMessage);
         }
     }
 
     private VersionModel getLatesVersion() {
 
-        List<String> allVersionStrings = new ReleaseEnvironment(this.directory)
-                .getAllPresentedVersionStrings();
+        Inspector inspector = new Inspector(workspace.getVersionFilesScanner());
+
+        List<String> allVersionStrings = inspector.getAllPresentedVersionStrings();
 
         VersionModel latest = zeroVersion();
 
@@ -250,8 +135,9 @@ public class Releaser2 {
 
     private SetVersionResult setAllVersions(VersionModel version) {
 
-        List<VersionSourceFile> sourceFiles = new ReleaseEnvironment(this.directory)
-                .getPresentVersionSourceFiles();
+        Inspector inspector = new Inspector(this.workspace.getVersionFilesScanner());
+
+        List<VersionSourceFile> sourceFiles = inspector.getPresentVersionSourceFiles();
 
         SetVersionResult ret = new SetVersionResult();
 
@@ -286,7 +172,9 @@ public class Releaser2 {
 
         String versionString = parser.getTagString(version);
 
-        versionControl.markVersion(this.directory, versionString, message);
+        File sourceRoot = this.workspace.getSourceControlRoot();
+
+        versionControl.markVersion(sourceRoot, versionString, message);
     }
 
     private VersionModel zeroVersion() {

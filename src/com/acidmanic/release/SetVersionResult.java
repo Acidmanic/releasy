@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release;
 
-import com.acidmanic.release.versionables.VersionSourceFile;
+import com.acidmanic.release.versionables.versionsources.VersionSourceFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
