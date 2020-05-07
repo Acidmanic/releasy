@@ -78,5 +78,9 @@ public class DirectoryScannerBundle {
             directoryScanner.scan(dir, validator, scanner);
         }
     }
+
+    public boolean isEmpty() {
+        return this.scanners.isEmpty();
+    }
     
 }

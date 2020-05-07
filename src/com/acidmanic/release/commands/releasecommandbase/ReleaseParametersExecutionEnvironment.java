@@ -97,6 +97,17 @@ public class ReleaseParametersExecutionEnvironment extends ExecutionEnvironment 
         
         DirectoryScannerBundle ret = getDataRepository().get(FixedArgument.SCANNERS);
         
+        if(ret== null){
+            
+            ret = new DirectoryScannerBundle();
+        }
+        if(ret.isEmpty()){
+            
+            File here = new File(".");
+            
+            ret.addCurrentDirectory(here);
+        }
+        
         return ret;
     }
     
@@ -110,6 +121,10 @@ public class ReleaseParametersExecutionEnvironment extends ExecutionEnvironment 
     public File getRootDirectory(){
         
         File ret = getDataRepository().get(FixedArgument.ROOT);
+        
+        if(ret==null || !ret.exists() || !ret.isDirectory()){
+            ret = new File(".");
+        }
         
         return ret;
     }

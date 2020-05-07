@@ -17,7 +17,6 @@
 package com.acidmanic.release.versionsources;
 
 import com.acidmanic.io.file.FileIOHelper;
-import com.acidmanic.io.file.FileSystemHelper;
 import com.acidmanic.parse.stringcomparison.StringComparisionFactory;
 import com.acidmanic.parse.stringcomparison.StringComparison;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
