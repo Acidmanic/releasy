@@ -29,8 +29,8 @@ public class ReleaseParametersTypeRegistery extends TypeRegistery{
         registerClass(Directory.class);
         registerClass(DirectoryTree.class);
         registerClass(DirectoryRadical.class);
-        registerClass(Standard.class);
-        registerClass(WorkspaceRoot.class);
+        registerClass(VersionStandard.class);
+        registerClass(SourceRoot.class);
     }
     
 }

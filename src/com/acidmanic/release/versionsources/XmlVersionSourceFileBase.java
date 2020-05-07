@@ -51,9 +51,9 @@ public class XmlVersionSourceFileBase extends VersionSourceFileBase {
         this.versionFiles = new ArrayList<>();
 
         StringComparison comparison = new StringComparisionFactory().make(this.fileNameComparison);
-
+// its not finding any files
         scanners.scan(file -> comparison.areEqual(fileNamePattern, file.getName()),
-                 file -> this.versionFiles.add(file));
+                file -> this.versionFiles.add(file));
     }
 
     @Override
@@ -63,14 +63,14 @@ public class XmlVersionSourceFileBase extends VersionSourceFileBase {
 
     @Override
     public boolean setVersion(String versionString) {
-        
+
         boolean ret = true;
-        
-        for(File versionFile : this.versionFiles){
-            
-            ret &= setVersion(versionFile,versionString);
+
+        for (File versionFile : this.versionFiles) {
+
+            ret &= setVersion(versionFile, versionString);
         }
-        
+
         return ret;
     }
 
@@ -103,20 +103,20 @@ public class XmlVersionSourceFileBase extends VersionSourceFileBase {
     }
 
     private boolean setVersion(File versionFile, String versionString) {
-        
+
         String content = new FileIOHelper().tryReadAllText(versionFile);
-        
+
         XmlInPlaceEditor editor = new XmlInPlaceEditor();
-        
+
         content = editor.setTagContent(versionNodeAddress, content, versionString);
-        
-        if(versionFile.exists()){
-            
+
+        if (versionFile.exists()) {
+
             versionFile.delete();
         }
-        
+
         new FileIOHelper().tryWriteAll(versionFile, content);
-        
+
         return true;
     }
 

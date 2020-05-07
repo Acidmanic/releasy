@@ -17,11 +17,11 @@
 package com.acidmanic.release.commands.releasecommandbase;
 
 import com.acidmanic.commandline.application.ExecutionDataRepository;
-import com.acidmanic.commandline.application.ExecutionEnvironment;
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.commandline.commands.TypeRegistery;
-import com.acidmanic.release.commands.directoryscanning.DirectoryScanner;
-import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
+import com.acidmanic.consoletools.terminal.Terminal;
+import com.acidmanic.consoletools.terminal.styling.TerminalControlEscapeSequences;
+import com.acidmanic.consoletools.terminal.styling.TerminalStyle;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versionstandard.StandardProvider;
@@ -53,6 +53,20 @@ public abstract class ReleaseCommandBase2 extends CommandBase {
 
         execute(standard, workspace, env.getDataRepository());
 
+    }
+    
+    @Override
+    protected void info(String text){
+        TerminalStyle style = new TerminalStyle(
+                TerminalControlEscapeSequences.FOREGROUND_CYAN
+        );
+        Terminal terminal = new Terminal();
+        
+        terminal.setScreenAttributes(style);
+        
+        System.out.println(text);
+        
+        terminal.resetScreenAttributes();
     }
 
     protected abstract void execute(VersionStandard standard,

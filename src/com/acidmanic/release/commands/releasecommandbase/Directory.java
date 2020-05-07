@@ -16,7 +16,6 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
-import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 import java.io.File;
 
@@ -24,18 +23,19 @@ import java.io.File;
  *
  * @author Acidmanic
  */
-public class Directory extends CommandBase implements ReleaseParametersExecutionEnvironment.FixedArgument{
+public class Directory extends ReleaseArgumentCommandBase
+        implements ReleaseParametersExecutionEnvironment.FixedArgument {
 
     @Override
     protected String getUsageString() {
-        return "";
+        return "Adds given directory to workspace. (Not Recursively)";
     }
 
     @Override
     public void execute() {
-        
+
         DirectoryScannerBundle bundle = getExecutionEnvironment().getDataRepository().get(SCANNERS);
-        
+
         bundle.addCurrentDirectory(new File(args[0]));
     }
 
@@ -43,5 +43,5 @@ public class Directory extends CommandBase implements ReleaseParametersExecution
     public int numberOfArguments() {
         return 1;
     }
-    
+
 }

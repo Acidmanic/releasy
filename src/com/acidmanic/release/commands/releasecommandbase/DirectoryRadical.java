@@ -16,7 +16,6 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
-import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 import static com.acidmanic.release.commands.releasecommandbase.ReleaseParametersExecutionEnvironment.FixedArgument.SCANNERS;
 import java.io.File;
@@ -25,10 +24,12 @@ import java.io.File;
  *
  * @author Acidmanic
  */
-public class DirectoryRadical extends CommandBase implements ReleaseParametersExecutionEnvironment.FixedArgument{
+public class DirectoryRadical extends ReleaseArgumentCommandBase
+        implements ReleaseParametersExecutionEnvironment.FixedArgument {
+
     @Override
     protected String getUsageString() {
-        return "";
+        return "Adds Given directory thowards the root directory to workspace.";
     }
 
     @Override

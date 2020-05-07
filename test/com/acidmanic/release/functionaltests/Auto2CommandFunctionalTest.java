@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Acidmanic
+ * Copyright (C) 2020 diego
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,30 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.releasecommandbase;
+package com.acidmanic.release.functionaltests;
+
+import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.release.commands.Auto2;
+import org.junit.Test;
+import release.Application;
 
 /**
  *
- * @author Acidmanic
+ * @author diego
  */
-public class VersionStandard extends ReleaseArgumentCommandBase
-        implements ReleaseParametersExecutionEnvironment.FixedArgument {
-
-    @Override
-    protected String getUsageString() {
-        return "Sets Cersion Standard. Default is BuiltIn Sematic Versioning";
+public class Auto2CommandFunctionalTest {
+    
+    
+    
+    
+    
+    @Test
+    public void autoShouldIncrementSemanticMajor(){
+        
+        Application.initialize();
+        
+        CommandBase auto = new Auto2();
+        
+        String[] args = {"version-standard","semantic","Major"};
+        
+        auto.setArguments(args);
+        
+        auto.execute();
     }
-
-    @Override
-    public void execute() {
-
-        getExecutionEnvironment()
-                .getDataRepository().set(VERSION_STANDARD, args[0]);
-    }
-
-    @Override
-    public int numberOfArguments() {
-        return 1;
-    }
-
+   
 }

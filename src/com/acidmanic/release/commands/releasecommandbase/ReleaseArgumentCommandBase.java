@@ -16,28 +16,22 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
+import com.acidmanic.commandline.commandnames.DoubleDashedNameGenerator;
+import com.acidmanic.commandline.commandnames.NameGenerator;
+import com.acidmanic.commandline.commands.CommandBase;
+
 /**
  *
  * @author Acidmanic
  */
-public class VersionStandard extends ReleaseArgumentCommandBase
-        implements ReleaseParametersExecutionEnvironment.FixedArgument {
+public abstract class ReleaseArgumentCommandBase extends CommandBase {
 
     @Override
-    protected String getUsageString() {
-        return "Sets Cersion Standard. Default is BuiltIn Sematic Versioning";
-    }
+    public String getName() {
 
-    @Override
-    public void execute() {
+        NameGenerator ng = new DoubleDashedNameGenerator(() -> this.getClass().getSimpleName());
 
-        getExecutionEnvironment()
-                .getDataRepository().set(VERSION_STANDARD, args[0]);
-    }
-
-    @Override
-    public int numberOfArguments() {
-        return 1;
+        return ng.generateName();
     }
 
 }

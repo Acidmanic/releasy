@@ -16,29 +16,28 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
-import com.acidmanic.commandline.commands.CommandBase;
-
 /**
  *
  * @author Acidmanic
  */
-public class WorkspaceRoot extends CommandBase implements ReleaseParametersExecutionEnvironment.FixedArgument{
+public class SourceRoot extends ReleaseArgumentCommandBase
+        implements ReleaseParametersExecutionEnvironment.FixedArgument {
 
     @Override
     protected String getUsageString() {
-        return "";
+        return "Sets the root directory for source control commits.";
     }
 
     @Override
     public void execute() {
-        
+
         getExecutionEnvironment()
-                .getDataRepository().set(ROOT,args[0]);        
+                .getDataRepository().set(ROOT, args[0]);
     }
 
     @Override
     public int numberOfArguments() {
         return 1;
     }
-    
+
 }

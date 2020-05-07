@@ -70,6 +70,12 @@ public class Auto2 extends ReleaseCommandBase2{
 
     @Override
     protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ExecutionDataRepository dataRepository) {
+        info("Standard: "+ (standard==null?"NOT FOUND":standard.getName()));
+        info("Workspace:");
+        info("\tROOT: " + workspace.getSourceControlRoot().toPath());
+        workspace.getVersionFilesScanner().scan(f -> true,
+                f -> info("\tdirectory: " + f.toPath().toAbsolutePath()
+                        .normalize().toString()));
         
         Releaser2 releaser = new Releaser2(workspace, standard);
         
