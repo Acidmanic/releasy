@@ -96,6 +96,8 @@ public class Releaser2 {
             commitSourceChangesIntoSourceControl(version);
             // Mark release on Version Control
             markReleaseOnVersionControl(version);
+            
+            return true;
         }
         return false;
     }

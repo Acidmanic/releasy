@@ -74,7 +74,7 @@ public class Auto2 extends ReleaseCommandBase2{
         info("Workspace:");
         info("\tROOT: " + workspace.getSourceControlRoot().toPath());
         workspace.getVersionFilesScanner().scan(f -> true,
-                f -> info("\tdirectory: " + f.toPath().toAbsolutePath()
+                f -> info("\tPassed File: " + f.toPath().toAbsolutePath()
                         .normalize().toString()));
         
         Releaser2 releaser = new Releaser2(workspace, standard);
