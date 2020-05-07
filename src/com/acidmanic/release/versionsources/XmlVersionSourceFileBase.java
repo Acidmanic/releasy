@@ -51,7 +51,7 @@ public class XmlVersionSourceFileBase extends VersionSourceFileBase {
         this.versionFiles = new ArrayList<>();
 
         StringComparison comparison = new StringComparisionFactory().make(this.fileNameComparison);
-// its not finding any files
+        
         scanners.scan(file -> comparison.areEqual(fileNamePattern, file.getName()),
                 file -> this.versionFiles.add(file));
     }
