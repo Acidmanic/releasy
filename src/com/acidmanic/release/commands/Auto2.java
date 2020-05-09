@@ -17,6 +17,7 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.application.ExecutionDataRepository;
+import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase2;
@@ -90,4 +91,5 @@ public class Auto2 extends ReleaseCommandBase2{
     protected String getUsageString() {
         return "";
     }
+
 }

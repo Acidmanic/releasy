@@ -38,6 +38,8 @@ public abstract class ReleaseCommandBase2 extends CommandBase {
 
         TypeRegistery registery = new ReleaseParametersTypeRegistery();
 
+        registerArguments(registery);
+
         ReleaseParametersExecutionEnvironment env
                 = new ReleaseParametersExecutionEnvironment(registery);
 
@@ -54,22 +56,26 @@ public abstract class ReleaseCommandBase2 extends CommandBase {
         execute(standard, workspace, env.getDataRepository());
 
     }
-    
+
     @Override
-    protected void info(String text){
+    protected void info(String text) {
         TerminalStyle style = new TerminalStyle(
                 TerminalControlEscapeSequences.FOREGROUND_CYAN
         );
         Terminal terminal = new Terminal();
-        
+
         terminal.setScreenAttributes(style);
-        
+
         System.out.println(text);
-        
+
         terminal.resetScreenAttributes();
     }
 
     protected abstract void execute(VersionStandard standard,
-             ReleaseWorkspace workspace,
-             ExecutionDataRepository dataRepository);
+            ReleaseWorkspace workspace,
+            ExecutionDataRepository dataRepository);
+
+    protected void registerArguments(TypeRegistery registery) {
+    }
+
 }

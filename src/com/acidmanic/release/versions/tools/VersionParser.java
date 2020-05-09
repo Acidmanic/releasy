@@ -31,11 +31,37 @@ import java.util.List;
 public class VersionParser {
 
     private final VersionStandard standard;
+    private final VersionModel ZERO_VERSION;
 
     public VersionParser(VersionStandard standard) {
+        
         this.standard = standard;
+        
+        this.ZERO_VERSION = zeroVersion(standard);
     }
 
+    public VersionModel getZeroVersion(){
+        return this.ZERO_VERSION;
+    }
+    
+    
+    public static VersionModel zeroVersion(VersionStandard standard) {
+
+        int length = standard.getSections().size();
+
+        VersionModel ret = new VersionModel(length);
+
+        for (int i = 0; i < length; i++) {
+
+            ret.setValue(i, 0);
+
+            long order = standard.getSections().get(i).getGlobalWeightOrder();
+
+            ret.setOrder(i, order);
+        }
+        return ret;
+    }
+    
     private String getVersionString(VersionModel version, boolean asTag) {
 
         StringBuilder sb = new StringBuilder();
@@ -327,5 +353,4 @@ public class VersionParser {
         return !section.isDefaultValueHidden()
                 || value != section.getDefaultValue();
     }
-
 }

@@ -26,8 +26,9 @@ import com.acidmanic.release.versions.VersionModel;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versions.tools.VersionIncrementor;
 import com.acidmanic.release.versions.tools.VersionParser;
+import com.acidmanic.utilities.Result;
+import com.acidmanic.utilities.trying.Trier;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
@@ -46,6 +47,7 @@ public class Releaser2 {
     private final VersionStandard standard;
 
     private final ReleaseWorkspace workspace;
+
 
     public Releaser2(ReleaseWorkspace workspace, VersionStandard standard) {
 
@@ -81,25 +83,10 @@ public class Releaser2 {
         VersionIncrementor inc = new VersionIncrementor(this.standard);
 
         changes.forEach(name -> inc.increment(version, name));
-        // Set new version everywhere
-        SetVersionResult results = setAllVersions(version);
-        // Check if is it ok to continue the release, regarding the result
 
-        ReleaseStrategy strategy = Application.getReleaseStrategy();
+        boolean result = setVersionToWorkspace(version);
 
-        GrantResult grantResult = strategy.grantContinue(results);
-
-        System.out.println(grantResult.getMessage());
-
-        if (grantResult.isGrant()) {
-            // Commit changes on source control
-            commitSourceChangesIntoSourceControl(version);
-            // Mark release on Version Control
-            markReleaseOnVersionControl(version);
-            
-            return true;
-        }
-        return false;
+        return result;
     }
 
     private void commitSourceChangesIntoSourceControl(VersionModel version) {
@@ -121,15 +108,22 @@ public class Releaser2 {
 
         List<String> allVersionStrings = inspector.getAllPresentedVersionStrings();
 
-        VersionModel latest = zeroVersion();
+        VersionParser parser = new VersionParser(standard);
+
+        VersionModel latest = parser.getZeroVersion();
 
         for (String versionString : allVersionStrings) {
 
-            VersionModel model = tryParse(versionString);
+            Result<VersionModel> result = new Trier().tryFunction(() -> parser.parse(versionString));
 
-            if (model.toRawValue() > latest.toRawValue()) {
+            if (result.isSuccess()) {
+                
+                VersionModel model = result.getValue();
+                
+                if (model.toRawValue() > latest.toRawValue()) {
 
-                latest = model;
+                    latest = model;
+                }
             }
         }
         return latest;
@@ -179,34 +173,42 @@ public class Releaser2 {
         versionControl.markVersion(sourceRoot, versionString, message);
     }
 
-    private VersionModel zeroVersion() {
+    public boolean setVersionToWorkspace(VersionModel version) {
+        // Set new version everywhere
+        SetVersionResult results = setAllVersions(version);
+        // Check if is it ok to continue the release, regarding the result
 
-        int length = this.standard.getSections().size();
+        ReleaseStrategy strategy = Application.getReleaseStrategy();
 
-        VersionModel ret = new VersionModel(length);
+        GrantResult grantResult = strategy.grantContinue(results);
 
-        for (int i = 0; i < length; i++) {
+        System.out.println(grantResult.getMessage());
 
-            ret.setValue(i, 0);
+        if (grantResult.isGrant()) {
+            // Commit changes on source control
+            commitSourceChangesIntoSourceControl(version);
+            // Mark release on Version Control
+            markReleaseOnVersionControl(version);
 
-            long order = this.standard.getSections().get(i).getGlobalWeightOrder();
-
-            ret.setOrder(i, order);
+            return true;
         }
-        return ret;
+        return false;
     }
 
-    private VersionModel tryParse(String versionStringn) {
+    // Expose functionality 
+    public boolean setVersionToWorkspace(String versionString) {
 
-        VersionParser parser = new VersionParser(this.standard);
+        VersionParser parser = new VersionParser(standard);
 
-        try {
+        Result<VersionModel> result = new Trier().tryFunction(() -> parser.parse(versionString));
 
-            return parser.parse(versionStringn);
+        if (result.isSuccess()) {
 
-        } catch (Exception e) {
-            return zeroVersion();
+            VersionModel versionModel = result.getValue();
+
+            return setVersionToWorkspace(versionModel);
         }
+        return false;
     }
 
 }
