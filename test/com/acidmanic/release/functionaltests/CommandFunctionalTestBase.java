@@ -17,30 +17,22 @@
 package com.acidmanic.release.functionaltests;
 
 import com.acidmanic.commandline.commands.CommandBase;
-import com.acidmanic.release.commands.Auto;
-import org.junit.Test;
 import release.Application;
 
 /**
  *
  * @author diego
  */
-public class AutoCommand {
-
+public class CommandFunctionalTestBase {
     
     
-    @Test
-    public void shouldRunAutoCommandWithoutException() {
+    protected void executeCommand(CommandBase command,String[] args){
         
-        Application.initialize();
-
-        CommandBase auto = new Auto();
-
-        String[] args = {"feat", "fix"};
-
-        auto.setArguments(args);
-
-        auto.execute();
+        Application.initialize();        
+        
+        command.setArguments(args);
+        
+        command.execute();
     }
-
+    
 }

@@ -16,31 +16,30 @@
  */
 package com.acidmanic.release.functionaltests;
 
-import com.acidmanic.commandline.commands.CommandBase;
-import com.acidmanic.release.commands.Auto;
+import com.acidmanic.release.commands.Manual2;
 import org.junit.Test;
-import release.Application;
 
 /**
  *
  * @author diego
  */
-public class AutoCommand {
-
+public class Manual2FunctionalTest extends CommandFunctionalTestBase {
+    
+    
+    
+    
     
     
     @Test
-    public void shouldRunAutoCommandWithoutException() {
-        
-        Application.initialize();
-
-        CommandBase auto = new Auto();
-
-        String[] args = {"feat", "fix"};
-
-        auto.setArguments(args);
-
-        auto.execute();
+    public void manual2CommandShouldRunWithNoError(){
+    
+            Manual2 manual = new Manual2();
+            
+            String[] args = {"--version","1.0.0"};
+            
+            executeCommand(manual, args);
     }
-
+    
+    
+    
 }
