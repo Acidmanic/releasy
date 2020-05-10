@@ -19,6 +19,7 @@ package com.acidmanic.utilities;
 /**
  *
  * @author Acidmanic
+ * @param <T>
  */
 public class Result<T> {
     
@@ -52,9 +53,9 @@ public class Result<T> {
         this.success = success;
     }
 
-    public static <T> Result<T> success(T value){
+    public static <Tvalue> Result<Tvalue> success(Tvalue value){
         
-        Result<T> result = new Result<>();
+        Result<Tvalue> result = new Result<>();
         
         result.setMessage("");
         

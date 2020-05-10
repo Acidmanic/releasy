@@ -24,22 +24,15 @@ import org.junit.Test;
  * @author diego
  */
 public class Manual2FunctionalTest extends CommandFunctionalTestBase {
-    
-    
-    
-    
-    
-    
+
     @Test
-    public void manual2CommandShouldRunWithNoError(){
-    
-            Manual2 manual = new Manual2();
-            
-            String[] args = {"--version","1.0.0"};
-            
-            executeCommand(manual, args);
+    public void manual2CommandShouldRunWithNoError() {
+
+        Manual2 manual = new Manual2();
+
+        String[] args = {"--version", "1.0.0"};
+
+        executeCommand(manual, args);
     }
-    
-    
-    
+
 }

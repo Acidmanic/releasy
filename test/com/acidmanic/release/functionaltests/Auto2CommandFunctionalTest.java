@@ -25,24 +25,17 @@ import release.Application;
  *
  * @author diego
  */
-public class Auto2CommandFunctionalTest {
-    
-    
-    
-    
-    
+public class Auto2CommandFunctionalTest extends CommandFunctionalTestBase {
+
     @Test
-    public void autoShouldIncrementSemanticMajor(){
-        
-        Application.initialize();
-        
+    public void autoShouldIncrementSemanticMajor() {
+
         CommandBase auto = new Auto2();
-        
-        String[] args = {"version-standard","semantic","Major"};
-        
-        auto.setArguments(args);
-        
-        auto.execute();
+
+        String[] args = {"version-standard", "semantic", "Major"};
+
+        executeCommand(auto, args);
+
     }
-   
+
 }

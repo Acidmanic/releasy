@@ -23,7 +23,7 @@ import release.Application;
  *
  * @author diego
  */
-public class CommandFunctionalTestBase {
+public abstract class CommandFunctionalTestBase {
     
     
     protected void executeCommand(CommandBase command,String[] args){
