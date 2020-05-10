@@ -18,8 +18,10 @@ package release;
 
 import com.acidmanic.commandline.commands.ApplicationWideTypeRegistery;
 import com.acidmanic.release.commands.Auto;
+import com.acidmanic.release.commands.Auto2;
 import com.acidmanic.release.commands.Install;
 import com.acidmanic.release.commands.Manual;
+import com.acidmanic.release.commands.Manual2;
 import com.acidmanic.release.commands.Status;
 import com.acidmanic.release.commands.Version;
 import com.acidmanic.release.readmeupdate.updaters.CarthageReadmeUpdater;
@@ -80,6 +82,9 @@ public class Application {
         ApplicationWideTypeRegistery.makeInstance().registerClass(Install.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Status.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Version.class);
+        
+        ApplicationWideTypeRegistery.makeInstance().registerClass(Auto2.class);
+        ApplicationWideTypeRegistery.makeInstance().registerClass(Manual2.class);
 
         releaser = new GitTag();
         
