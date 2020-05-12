@@ -18,13 +18,14 @@ package com.acidmanic.release.commands.releasecommandbase;
 
 import com.acidmanic.commandline.application.ExecutionEnvironment;
 import com.acidmanic.commandline.commands.Command;
+import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.commandline.commands.CommandFactory;
 import com.acidmanic.commandline.commands.TypeRegistery;
-import com.acidmanic.release.commands.directoryscanning.DirectoryScanner;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.versions.standard.VersionStandards;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -40,22 +41,21 @@ public class ReleaseParametersExecutionEnvironment extends ExecutionEnvironment 
 
         int numberOfArguments();
     }
-    
-    public ReleaseParametersExecutionEnvironment(TypeRegistery registery) {
-        super(registery);
-        
-        this.getDataRepository().set(FixedArgument.SCANNERS, new DirectoryScannerBundle());
 
-        this.getDataRepository().set(FixedArgument.VERSION_STANDARD,
-                 VersionStandards.SIMPLE_SEMANTIC.getName());
+    private class CommandsExtractionResult {
 
-        this.getDataRepository().set(FixedArgument.ROOT, new File("."));
+        public boolean hasHelp;
+        public List<Command> commands = new ArrayList<>();
+        public CommandBase help = null;
     }
 
-    public void executeAll(String[] args) {
+    private CommandsExtractionResult extractCommands(String[] args) {
+
         int argsIndex = 0;
 
         CommandFactory factory = new CommandFactory(this.getTypeRegistery());
+
+        CommandsExtractionResult commands = new CommandsExtractionResult();
 
         while (argsIndex < args.length) {
 
@@ -68,13 +68,48 @@ public class ReleaseParametersExecutionEnvironment extends ExecutionEnvironment 
             command.setCreatorFactory(factory);
 
             if (command instanceof FixedArgument) {
-                argsIndex += ((FixedArgument) command).numberOfArguments() + 1;
 
-                command.execute();
+                argsIndex += ((FixedArgument) command).numberOfArguments() + 1;
+                //Assuming all help commands extend librariys Help command
+                if (command instanceof com.acidmanic.commandline.commands.Help) {
+
+                    commands.help = (CommandBase) command;
+
+                    commands.hasHelp = true;
+                } else {
+                    commands.commands.add(command);
+                }
+
             } else {
                 argsIndex += 1;
             }
         }
+        return commands;
+    }
+
+    public ReleaseParametersExecutionEnvironment(TypeRegistery registery) {
+        super(registery);
+
+        this.getDataRepository().set(FixedArgument.SCANNERS, new DirectoryScannerBundle());
+
+        this.getDataRepository().set(FixedArgument.VERSION_STANDARD,
+                VersionStandards.SIMPLE_SEMANTIC.getName());
+
+        this.getDataRepository().set(FixedArgument.ROOT, new File("."));
+    }
+
+    public void executeAll(String[] args) {
+
+        CommandsExtractionResult commands = extractCommands(args);
+
+        if (commands.hasHelp) {
+            
+            commands.help.execute();
+            
+        } else {
+            commands.commands.forEach(cmd -> cmd.execute());
+        }
+
     }
 
     private String[] subArray(String[] array, int index) {
@@ -92,41 +127,41 @@ public class ReleaseParametersExecutionEnvironment extends ExecutionEnvironment 
         }
         return args;
     }
-    
-    public DirectoryScannerBundle getScanners(){
-        
+
+    public DirectoryScannerBundle getScanners() {
+
         DirectoryScannerBundle ret = getDataRepository().get(FixedArgument.SCANNERS);
-        
-        if(ret== null){
-            
+
+        if (ret == null) {
+
             ret = new DirectoryScannerBundle();
         }
-        if(ret.isEmpty()){
-            
+        if (ret.isEmpty()) {
+
             File here = new File(".");
-            
+
             ret.addCurrentDirectory(here);
         }
-        
+
         return ret;
     }
-    
-    public String getStandardName(){
-        
+
+    public String getStandardName() {
+
         String ret = getDataRepository().get(FixedArgument.VERSION_STANDARD);
-        
+
         return ret;
     }
-    
-    public File getRootDirectory(){
-        
+
+    public File getRootDirectory() {
+
         File ret = getDataRepository().get(FixedArgument.ROOT);
-        
-        if(ret==null || !ret.exists() || !ret.isDirectory()){
+
+        if (ret == null || !ret.exists() || !ret.isDirectory()) {
             ret = new File(".");
         }
-        
+
         return ret;
     }
-    
+
 }

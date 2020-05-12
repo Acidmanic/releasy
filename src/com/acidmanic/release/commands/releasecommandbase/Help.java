@@ -10,7 +10,7 @@ package com.acidmanic.release.commands.releasecommandbase;
  * @author diego
  */
 public class Help extends com.acidmanic.commandline.commands.Help implements ReleaseParametersExecutionEnvironment.FixedArgument {
-
+      
     @Override
     public int numberOfArguments() {
         return 0;

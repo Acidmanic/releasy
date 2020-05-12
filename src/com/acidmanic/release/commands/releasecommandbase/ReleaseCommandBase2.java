@@ -36,7 +36,9 @@ public abstract class ReleaseCommandBase2 extends CommandBase {
     @Override
     public void execute() {
 
-        TypeRegistery registery = new ReleaseParametersTypeRegistery();
+        TypeRegistery registery = new TypeRegistery();
+        
+        registerCommonArguments(registery);
 
         registerArguments(registery);
 
@@ -75,7 +77,14 @@ public abstract class ReleaseCommandBase2 extends CommandBase {
             ReleaseWorkspace workspace,
             ExecutionDataRepository dataRepository);
 
-    protected void registerArguments(TypeRegistery registery) {
+    private void registerCommonArguments(TypeRegistery registery) {
+        registery.registerClass(Directory.class);
+        registery.registerClass(DirectoryTree.class);
+        registery.registerClass(DirectoryRadical.class);
+        registery.registerClass(com.acidmanic.release.commands.releasecommandbase.VersionStandard.class);
+        registery.registerClass(SourceRoot.class);
     }
+    
+    protected void registerArguments(TypeRegistery registery){}
 
 }
