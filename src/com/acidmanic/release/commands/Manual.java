@@ -23,6 +23,7 @@ import release.Application;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class Manual extends ReleaseCommandBase {
 
     private com.acidmanic.release.versions.Version version;

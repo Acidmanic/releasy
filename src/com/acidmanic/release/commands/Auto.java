@@ -22,6 +22,7 @@ import com.acidmanic.release.versions.Change;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class Auto extends ReleaseBase {
 
     @Override
