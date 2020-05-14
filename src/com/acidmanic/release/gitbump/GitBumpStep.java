@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Mani Moayedi (acidmanic.moayedi@gmail.com)
+ * Copyright (C) 2020 diego
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,20 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.sourcecontrols;
-
-import java.io.File;
+package com.acidmanic.release.gitbump;
 
 /**
  *
- * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
+ * @author diego
  */
-public interface SourceControlSystem {
-   
-    void acceptLocalChanges(File directory,String description);
-
-    boolean isPresent(File directory);
+public interface GitBumpStep {
     
-    boolean switchBranch(File directory, String name);
-
+    boolean execute(String...argument);
 }

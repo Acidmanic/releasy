@@ -37,4 +37,11 @@ public class GitStdWrapperSourceControl implements SourceControlSystem {
         return new GitStdWrapper(directory).isGitRepository();
     }
 
+    @Override
+    public boolean switchBranch(File directory, String name) {
+        GitStdWrapper git = new GitStdWrapper(directory);
+        git.command("checkout "+name);
+        return true;
+    }
+
 }

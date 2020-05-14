@@ -81,4 +81,22 @@ public class JGitFacadeSourceControl implements SourceControlSystem,VersionContr
         return value;
     }
 
+    @Override
+    public boolean switchBranch(File directory,String name) {
+        Git git = tryGetGit(directory);
+        
+        if(git!=null){
+            
+            try {
+                git.checkout()
+                        .setName(name)
+                        .setCreateBranch(false)
+                        .call();
+                
+                return true;
+            } catch (Exception e) {}
+        }
+        return false;
+    }
+
 }
