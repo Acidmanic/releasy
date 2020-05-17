@@ -27,6 +27,12 @@
     <build>
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
+        
+        <testResources>
+            <testResource>
+                <directory>${basedir}/test/resources</directory>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -180,7 +186,11 @@
             <version>1.0.1</version>
         </dependency>
         
-        
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.12</version>
+        </dependency>
     </dependencies>
     
     <distributionManagement>
