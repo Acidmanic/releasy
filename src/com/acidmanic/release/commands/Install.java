@@ -18,7 +18,11 @@ package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.installation.BasicInstaller;
+import com.acidmanic.installation.InstallerBase;
 import com.acidmanic.installation.models.DeploymentMetadata;
+import com.acidmanic.installation.tasks.InstallJarFileExecutable;
+import com.acidmanic.installation.tasks.InstallationTask;
+import java.util.List;
 
 /**
  *
@@ -31,12 +35,17 @@ public class Install extends CommandBase {
         return "";
     }
 
-    private class Installer extends BasicInstaller {
+    private class Installer extends InstallerBase {
 
         @Override
         protected void setupMetaData(DeploymentMetadata metadata) {
             metadata.setOrganizationName("Acidmanic");
             metadata.setProductName("Releasy");
+        }
+
+        @Override
+        protected void introduceTasks(List<InstallationTask> tasks) {
+            tasks.add(new InstallJarFileExecutable());
         }
 
     }
