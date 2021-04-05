@@ -53,10 +53,11 @@ public class GitStdWrapper {
     
     
     public boolean isCleanDirectory(){
-        String result = command("status").trim();
+        String result = command("status").trim().toLowerCase();
         
         boolean ret = result.contains("nothing to commit") &&
-                result.contains("working directory clean");
+                (result.contains("working directory clean") ||
+                result.contains("working tree clean"));
         
         return ret;
     }
