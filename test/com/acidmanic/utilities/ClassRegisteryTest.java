@@ -26,6 +26,8 @@ import com.acidmanic.utilities.models.G;
 import com.acidmanic.utilities.models.H;
 import com.acidmanic.utilities.models.I;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -35,35 +37,41 @@ import static org.junit.Assert.*;
  */
 public class ClassRegisteryTest {
 
-    public static boolean created = false;
-
-    public ClassRegisteryTest() {
-        if (!created) {
-            ClassRegistery.makeInstance().add(A.class);
-            ClassRegistery.makeInstance().add(B.class);
-            ClassRegistery.makeInstance().add(C.class);
-            ClassRegistery.makeInstance().add(D.class); //A
-            ClassRegistery.makeInstance().add(E.class); //A
-            ClassRegistery.makeInstance().add(F.class); //A
-            ClassRegistery.makeInstance().add(G.class); //I
-            ClassRegistery.makeInstance().add(H.class); //I
-            System.out.println("RECREATION");
-            created = true;
+  
+    
+    private ClassRegistery makeInitializedInstance(){
+        ClassRegistery registery=null;
+        try {
+            registery = ClassRegistery.class.newInstance();
+            registery.add(A.class);
+            registery.add(B.class);
+            registery.add(C.class);
+            registery.add(D.class); //A
+            registery.add(E.class); //A
+            registery.add(F.class); //A
+            registery.add(G.class); //I
+            registery.add(H.class); //I
+            return registery;
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
-
+        return registery;
     }
-
+    
     @Test
     public void shouldMakeAll8Classes() {
         System.out.println("---- shouldMakeAll8Classes ----");
-        List<Object> result = ClassRegistery.makeInstance().all();
+        List<Object> result = makeInitializedInstance().all();
         assertEquals(8, result.size());
     }
 
     @Test
     public void shouldMakeThreeABasedClasses() {
         System.out.println("---- shouldMakeThreeABasedClasses ----");
-        List<A> result = ClassRegistery.makeInstance().all(A.class);        
+        
+        ClassRegistery registery = makeInitializedInstance();
+        
+        List<A> result = registery.all(A.class);        
         assertEquals(4, result.size());
         assertEquals("A", result.get(0).getClass().getSimpleName());
         assertEquals("D", result.get(1).getClass().getSimpleName());
@@ -74,7 +82,10 @@ public class ClassRegisteryTest {
     @Test
     public void shouldMakeTwoIImplementations() {
         System.out.println("---- shouldMakeTwoIImplementations ----");
-        List<I> result = ClassRegistery.makeInstance().all(I.class);
+        
+        ClassRegistery registery = makeInitializedInstance();
+        
+        List<I> result = registery.all(I.class);
         assertEquals(2, result.size());
         assertEquals("G", result.get(0).getClass().getSimpleName());
         assertEquals("H", result.get(1).getClass().getSimpleName());

@@ -31,7 +31,7 @@ public class ClassRegistery {
      * *
      * Singleton
      */
-    private ClassRegistery() {
+    protected ClassRegistery() {
         this.classes = new ArrayList<>();
     }
 
