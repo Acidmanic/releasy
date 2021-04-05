@@ -51,9 +51,10 @@
                             <mainClass>release.Release</mainClass>
                         </manifest>
                     </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <descriptors>
+                        <descriptor>src/assembly/standalone.xml</descriptor>
+                    </descriptors>
+                    <finalName>releasy</finalName>
                 </configuration>
             </plugin> 
             <plugin>
