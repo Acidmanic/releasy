@@ -20,11 +20,34 @@ package com.acidmanic.release.gitbump;
  *
  * @author diego
  */
-public interface GitBumpStep {
+public abstract class GitbumpStepBase implements GitBumpStep {
 
-    void execute(Context context);
+    private String id;
 
-    String getId();
+    @Override
+    public String getId() {
+        return id;
+    }
 
-    void setId(String id);
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    protected abstract boolean performExecution(Context context);
+
+    @Override
+    public void execute(Context context) {
+        
+        if(context.getExecutionStatus(this.id)){
+            //TODO: Maybe you log a skip <info>
+            return;
+        }
+        
+        boolean result = performExecution(context);
+        
+        context.updateExecutionStatus(this.id, result);
+    }
+
+    
+    
 }

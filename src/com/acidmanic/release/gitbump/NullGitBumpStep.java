@@ -20,11 +20,20 @@ package com.acidmanic.release.gitbump;
  *
  * @author diego
  */
-public interface GitBumpStep {
+public class NullGitBumpStep implements GitBumpStep{
 
-    void execute(Context context);
+    @Override
+    public void execute(Context context) {
+        System.out.println("Given Step did not match with any known gitbump step.");
+    }
 
-    String getId();
+    @Override
+    public String getId() {
+        return "NULL";
+    }
 
-    void setId(String id);
+    @Override
+    public void setId(String id) {
+    }
+    
 }

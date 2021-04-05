@@ -16,15 +16,30 @@
  */
 package com.acidmanic.release.gitbump;
 
+import com.acidmanic.release.sourcecontrols.JGitFacadeSourceControl;
+import java.io.File;
+
 /**
  *
  * @author diego
  */
-public interface GitBumpStep {
+public class Merge extends GitbumpStepBase {
 
-    void execute(Context context);
+    private final String branch;
 
-    String getId();
+    public Merge(String branch) {
+        this.branch = branch;
+    }
 
-    void setId(String id);
+    @Override
+    protected boolean performExecution(Context context) {
+        JGitFacadeSourceControl jgit = new JGitFacadeSourceControl();
+
+        File directory = context.getDirectory();
+
+        int result = jgit.merge(directory, branch);
+
+        return result == JGitFacadeSourceControl.MERGE_RESULT_CONFLICT;
+    }
+
 }

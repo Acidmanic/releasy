@@ -16,9 +16,9 @@
  */
 package com.acidmanic.release.sourcecontrols;
 
-import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.io.file.FileSystemHelper;
-import com.acidmanic.utilities.Bash;
+import com.acidmanic.release.functionaltests.GitFunctionalTestBase;
+import com.acidmanic.release.test.TestResource;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -29,81 +29,97 @@ import static org.junit.Assert.*;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class JGitFacadeSourceControlTest {
+public class JGitFacadeSourceControlFunctionalTest extends GitFunctionalTestBase {
 
-    private File directory;
+    private File localDirectory;
 
-    public JGitFacadeSourceControlTest() {
+    public JGitFacadeSourceControlFunctionalTest() {
 
     }
 
-    private void setupTestGit(boolean init) {
-        directory = new File("git-test");
-        if (directory.exists()) {
-            new FileSystemHelper().deleteDirectory(directory.getAbsolutePath());
-        }
-        directory.mkdirs();
-        if (init) {
-            System.out.println(new Bash().syncRun("git -C git-test init"));
-        }
+    private void clearEnvironment() {
+        new FileSystemHelper().clearDirectory(".");
     }
 
-    private String gitCommand(String command) {
-        Bash b = new Bash();
-        return b.syncRun("git -C git-test " + command);
+    private void createEnvironment() {
+
+        clearEnvironment();
+
+        new TestResource().putOutContent("gitbump-env.zip", new File("."));
+
+        localDirectory = new File("local");
     }
 
     @Test
     public void shouldReturnTrueForInitializedGitDirectory() {
-        setupTestGit(true);
+
+        createEnvironment();
 
         JGitFacadeSourceControl sut = new JGitFacadeSourceControl();
 
-        boolean result = sut.isPresent(directory);
+        boolean result = sut.isPresent(localDirectory);
 
         assertEquals(true, result);
     }
 
     @Test
     public void shouldReturnFalseForEmptyDirectory() {
-        setupTestGit(false);
+
+        clearEnvironment();
+
+        File noneGitDirectory = new File("local2");
+
+        noneGitDirectory.mkdirs();
 
         JGitFacadeSourceControl sut = new JGitFacadeSourceControl();
 
-        boolean result = sut.isPresent(directory);
+        boolean result = sut.isPresent(noneGitDirectory);
 
         assertEquals(false, result);
+
+        noneGitDirectory.delete();
     }
 
-    
     @Test
     public void shouldHaveDirtyDirectoryBeforeAndCleanAfterAccept() throws IOException {
-        
-        setupTestGit(true);
+
+        createEnvironment();
 
         String addingFileName = UUID.randomUUID().toString();
-        
-        addFile(addingFileName);
-        
+
+        introduceFileToLocalDirectory(localDirectory, addingFileName);
+
+        assertDirtyDirectory(localDirectory);
+
         JGitFacadeSourceControl sut = new JGitFacadeSourceControl();
 
-        sut.acceptLocalChanges(directory, "Some Descriptions");
-        
-        String clean = gitCommand("status");
+        sut.acceptLocalChanges(localDirectory, "Some Descriptions");
 
-        assertEquals(-1, clean.indexOf(addingFileName));
+        assertCleanDirectory(localDirectory);
     }
 
-    private void addFile(String name) throws IOException {
+    @Test
+    public void souldCheckOutToMasterBranch() {
+        createEnvironment();
         
-        File readme = directory.toPath().resolve(name).toFile();
+        JGitFacadeSourceControl sut = new JGitFacadeSourceControl();
         
-        if(readme.exists()){
-            readme.delete();
-        }
+        sut.switchBranch(localDirectory, "master");
         
-        readme.createNewFile();
+        assertBranch(localDirectory,"master");
     }
     
+    @Test
+    public void souldCheckOutToDevelopBranch() {
+        createEnvironment();
+        
+        JGitFacadeSourceControl sut = new JGitFacadeSourceControl();
+        
+        sut.switchBranch(localDirectory, "develop");
+        
+        assertBranch(localDirectory,"develop");
+    }
+
     
+
 }

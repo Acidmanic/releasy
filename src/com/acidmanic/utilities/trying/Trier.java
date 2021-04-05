@@ -61,6 +61,18 @@ public class Trier {
         } catch (Exception e) {
         }
     }
+    
+    public boolean tryCheckAction(UnsafeAction action) {
+
+        try {
+
+            action.invoke();
+
+            return true;
+        } catch (Exception e) {
+        }
+        return false;
+    }
 
     public void tryAction(UnsafeAction action, Action onFailure) {
 

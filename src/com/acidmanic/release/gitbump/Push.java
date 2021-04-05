@@ -16,15 +16,32 @@
  */
 package com.acidmanic.release.gitbump;
 
+import com.acidmanic.release.sourcecontrols.JGitFacadeSourceControl;
+import java.io.File;
+
 /**
  *
  * @author diego
  */
-public interface GitBumpStep {
+public class Push extends GitbumpStepBase {
 
-    void execute(Context context);
+    private final String branch;
 
-    String getId();
+    public Push(String branch) {
 
-    void setId(String id);
+        this.branch = branch;
+    }
+
+    @Override
+    protected boolean performExecution(Context context) {
+
+        File directory = context.getDirectory();
+
+        JGitFacadeSourceControl jgit = new JGitFacadeSourceControl();
+
+        String remote = context.getRemote();
+
+        return jgit.push(directory, remote, branch);
+    }
+
 }

@@ -17,18 +17,30 @@
 package com.acidmanic.release.gitbump;
 
 import com.acidmanic.release.sourcecontrols.JGitFacadeSourceControl;
+import java.io.File;
 
 /**
  *
  * @author diego
  */
-public class Checkout implements GitBumpStep{
+public class Checkout extends GitbumpStepBase {
+
+    private final String branchName;
+
+    public Checkout(String branchName) {
+
+        this.branchName = branchName;
+    }
 
     @Override
-    public boolean execute(String... argument) {
+    protected boolean performExecution(Context context) {
+        File directory = context.getDirectory();
+
         JGitFacadeSourceControl jgit = new JGitFacadeSourceControl();
-        
-        
+
+        boolean result = jgit.switchBranch(directory, this.branchName);
+
+        return result;
     }
-    
+
 }

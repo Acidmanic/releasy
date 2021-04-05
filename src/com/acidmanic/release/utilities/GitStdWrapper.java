@@ -50,6 +50,16 @@ public class GitStdWrapper {
         return new Bash().syncRun("git " + command, workspace);
 
     }
+    
+    
+    public boolean isCleanDirectory(){
+        String result = command("status").trim();
+        
+        boolean ret = result.contains("nothing to commit") &&
+                result.contains("working directory clean");
+        
+        return ret;
+    }
 
     public boolean isGitRepository() {
         String result = command("status").trim();

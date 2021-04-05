@@ -14,17 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.gitbump;
+package com.acidmanic.utilities;
 
 /**
  *
  * @author diego
  */
-public interface GitBumpStep {
-
-    void execute(Context context);
-
-    String getId();
-
-    void setId(String id);
+public abstract class Compare {
+    
+    
+    private Compare(){}
+    
+    
+    public static <T> boolean EqualsOne(T value,T...against){
+        
+        if(value == null){
+            
+            for(T par:against){
+                
+                if(par == null){
+                    
+                    return true;
+                }
+            }
+        }else{
+            
+            for(T par:against){
+                
+                if(value.equals(par)){
+                    
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
