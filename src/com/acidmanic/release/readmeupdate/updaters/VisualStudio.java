@@ -20,7 +20,7 @@ import com.acidmanic.parse.stringcomparison.StringComparison;
 import com.acidmanic.release.fileeditors.AssemblyInfoEditor;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.FileSearch;
+import com.acidmanic.release.utilities.FileSearch;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;

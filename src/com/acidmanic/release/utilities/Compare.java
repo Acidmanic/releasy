@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Acidmanic
+ * Copyright (C) 2020 diego
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.directoryscanning;
-
-import com.acidmanic.release.utilities.DirectoryHelper;
-import java.io.File;
-import java.util.function.Consumer;
-import java.util.function.Function;
+package com.acidmanic.release.utilities;
 
 /**
  *
- * @author Acidmanic
+ * @author diego
  */
-public class RadicallyScanner implements DirectoryScanner{
-
-    @Override
-    public void scan(File directory, Function<File, Boolean> validator, Consumer<File> scanner) {
+public abstract class Compare {
+    
+    
+    private Compare(){}
+    
+    
+    public static <T> boolean EqualsOne(T value,T...against){
         
-        new DirectoryHelper().scanTreeFiles(directory, validator, scanner);
+        if(value == null){
+            
+            for(T par:against){
+                
+                if(par == null){
+                    
+                    return true;
+                }
+            }
+        }else{
+            
+            for(T par:against){
+                
+                if(value.equals(par)){
+                    
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-    
-    
 }

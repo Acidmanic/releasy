@@ -18,7 +18,7 @@ package com.acidmanic.release.environment;
 
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.versionsources.VersionSourceFile;
-import com.acidmanic.utilities.ClassRegistery;
+import com.acidmanic.release.utilities.ClassRegistery;
 import java.util.ArrayList;
 import java.util.List;
 

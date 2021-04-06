@@ -18,7 +18,7 @@ package com.acidmanic.release.readmeupdate.updaters;
 
 import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.release.fileeditors.inplaceediting.XmlInPlaceEditor;
-import com.acidmanic.utilities.FileSearch;
+import com.acidmanic.release.utilities.FileSearch;
 import java.io.File;
 
 /**

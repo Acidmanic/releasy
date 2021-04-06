@@ -19,7 +19,7 @@ package com.acidmanic.release.versionables;
 import com.acidmanic.release.fileeditors.inplaceediting.XmlInPlaceEditor;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.FileSearch;
+import com.acidmanic.release.utilities.FileSearch;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

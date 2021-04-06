@@ -17,10 +17,10 @@
 package com.acidmanic.release.sourcecontrols;
 
 import com.acidmanic.release.versioncontrols.VersionControl;
-import com.acidmanic.utilities.Compare;
-import com.acidmanic.utilities.Result;
-import com.acidmanic.utilities.delegates.UnSafeAction1;
-import com.acidmanic.utilities.trying.Trier;
+import com.acidmanic.release.utilities.Compare;
+import com.acidmanic.release.utilities.Result;
+import com.acidmanic.release.utilities.delegates.UnSafeAction1;
+import com.acidmanic.release.utilities.trying.Trier;
 import java.io.File;
 import java.util.List;
 import org.eclipse.jgit.api.Git;

@@ -17,8 +17,6 @@
 package com.acidmanic.release.utilities;
 
 import com.acidmanic.utilities.Bash;
-import com.acidmanic.utilities.BashFactory;
-import com.acidmanic.utilities.DefaultBashFactory;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -46,7 +46,7 @@ import com.acidmanic.release.versionables.XCode;
 import com.acidmanic.release.versioncontrols.VersionControl;
 import com.acidmanic.release.versions.SemanticVersionFactory;
 import com.acidmanic.release.versions.VersionFactory;
-import com.acidmanic.utilities.ClassRegistery;
+import com.acidmanic.release.utilities.ClassRegistery;
 import java.io.File;
 
 /**

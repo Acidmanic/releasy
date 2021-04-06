@@ -22,7 +22,7 @@ import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versions.standard.VersionStandards;
 import com.acidmanic.release.versions.tools.VersionParser;
 import com.acidmanic.release.versionstandard.StandardProvider;
-import com.acidmanic.utilities.ApplicationInfo;
+import com.acidmanic.release.utilities.ApplicationInfo;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

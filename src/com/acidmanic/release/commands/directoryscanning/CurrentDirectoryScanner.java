@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.commands.directoryscanning;
 
-import com.acidmanic.utilities.DirectoryHelper;
+import com.acidmanic.release.utilities.DirectoryHelper;
 import java.io.File;
 import java.util.function.Consumer;
 import java.util.function.Function;

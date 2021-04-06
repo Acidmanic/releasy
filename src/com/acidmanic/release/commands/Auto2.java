@@ -17,13 +17,12 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.application.ExecutionDataRepository;
-import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase2;
 import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;
-import com.acidmanic.utilities.Emojies;
+import com.acidmanic.release.utilities.Emojies;
 import java.util.ArrayList;
 import java.util.List;
 

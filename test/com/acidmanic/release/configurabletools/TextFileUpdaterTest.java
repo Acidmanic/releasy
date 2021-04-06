@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.configurabletools;
 
-import com.acidmanic.utilities.TextFileUpdater;
+import com.acidmanic.release.utilities.TextFileUpdater;
 import com.acidmanic.release.versions.SemanticVersion;
 import com.acidmanic.release.versions.Version;
 import java.io.File;

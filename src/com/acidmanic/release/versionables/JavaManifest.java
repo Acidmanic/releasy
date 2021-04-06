@@ -18,7 +18,7 @@ package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.fileeditors.ManifestEditor;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.FileSearch;
+import com.acidmanic.release.utilities.FileSearch;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

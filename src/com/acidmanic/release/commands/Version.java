@@ -19,7 +19,7 @@ package com.acidmanic.release.commands;
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versionables.Versionable;
-import com.acidmanic.utilities.ClassRegistery;
+import com.acidmanic.release.utilities.ClassRegistery;
 import java.util.List;
 import release.Application;
 import com.acidmanic.release.readmeupdate.updaters.ReadmeUpdater;

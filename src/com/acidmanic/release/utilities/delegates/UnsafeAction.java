@@ -14,24 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.directoryscanning;
-
-import com.acidmanic.release.utilities.DirectoryHelper;
-import java.io.File;
-import java.util.function.Consumer;
-import java.util.function.Function;
+package com.acidmanic.release.utilities.delegates;
 
 /**
  *
  * @author Acidmanic
  */
-public class RadicallyScanner implements DirectoryScanner{
-
-    @Override
-    public void scan(File directory, Function<File, Boolean> validator, Consumer<File> scanner) {
-        
-        new DirectoryHelper().scanTreeFiles(directory, validator, scanner);
-    }
+public interface UnsafeAction {
     
-    
+    void invoke() throws Exception;
 }

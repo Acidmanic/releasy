@@ -14,24 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.directoryscanning;
-
-import com.acidmanic.release.utilities.DirectoryHelper;
-import java.io.File;
-import java.util.function.Consumer;
-import java.util.function.Function;
+package com.acidmanic.release.utilities;
 
 /**
  *
  * @author Acidmanic
  */
-public class RadicallyScanner implements DirectoryScanner{
+public abstract class Emojies {
 
-    @Override
-    public void scan(File directory, Function<File, Boolean> validator, Consumer<File> scanner) {
-        
-        new DirectoryHelper().scanTreeFiles(directory, validator, scanner);
+    private Emojies() {
     }
-    
-    
+
+    public abstract class SmileysAndPeople {
+
+        public static final  String THUMBS_UP = "👍";
+        public static final  String FACE_WITH_MONOCLE = "🧐";
+
+        private SmileysAndPeople() {
+        }
+
+    }
+
+    public abstract class Symbols {
+
+        private Symbols() {
+        }
+
+        public static final char INFORMATION = 'ℹ';
+        public static final  String CHECK_MARK = "✔";
+        public static final char WARNING = '⚠';
+        public static final String OK_BUTTON = "🆗";
+        public static final char NO_ENTRY = '⛔';
+
+    }
+
 }

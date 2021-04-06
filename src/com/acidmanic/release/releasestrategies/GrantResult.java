@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.releasestrategies;
 
-import com.acidmanic.utilities.Emojies;
+import com.acidmanic.release.utilities.Emojies;
 
 /**
  *

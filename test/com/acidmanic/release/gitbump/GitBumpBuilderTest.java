@@ -16,7 +16,7 @@ import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versions.standard.VersionStandards;
 import com.acidmanic.release.versionsources.VersionSourceFile;
-import com.acidmanic.utilities.ClassRegistery;
+import com.acidmanic.release.utilities.ClassRegistery;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -18,7 +18,7 @@ package com.acidmanic.release.environment;
 
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.ReleaseTypes;
-import com.acidmanic.utilities.ClassRegistery;
+import com.acidmanic.release.utilities.ClassRegistery;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
