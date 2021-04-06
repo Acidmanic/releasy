@@ -5,21 +5,16 @@
  */
 package com.acidmanic.release.gitbump;
 
-import com.acidmanic.commandline.commands.TypeRegistery;
-import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.io.file.FileSystemHelper;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.test.TestResource;
-import com.acidmanic.release.versionables.Versionable;
-import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versions.standard.VersionStandards;
 import com.acidmanic.release.versionsources.VersionSourceFile;
 import com.acidmanic.release.utilities.ClassRegistery;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -88,6 +83,11 @@ public class GitBumpBuilderTest {
                 isRegistered = true;
                 ClassRegistery.makeInstance().add(TestVersionSourceFile.class);
             }
+        }
+
+        @Override
+        public String getName() {
+            return "Test";
         }
     }
 

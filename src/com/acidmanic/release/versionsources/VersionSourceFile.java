@@ -37,4 +37,7 @@ public interface VersionSourceFile {
     // Lists all version Strings apeared in all instances of this VersionSourceFile
     List<String> getVersions();
 
+    // Gives the name of the source file versioning. ex: NuGet, Maven, and etc.
+    String getName();
+
 }

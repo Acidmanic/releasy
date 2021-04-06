@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Acidmanic
  */
-public class XmlVersionSourceFileBase extends VersionSourceFileBase {
+public abstract class XmlVersionSourceFileBase extends VersionSourceFileBase {
 
     private final String fileNamePattern;
     private final String[] versionNodeAddress;

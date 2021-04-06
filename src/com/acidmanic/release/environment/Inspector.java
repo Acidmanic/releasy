@@ -19,7 +19,9 @@ package com.acidmanic.release.environment;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.versionsources.VersionSourceFile;
 import com.acidmanic.release.utilities.ClassRegistery;
+import com.acidmanic.release.utilities.Pair;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -73,6 +75,20 @@ public class Inspector {
             
             ret.addAll(versions);
         }
+        return ret;
+    }
+    
+    public HashMap<VersionSourceFile,List<String>> getAllPresentVersionStringsAndFiles(){
+        
+        List<VersionSourceFile> allPresent = getPresentVersionSourceFiles();
+        
+        HashMap<VersionSourceFile,List<String>> ret = new HashMap<>();
+        
+        allPresent.forEach((source) -> {
+            List<String> versions = source.getVersions();
+            
+            ret.put(source, versions);
+        });
         return ret;
     }
 }

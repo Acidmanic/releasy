@@ -23,6 +23,7 @@ import com.acidmanic.release.commands.Install;
 import com.acidmanic.release.commands.Manual;
 import com.acidmanic.release.commands.Manual2;
 import com.acidmanic.release.commands.Status;
+import com.acidmanic.release.commands.Status2;
 import com.acidmanic.release.commands.Version;
 import com.acidmanic.release.readmeupdate.updaters.CarthageReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.CocoapodsReadmeUpdater;
@@ -85,6 +86,8 @@ public class Application {
         
         ApplicationWideTypeRegistery.makeInstance().registerClass(Auto2.class);
         ApplicationWideTypeRegistery.makeInstance().registerClass(Manual2.class);
+        ApplicationWideTypeRegistery.makeInstance().registerClass(Status2.class);
+        
 
         releaser = new GitTag();
         

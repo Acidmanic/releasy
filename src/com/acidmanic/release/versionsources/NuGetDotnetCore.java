@@ -31,4 +31,9 @@ public class NuGetDotnetCore extends XmlVersionSourceFileBase {
     public NuGetDotnetCore() {
         super(FILENAME_PATTERN, VERSION_ADDRESS, COMPARISON);
     }
+
+    @Override
+    public String getName() {
+        return "NuGet (csproj)";
+    }
 }
