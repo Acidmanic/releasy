@@ -16,33 +16,41 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
-import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
-import static com.acidmanic.release.commands.releasecommandbase.ReleaseParametersExecutionEnvironment.FixedArgument.SCANNERS;
+import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.release.commands.ReleaseContext;
 import java.io.File;
 
 /**
  *
  * @author Acidmanic
  */
-public class DirectoryTree extends ReleaseArgumentCommandBase
-        implements ReleaseParametersExecutionEnvironment.FixedArgument {
+public class DirectoryTree extends CommandBase {
 
     @Override
-    protected String getUsageString() {
+    protected String getUsageDescription() {
         return "Adds a directory to workspace (Recursively)";
     }
 
     @Override
-    public void execute() {
-
-        DirectoryScannerBundle bundle = getExecutionEnvironment().getDataRepository().get(SCANNERS);
-
-        bundle.addTree(new File(args[0]));
+    protected String getArgumentsDesciption() {
+        return "directory path";
     }
 
     @Override
-    public int numberOfArguments() {
-        return 1;
+    public void execute(String[] args) {
+
+        ReleaseContext context = getContext();
+
+        if (args.length == 1) {
+            context.getBundle().addTree(new File(args[0]));
+        } else {
+            error("Directory path expected.");
+        }
+    }
+
+    @Override
+    public boolean hasArguments() {
+        return true;
     }
 
 }

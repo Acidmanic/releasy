@@ -16,38 +16,40 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
-import com.acidmanic.commandline.application.ExecutionEnvironment;
+import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.release.commands.ReleaseContext;
 
 /**
  *
  * @author Acidmanic
  */
-public class Version  extends ReleaseArgumentCommandBase implements ReleaseParametersExecutionEnvironment.FixedArgument{
+public class Version extends CommandBase {
 
-    public static final String VERSION_STRING="VERSION_STRING";
-    
     @Override
-    protected String getUsageString() {
-        return "";
+    protected String getUsageDescription() {
+        return "Sets the version to given version.";
     }
 
     @Override
-    public void execute() {
-        
-        
-        if(args.length==0){
-            error("You should specify the version.");
-            return;
+    protected String getArgumentsDesciption() {
+        return "Version string";
+    }
+
+    @Override
+    public void execute(String[] args) {
+
+        if (args.length == 1) {
+            ReleaseContext context = getContext();
+
+            context.setVersionString(args[0]);
+        } else {
+            error("Version string expected.");
         }
-        
-        ExecutionEnvironment env = getExecutionEnvironment();
-        
-        env.getDataRepository().set(Version.VERSION_STRING, this.args[0]);
     }
 
     @Override
-    public int numberOfArguments() {
-        return 1;
+    public boolean hasArguments() {
+        return true;
     }
-    
+
 }

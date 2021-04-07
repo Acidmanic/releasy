@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath release.Release auto2 fix</exec.args>
+                <exec.args>-classpath %classpath release.Release Help</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.workingdir>/home/diego/Projects/release-test-subject/</exec.workingdir>
             </properties>
@@ -25,7 +25,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath release.Release auto2 fix</exec.args>
+                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath release.Release Help</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
                 <exec.workingdir>/home/diego/Projects/release-test-subject/</exec.workingdir>
@@ -41,7 +41,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath release.Release auto2 fix</exec.args>
+                <exec.args>-classpath %classpath release.Release Help</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.workingdir>/home/diego/Projects/release-test-subject/</exec.workingdir>
             </properties>

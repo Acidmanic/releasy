@@ -16,33 +16,41 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
-import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
-import static com.acidmanic.release.commands.releasecommandbase.ReleaseParametersExecutionEnvironment.FixedArgument.SCANNERS;
+import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.release.commands.ReleaseContext;
 import java.io.File;
 
 /**
  *
  * @author Acidmanic
  */
-public class DirectoryRadical extends ReleaseArgumentCommandBase
-        implements ReleaseParametersExecutionEnvironment.FixedArgument {
+public class DirectoryRadical extends CommandBase {
 
     @Override
-    protected String getUsageString() {
+    protected String getUsageDescription() {
         return "Adds Given directory thowards the root directory to workspace.";
     }
 
     @Override
-    public void execute() {
-        
-        DirectoryScannerBundle bundle = getExecutionEnvironment().getDataRepository().get(SCANNERS);
-        
-        bundle.addRadically(new File(args[0]));
+    protected String getArgumentsDesciption() {
+        return "directory path";
     }
 
     @Override
-    public int numberOfArguments() {
-        return 1;
+    public void execute(String[] args) {
+        
+        ReleaseContext context = getContext();
+        
+        if(args.length==1){
+            context.getBundle().addRadically(new File(args[0]));
+        }else{
+            error("Expected directory path.");
+        }
+    }
+
+    @Override
+    public boolean hasArguments() {
+        return true;
     }
     
 }

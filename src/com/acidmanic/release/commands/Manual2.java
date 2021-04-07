@@ -16,7 +16,6 @@
  */
 package com.acidmanic.release.commands;
 
-import com.acidmanic.commandline.application.ExecutionDataRepository;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
@@ -27,31 +26,30 @@ import com.acidmanic.release.versions.standard.VersionStandard;
  *
  * @author Acidmanic
  */
-public class Manual2 extends ReleaseCommandBase2{
+public class Manual2 extends ReleaseCommandBase2 {
 
     @Override
-    protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ExecutionDataRepository dataRepository) {
-        
-        
-        String version = dataRepository.get(com.acidmanic.release.commands.releasecommandbase.Version.VERSION_STRING);
-        
+    protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ReleaseContext subsContext) {
+
+        String version = subsContext.getVersionString();
+
         Releaser2 releaser = new Releaser2(workspace, standard);
-        
+
         releaser.setVersionToWorkspace(version);
     }
 
     @Override
-    protected String getUsageString() {
-        return "";
+    protected void addArgumentClasses(TypeRegistery registery) {
+        super.addArgumentClasses(registery);
+
+        registery.registerClass(com.acidmanic.release.commands.releasecommandbase.Version.class);
     }
 
     @Override
-    protected void registerArguments(TypeRegistery registery) {
-        super.registerArguments(registery); 
-        
-        registery.registerClass(com.acidmanic.release.commands.releasecommandbase.Version.class);
+    protected String getUsageDescription() {
+        return "This command will set the given version into all version "
+                + "source files available in workspace. This version then will "
+                + "be tagged via available source controls in workspace root.";
     }
-    
-    
-    
+
 }

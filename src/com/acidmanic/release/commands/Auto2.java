@@ -16,9 +16,10 @@
  */
 package com.acidmanic.release.commands;
 
-import com.acidmanic.commandline.application.ExecutionDataRepository;
+import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.commands.releasecommandbase.Inc;
 import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase2;
 import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;
@@ -30,38 +31,45 @@ import java.util.List;
  *
  * @author Acidmanic
  */
-public class Auto2 extends ReleaseCommandBase2{
-    
-    private ArrayList<String> extractChanges(VersionStandard standard) {
-        
+public class Auto2 extends ReleaseCommandBase2 {
+
+    private ArrayList<String> extractChanges(VersionStandard standard, String[] increments) {
+
         ArrayList<String> changes = new ArrayList<>();
-        
-        for(String arg: this.args){
-            
-            if(isVersionSectionName(standard,arg)){
-                
+
+        for (String arg : increments) {
+
+            if (isVersionSectionName(standard, arg)) {
+
                 changes.add(arg);
             }
         }
         return changes;
     }
 
+    @Override
+    protected void addArgumentClasses(TypeRegistery registery) {
+        super.addArgumentClasses(registery);
+
+        registery.registerClass(Inc.class);
+    }
+
     private boolean isVersionSectionName(VersionStandard standard, String name) {
-        
+
         name = name.toLowerCase();
-        
-        for(VersionSection section : standard.getSections()){
-            
-            if(section.getSectionName().toLowerCase().compareTo(name)==0){
+
+        for (VersionSection section : standard.getSections()) {
+
+            if (section.getSectionName().toLowerCase().compareTo(name) == 0) {
                 return true;
             }
         }
         return false;
     }
-    
+
     private void logRelease(boolean success) {
         if (success) {
-            log(" "+Emojies.Symbols.CHECK_MARK+"    Successfully released.");
+            log(" " + Emojies.Symbols.CHECK_MARK + "    Successfully released.");
         } else {
             warning("     Release has not been completed.");
         }
@@ -69,26 +77,31 @@ public class Auto2 extends ReleaseCommandBase2{
     }
 
     @Override
-    protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ExecutionDataRepository dataRepository) {
-        info("Standard: "+ (standard==null?"NOT FOUND":standard.getName()));
+    protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ReleaseContext subCommandsExecutionContext) {
+
+        info("Standard: " + (standard == null ? "NOT FOUND" : standard.getName()));
         info("Workspace:");
         info("\tROOT: " + workspace.getSourceControlRoot().toPath());
         workspace.getVersionFilesScanner().scan(f -> true,
                 f -> info("\tPassed File: " + f.toPath().toAbsolutePath()
                         .normalize().toString()));
-        
+
         Releaser2 releaser = new Releaser2(workspace, standard);
-        
-        List<String> changes = extractChanges(standard);
-        
+
+        List<String> changes = extractChanges(standard, subCommandsExecutionContext.getIncrementSegmentNames());
+
         boolean success = releaser.release(changes);
-        
+
         logRelease(success);
+
     }
 
     @Override
-    protected String getUsageString() {
-        return "";
+    protected String getUsageDescription() {
+        return "This command will increment current version from workspace, "
+                + "then set it on every version source file. Then incremented "
+                + "version would be commited and tagged on available source "
+                + "controls in workspace root.";
     }
 
 }

@@ -16,28 +16,40 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
+import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.release.commands.ReleaseContext;
+import java.io.File;
+
 /**
  *
  * @author Acidmanic
  */
-public class SourceRoot extends ReleaseArgumentCommandBase
-        implements ReleaseParametersExecutionEnvironment.FixedArgument {
+public class SourceRoot extends CommandBase {
 
     @Override
-    protected String getUsageString() {
+    protected String getUsageDescription() {
         return "Sets the root directory for source control commits.";
     }
 
     @Override
-    public void execute() {
-
-        getExecutionEnvironment()
-                .getDataRepository().set(ROOT, args[0]);
+    protected String getArgumentsDesciption() {
+        return "directory path";
     }
 
     @Override
-    public int numberOfArguments() {
-        return 1;
+    public void execute(String[] args) {
+        if (args.length == 1) {
+            ReleaseContext context = getContext();
+
+            context.setRoot(new File(args[0]));
+        } else {
+            error("Expected Directory path.");
+        }
+    }
+
+    @Override
+    public boolean hasArguments() {
+        return true;
     }
 
 }

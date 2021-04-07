@@ -16,22 +16,17 @@
  */
 package release;
 
-import com.acidmanic.commandline.commands.ApplicationWideTypeRegistery;
-import com.acidmanic.release.commands.Auto;
+import com.acidmanic.commandline.commands.Help;
+import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.commands.Auto2;
-import com.acidmanic.release.commands.Install;
-import com.acidmanic.release.commands.Manual;
 import com.acidmanic.release.commands.Manual2;
-import com.acidmanic.release.commands.Status;
 import com.acidmanic.release.commands.Status2;
-import com.acidmanic.release.commands.Version;
 import com.acidmanic.release.readmeupdate.updaters.CarthageReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.CocoapodsReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.GradleReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.MavenReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.VisualStudio;
 import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
-import release.inapptests.Test;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.sourcecontrols.JGitFacadeSourceControl;
 import com.acidmanic.release.sourcecontrols.SourceControlSystem;
@@ -48,7 +43,6 @@ import com.acidmanic.release.versioncontrols.VersionControl;
 import com.acidmanic.release.versions.SemanticVersionFactory;
 import com.acidmanic.release.versions.VersionFactory;
 import com.acidmanic.release.utilities.ClassRegistery;
-import java.io.File;
 
 /**
  *
@@ -61,6 +55,8 @@ public class Application {
     private static VersionFactory versionFactory;
     private static SourceControlSystem sourceControlSystem;
     private static VersionControl versionControl;
+
+    private static final TypeRegistery commandsRegistery = new TypeRegistery();
 
     public static void initialize() {
         ClassRegistery.makeInstance().add(Cocoapods.class);
@@ -77,26 +73,19 @@ public class Application {
         ClassRegistery.makeInstance().add(CarthageReadmeUpdater.class);
         ClassRegistery.makeInstance().add(CocoapodsReadmeUpdater.class);
 
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Manual.class);
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Auto.class);
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Test.class);
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Install.class);
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Status.class);
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Version.class);
-        
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Auto2.class);
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Manual2.class);
-        ApplicationWideTypeRegistery.makeInstance().registerClass(Status2.class);
-        
+        commandsRegistery.registerClass(Auto2.class);
+        commandsRegistery.registerClass(Manual2.class);
+        commandsRegistery.registerClass(Status2.class);
+        commandsRegistery.registerClass(Help.class);
 
         releaser = new GitTag();
-        
+
         releaseStrategy = new ReleaseIfAllPresentsSet();
 
         versionFactory = new SemanticVersionFactory();
 
         sourceControlSystem = new JGitFacadeSourceControl();
-        
+
         versionControl = new JGitFacadeSourceControl();
     }
 
@@ -118,6 +107,10 @@ public class Application {
 
     public static VersionControl getVersionControl() {
         return versionControl;
+    }
+
+    public static TypeRegistery getCommandsRegistery() {
+        return commandsRegistery;
     }
 
 }

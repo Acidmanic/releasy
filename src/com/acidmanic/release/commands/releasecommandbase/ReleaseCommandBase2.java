@@ -16,14 +16,17 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
-import com.acidmanic.commandline.application.ExecutionDataRepository;
-import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.commandline.commands.FractalCommandBase;
+import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.consoletools.terminal.Terminal;
 import com.acidmanic.consoletools.terminal.styling.TerminalControlEscapeSequences;
 import com.acidmanic.consoletools.terminal.styling.TerminalStyle;
+import com.acidmanic.release.commands.ReleaseContext;
+import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.versions.standard.VersionStandard;
+import com.acidmanic.release.versions.standard.VersionStandards;
 import com.acidmanic.release.versionstandard.StandardProvider;
 import java.io.File;
 
@@ -31,33 +34,48 @@ import java.io.File;
  *
  * @author Acidmanic
  */
-public abstract class ReleaseCommandBase2 extends CommandBase {
+public abstract class ReleaseCommandBase2 extends FractalCommandBase<ReleaseContext> {
 
     @Override
-    public void execute() {
+    protected void addArgumentClasses(TypeRegistery registery) {
+        registery.registerClass(Directory.class);
+        registery.registerClass(DirectoryTree.class);
+        registery.registerClass(DirectoryRadical.class);
+        registery.registerClass(com.acidmanic.release.commands.releasecommandbase.VersionStandard.class);
+        registery.registerClass(SourceRoot.class);
+        registery.registerClass(Help.class);
+    }
 
-        TypeRegistery registery = new TypeRegistery();
-        
-        registerCommonArguments(registery);
+    @Override
+    protected ReleaseContext createNewContext() {
+        ReleaseContext context = new ReleaseContext();
 
-        registerArguments(registery);
+        context.setBundle(new DirectoryScannerBundle());
 
-        ReleaseParametersExecutionEnvironment env
-                = new ReleaseParametersExecutionEnvironment(registery);
+        context.setRoot(new File("."));
 
-        env.execute(args);
+        context.setStandardName(VersionStandards.SIMPLE_SEMANTIC.getName());
 
-        File root = env.getRootDirectory();
+        return context;
+    }
 
-        ReleaseWorkspace workspace = new ReleaseWorkspace(env.getScanners(), root);
+    @Override
+    protected void execute(ReleaseContext subCommandsExecutionContext) {
 
-        String standardName = env.getStandardName();
+        ReleaseWorkspace workspace = new ReleaseWorkspace(
+                subCommandsExecutionContext.getBundle(),
+                subCommandsExecutionContext.getRoot());
+
+        String standardName = subCommandsExecutionContext.getStandardName();
 
         VersionStandard standard = new StandardProvider().getStandard(standardName);
 
-        execute(standard, workspace, env.getDataRepository());
-
+        execute(standard, workspace, subCommandsExecutionContext);
     }
+
+    protected abstract void execute(VersionStandard standard,
+            ReleaseWorkspace workspace,
+            ReleaseContext subCommandsExecutionContext);
 
     @Override
     protected void info(String text) {
@@ -72,19 +90,4 @@ public abstract class ReleaseCommandBase2 extends CommandBase {
 
         terminal.resetScreenAttributes();
     }
-
-    protected abstract void execute(VersionStandard standard,
-            ReleaseWorkspace workspace,
-            ExecutionDataRepository dataRepository);
-
-    private void registerCommonArguments(TypeRegistery registery) {
-        registery.registerClass(Directory.class);
-        registery.registerClass(DirectoryTree.class);
-        registery.registerClass(DirectoryRadical.class);
-        registery.registerClass(com.acidmanic.release.commands.releasecommandbase.VersionStandard.class);
-        registery.registerClass(SourceRoot.class);
-    }
-    
-    protected void registerArguments(TypeRegistery registery){}
-
 }

@@ -16,8 +16,9 @@
  */
 package release;
 
-import com.acidmanic.commandline.application.ExecutionEnvironment;
-
+import com.acidmanic.commandline.commands.Command;
+import com.acidmanic.commandline.commands.CommandFactory;
+import java.util.HashMap;
 
 /**
  *
@@ -31,11 +32,13 @@ public class Release {
     public static void main(String[] args) {
 
         Application.initialize();
-        
-        ExecutionEnvironment environment = new ExecutionEnvironment();
 
-        environment.execute(args);
-        
+        CommandFactory factory = new CommandFactory(Application.getCommandsRegistery());
+
+        HashMap<Command, String[]> commands = factory.make(args, true);
+
+        commands.forEach((c, a) -> c.execute(a));
+
     }
 
 }

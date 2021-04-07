@@ -16,28 +16,39 @@
  */
 package com.acidmanic.release.commands.releasecommandbase;
 
+import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.release.commands.ReleaseContext;
+
 /**
  *
  * @author Acidmanic
  */
-public class VersionStandard extends ReleaseArgumentCommandBase
-        implements ReleaseParametersExecutionEnvironment.FixedArgument {
-
+public class VersionStandard extends CommandBase {
     @Override
-    protected String getUsageString() {
+    protected String getUsageDescription() {
         return "Sets Cersion Standard. Default is BuiltIn Sematic Versioning";
     }
 
     @Override
-    public void execute() {
-
-        getExecutionEnvironment()
-                .getDataRepository().set(VERSION_STANDARD, args[0]);
+    protected String getArgumentsDesciption() {
+        return "version standard name";
     }
 
     @Override
-    public int numberOfArguments() {
-        return 1;
+    public void execute(String[] args) {
+        if(args.length==1){
+            ReleaseContext context = getContext();
+            
+            context.setStandardName(args[0]);
+            
+        }else{
+            error("Expected version standard name");
+        }
+    }
+
+    @Override
+    public boolean hasArguments() {
+        return true;
     }
 
 }

@@ -16,7 +16,6 @@
  */
 package com.acidmanic.release.commands;
 
-import com.acidmanic.commandline.application.ExecutionDataRepository;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase2;
 import com.acidmanic.release.environment.Inspector;
@@ -32,7 +31,7 @@ import java.util.List;
 public class Status2 extends ReleaseCommandBase2 {
 
     @Override
-    protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ExecutionDataRepository dataRepository) {
+    protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ReleaseContext subCommandsExecutionContext) {
 
         Inspector inspector = new Inspector(workspace.getVersionFilesScanner());
 
@@ -41,7 +40,7 @@ public class Status2 extends ReleaseCommandBase2 {
         for (VersionSourceFile source : presentVersions.keySet()) {
 
             info("\n" + source.getName() + ": ");
-            
+
             info("----------------------");
 
             List<String> versionsStrings = presentVersions.get(source);
@@ -53,7 +52,7 @@ public class Status2 extends ReleaseCommandBase2 {
     }
 
     @Override
-    protected String getUsageString() {
+    protected String getUsageDescription() {
         return "This command will list and view any version source and any "
                 + "released versions on any available version controls present"
                 + " at the workspace";
