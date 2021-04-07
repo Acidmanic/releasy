@@ -61,10 +61,14 @@ public abstract class ReleaseCommandBase2 extends FractalCommandBase<ReleaseCont
 
     @Override
     protected void execute(ReleaseContext subCommandsExecutionContext) {
+        
+        File root = subCommandsExecutionContext.getRoot().toPath()
+                .toAbsolutePath().normalize().toFile();
+        
 
         ReleaseWorkspace workspace = new ReleaseWorkspace(
                 subCommandsExecutionContext.getBundle(),
-                subCommandsExecutionContext.getRoot());
+                root);
 
         String standardName = subCommandsExecutionContext.getStandardName();
 
