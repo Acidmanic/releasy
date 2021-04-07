@@ -58,10 +58,31 @@ public abstract class ReleaseCommandBase2 extends FractalCommandBase<ReleaseCont
 
         return context;
     }
+    
+    private void postProcessContext(ReleaseContext context){
+        if(context.getBundle()==null){
+            context.setBundle(new DirectoryScannerBundle());
+        }
+        if(context.getBundle().isEmpty()){
+            
+            File here = new File(".").toPath().toAbsolutePath().normalize().toFile();
+            
+            context.getBundle().addCurrentDirectory(here);
+        }
+        File root = context.getRoot();
+        
+        if(root==null || !root.exists() || !root.isDirectory()){
+            
+            root = new File(".").toPath().toAbsolutePath().normalize().toFile();
+        }
+        context.setRoot(root);
+    }
 
     @Override
     protected void execute(ReleaseContext subCommandsExecutionContext) {
 
+        postProcessContext(subCommandsExecutionContext);
+        
         File root = subCommandsExecutionContext.getRoot().toPath()
                 .toAbsolutePath().normalize().toFile();
 
