@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class Status2 extends ReleaseCommandBase2 {
+public class Status extends ReleaseCommandBase2 {
 
     @Override
     protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ReleaseContext subCommandsExecutionContext) {

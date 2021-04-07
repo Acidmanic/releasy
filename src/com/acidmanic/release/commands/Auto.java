@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author Acidmanic
  */
-public class Auto2 extends ReleaseCommandBase2 {
+public class Auto extends ReleaseCommandBase2 {
 
     private ArrayList<String> extractChanges(VersionStandard standard, String[] increments) {
 

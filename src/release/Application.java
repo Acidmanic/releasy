@@ -18,9 +18,9 @@ package release;
 
 import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
-import com.acidmanic.release.commands.Auto2;
-import com.acidmanic.release.commands.Manual2;
-import com.acidmanic.release.commands.Status2;
+import com.acidmanic.release.commands.Auto;
+import com.acidmanic.release.commands.Manual;
+import com.acidmanic.release.commands.Status;
 import com.acidmanic.release.readmeupdate.updaters.CarthageReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.CocoapodsReadmeUpdater;
 import com.acidmanic.release.readmeupdate.updaters.GradleReadmeUpdater;
@@ -73,9 +73,9 @@ public class Application {
         ClassRegistery.makeInstance().add(CarthageReadmeUpdater.class);
         ClassRegistery.makeInstance().add(CocoapodsReadmeUpdater.class);
 
-        commandsRegistery.registerClass(Auto2.class);
-        commandsRegistery.registerClass(Manual2.class);
-        commandsRegistery.registerClass(Status2.class);
+        commandsRegistery.registerClass(Auto.class);
+        commandsRegistery.registerClass(Manual.class);
+        commandsRegistery.registerClass(Status.class);
         commandsRegistery.registerClass(Help.class);
 
         releaser = new GitTag();

@@ -26,7 +26,7 @@ import com.acidmanic.release.versions.standard.VersionStandard;
  *
  * @author Acidmanic
  */
-public class Manual2 extends ReleaseCommandBase2 {
+public class Manual extends ReleaseCommandBase2 {
 
     @Override
     protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ReleaseContext subsContext) {
