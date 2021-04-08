@@ -18,7 +18,7 @@ package com.acidmanic.release.commands;
 
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase;
-import com.acidmanic.release.environment.Inspector;
+import com.acidmanic.release.environment.VersionInspector;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versionsources.VersionSourceFile;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class Status extends ReleaseCommandBase {
     @Override
     protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ReleaseContext subCommandsExecutionContext) {
 
-        Inspector inspector = new Inspector(workspace.getVersionFilesScanner());
+        VersionInspector inspector = new VersionInspector(workspace.getVersionFilesScanner());
 
         HashMap<VersionSourceFile, List<String>> presentVersions = inspector.getAllPresentVersionStringsAndFiles();
 

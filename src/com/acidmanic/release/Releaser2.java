@@ -17,7 +17,7 @@
 package com.acidmanic.release;
 
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
-import com.acidmanic.release.environment.Inspector;
+import com.acidmanic.release.environment.VersionInspector;
 import com.acidmanic.release.releasestrategies.GrantResult;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.versionsources.VersionSourceFile;
@@ -104,7 +104,7 @@ public class Releaser2 {
 
     private VersionModel getLatesVersion() {
 
-        Inspector inspector = new Inspector(workspace.getVersionFilesScanner());
+        VersionInspector inspector = new VersionInspector(workspace.getVersionFilesScanner());
 
         List<String> allVersionStrings = inspector.getAllPresentedVersionStrings();
 
@@ -131,7 +131,7 @@ public class Releaser2 {
 
     private SetVersionResult setAllVersions(VersionModel version) {
 
-        Inspector inspector = new Inspector(this.workspace.getVersionFilesScanner());
+        VersionInspector inspector = new VersionInspector(this.workspace.getVersionFilesScanner());
 
         List<VersionSourceFile> sourceFiles = inspector.getPresentVersionSourceFiles();
 

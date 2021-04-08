@@ -28,12 +28,12 @@ import java.util.List;
  *
  * @author Acidmanic
  */
-public class Inspector {
+public class VersionInspector {
     
     
     private final DirectoryScannerBundle workspace;
 
-    public Inspector(DirectoryScannerBundle workspace) {
+    public VersionInspector(DirectoryScannerBundle workspace) {
         this.workspace = workspace;
     }
     
