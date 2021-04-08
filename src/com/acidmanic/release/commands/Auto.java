@@ -20,7 +20,7 @@ import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.commands.releasecommandbase.Inc;
-import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase2;
+import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase;
 import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.utilities.Emojies;
@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author Acidmanic
  */
-public class Auto extends ReleaseCommandBase2 {
+public class Auto extends ReleaseCommandBase {
 
     private ArrayList<String> extractChanges(VersionStandard standard, String[] increments) {
 

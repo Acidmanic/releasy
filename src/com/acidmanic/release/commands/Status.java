@@ -17,7 +17,7 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
-import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase2;
+import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase;
 import com.acidmanic.release.environment.Inspector;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versionsources.VersionSourceFile;
@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-public class Status extends ReleaseCommandBase2 {
+public class Status extends ReleaseCommandBase {
 
     @Override
     protected void execute(VersionStandard standard, ReleaseWorkspace workspace, ReleaseContext subCommandsExecutionContext) {

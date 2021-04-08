@@ -34,7 +34,7 @@ import java.io.File;
  *
  * @author Acidmanic
  */
-public abstract class ReleaseCommandBase2 extends FractalCommandBase<ReleaseContext> {
+public abstract class ReleaseCommandBase extends FractalCommandBase<ReleaseContext> {
 
     @Override
     protected void addArgumentClasses(TypeRegistery registery) {
