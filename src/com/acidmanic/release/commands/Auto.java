@@ -21,10 +21,8 @@ import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.commands.releasecommandbase.Inc;
 import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase;
-import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.utilities.Emojies;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,19 +31,7 @@ import java.util.List;
  */
 public class Auto extends ReleaseCommandBase {
 
-    private ArrayList<String> extractChanges(VersionStandard standard, String[] increments) {
-
-        ArrayList<String> changes = new ArrayList<>();
-
-        for (String arg : increments) {
-
-            if (isVersionSectionName(standard, arg)) {
-
-                changes.add(arg);
-            }
-        }
-        return changes;
-    }
+    
 
     @Override
     protected void addArgumentClasses(TypeRegistery registery) {
@@ -54,18 +40,7 @@ public class Auto extends ReleaseCommandBase {
         registery.registerClass(Inc.class);
     }
 
-    private boolean isVersionSectionName(VersionStandard standard, String name) {
-
-        name = name.toLowerCase();
-
-        for (VersionSection section : standard.getSections()) {
-
-            if (section.getSectionName().toLowerCase().compareTo(name) == 0) {
-                return true;
-            }
-        }
-        return false;
-    }
+    
 
     private void logRelease(boolean success) {
         if (success) {
@@ -88,7 +63,7 @@ public class Auto extends ReleaseCommandBase {
 
         Releaser2 releaser = new Releaser2(workspace, standard);
 
-        List<String> changes = extractChanges(standard, subCommandsExecutionContext.getIncrementSegmentNames());
+        List<String> changes = new IncrementInputAnalyzer().extractChanges(standard, subCommandsExecutionContext.getIncrementSegmentNames());
 
         boolean success = releaser.release(changes);
 
