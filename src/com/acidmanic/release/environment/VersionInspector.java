@@ -19,7 +19,6 @@ package com.acidmanic.release.environment;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.versionsources.VersionSourceFile;
 import com.acidmanic.release.utilities.ClassRegistery;
-import com.acidmanic.release.utilities.Pair;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
