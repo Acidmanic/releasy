@@ -29,5 +29,7 @@ public interface SourceControlSystem {
     boolean isPresent(File directory);
     
     boolean switchBranch(File directory, String name);
+    
+    boolean mergeBranchIntoCurrent(File directory,String branchName);
 
 }

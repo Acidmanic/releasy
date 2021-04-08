@@ -223,4 +223,10 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         return false;
     }
 
+    @Override
+    public boolean mergeBranchIntoCurrent(File directory, String branchName) {
+        
+        return MERGE_RESULT_SUCCESS==merge(directory, branchName);
+    }
+
 }

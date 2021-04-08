@@ -16,6 +16,8 @@
  */
 package com.acidmanic.release.sourcecontrols;
 
+import com.acidmanic.lightweight.logger.ConsoleLogger;
+import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.release.utilities.GitStdWrapper;
 import java.io.File;
 
@@ -24,6 +26,16 @@ import java.io.File;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public class GitStdWrapperSourceControl implements SourceControlSystem {
+
+    private final Logger logger;
+
+    public GitStdWrapperSourceControl(Logger logger) {
+        this.logger = logger;
+    }
+
+    public GitStdWrapperSourceControl() {
+        this.logger = new ConsoleLogger();
+    }
 
     @Override
     public void acceptLocalChanges(File directory, String description) {
@@ -40,8 +52,15 @@ public class GitStdWrapperSourceControl implements SourceControlSystem {
     @Override
     public boolean switchBranch(File directory, String name) {
         GitStdWrapper git = new GitStdWrapper(directory);
-        git.command("checkout "+name);
+        git.command("checkout " + name);
         return true;
+    }
+
+    @Override
+    public boolean mergeBranchIntoCurrent(File directory, String branchName) {
+        this.logger.error(this.getClass().getSimpleName() 
+                + " does not implement merge operation.");
+        return false;
     }
 
 }
