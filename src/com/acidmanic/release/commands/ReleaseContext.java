@@ -7,6 +7,7 @@ package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.commands.context.ExecutionContext;
 import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
+import com.acidmanic.release.commands.directoryscanning.MergeArguments;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
 import java.io.File;
 
@@ -22,6 +23,7 @@ public class ReleaseContext implements ExecutionContext {
     private File root;
     private String versionString;
     private String[] incrementSegmentNames = {};
+    private MergeArguments mergeArguments;
 
     public String getStandardName() {
         return standardName;
@@ -69,6 +71,14 @@ public class ReleaseContext implements ExecutionContext {
 
     public void setIncrementSegmentNames(String[] incrementSegmentNames) {
         this.incrementSegmentNames = incrementSegmentNames;
+    }
+
+    public MergeArguments getMergeArguments() {
+        return mergeArguments;
+    }
+
+    public void setMergeArguments(MergeArguments mergeArguments) {
+        this.mergeArguments = mergeArguments;
     }
 
 }
