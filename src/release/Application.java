@@ -20,6 +20,7 @@ import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.commands.Auto;
 import com.acidmanic.release.commands.Bump;
+import com.acidmanic.release.commands.InstantRunTest;
 import com.acidmanic.release.commands.Manual;
 import com.acidmanic.release.commands.Status;
 import com.acidmanic.release.readmeupdate.updaters.CarthageReadmeUpdater;
@@ -60,6 +61,8 @@ public class Application {
     private static final TypeRegistery commandsRegistery = new TypeRegistery();
 
     public static void initialize() {
+        
+        // Version Source Files
         ClassRegistery.makeInstance().add(Cocoapods.class);
         ClassRegistery.makeInstance().add(Maven.class);
         ClassRegistery.makeInstance().add(XCode.class);
@@ -68,17 +71,22 @@ public class Application {
         ClassRegistery.makeInstance().add(NuGetDotnetCore.class);
         ClassRegistery.makeInstance().add(JavaManifest.class);
         ClassRegistery.makeInstance().add(VisualStudio.class);
-
+        // Readme Updaters
         ClassRegistery.makeInstance().add(MavenReadmeUpdater.class);
         ClassRegistery.makeInstance().add(GradleReadmeUpdater.class);
         ClassRegistery.makeInstance().add(CarthageReadmeUpdater.class);
         ClassRegistery.makeInstance().add(CocoapodsReadmeUpdater.class);
+        //SourceControl Systems
+        ClassRegistery.makeInstance().add(JGitFacadeSourceControl.class);
+        
+        
 
         commandsRegistery.registerClass(Auto.class);
         commandsRegistery.registerClass(Manual.class);
         commandsRegistery.registerClass(Status.class);
         commandsRegistery.registerClass(Help.class);
         commandsRegistery.registerClass(Bump.class);
+        commandsRegistery.registerClass(InstantRunTest.class);
 
         releaser = new GitTag();
 
