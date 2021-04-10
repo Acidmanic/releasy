@@ -17,12 +17,13 @@ public class Inc extends CommandBase {
     @Override
     protected String getUsageDescription() {
         return "This argument specifies which segments of version must be "
-                + "considered for incrementation.";
+                + "considered for incrementation. It's a comma separated"
+                + " list of segment names. ex: minor,build";
     }
 
     @Override
     protected String getArgumentsDesciption() {
-        return "version segment names (comma separated) ex: minor,build";
+        return "";
     }
 
     @Override

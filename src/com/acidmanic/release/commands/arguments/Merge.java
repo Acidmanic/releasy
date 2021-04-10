@@ -25,8 +25,7 @@ public class Merge extends CommandBase {
 
     @Override
     protected String getArgumentsDesciption() {
-        return "a comma separated list of branch names. the first one being the "
-                + "source branch and the fllowings the destinations.";
+        return "";
     }
 
     @Override

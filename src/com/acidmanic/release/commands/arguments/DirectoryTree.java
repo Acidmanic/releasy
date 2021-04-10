@@ -33,7 +33,7 @@ public class DirectoryTree extends CommandBase {
 
     @Override
     protected String getArgumentsDesciption() {
-        return "directory path";
+        return "";
     }
 
     @Override

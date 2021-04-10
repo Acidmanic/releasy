@@ -31,7 +31,7 @@ public class VersionStandard extends CommandBase {
 
     @Override
     protected String getArgumentsDesciption() {
-        return "version standard name";
+        return "";
     }
 
     @Override

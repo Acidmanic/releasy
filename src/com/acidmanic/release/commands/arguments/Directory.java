@@ -35,7 +35,7 @@ public class Directory extends CommandBase {
 
     @Override
     protected String getArgumentsDesciption() {
-        return "Directory path";
+        return "";
     }
 
     @Override

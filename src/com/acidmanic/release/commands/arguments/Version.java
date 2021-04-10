@@ -32,7 +32,7 @@ public class Version extends CommandBase {
 
     @Override
     protected String getArgumentsDesciption() {
-        return "Version string";
+        return "";
     }
 
     @Override

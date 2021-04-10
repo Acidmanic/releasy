@@ -33,7 +33,7 @@ public class DirectoryRadical extends CommandBase {
 
     @Override
     protected String getArgumentsDesciption() {
-        return "directory path";
+        return "";
     }
 
     @Override
