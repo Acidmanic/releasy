@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release;
 
-import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.environment.VersionInspector;
 import com.acidmanic.release.releasestrategies.GrantResult;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;

@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.directoryscanning;
+package com.acidmanic.release.directoryscanning;
 
+import com.acidmanic.release.utilities.DirectoryHelper;
 import java.io.File;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -24,7 +25,12 @@ import java.util.function.Function;
  *
  * @author Acidmanic
  */
-public interface DirectoryScanner {
+public class CurrentDirectoryScanner implements DirectoryScanner{
+
+    @Override
+    public void scan(File directory, Function<File, Boolean> validator, Consumer<File> scanner) {
+        
+        new DirectoryHelper().scanCurrentDirectoryFiles(directory, validator, scanner);
+    }
     
-    void scan(File directory,Function<File,Boolean> validator,Consumer<File> scanner);
 }

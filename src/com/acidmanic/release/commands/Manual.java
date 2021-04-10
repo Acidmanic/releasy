@@ -18,7 +18,7 @@ package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
-import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.versions.standard.VersionStandard;
 
 /**

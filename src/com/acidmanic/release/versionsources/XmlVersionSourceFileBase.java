@@ -19,7 +19,7 @@ package com.acidmanic.release.versionsources;
 import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.parse.stringcomparison.StringComparisionFactory;
 import com.acidmanic.parse.stringcomparison.StringComparison;
-import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
+import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.fileeditors.inplaceediting.XmlInPlaceEditor;
 import java.io.File;
 import java.util.ArrayList;

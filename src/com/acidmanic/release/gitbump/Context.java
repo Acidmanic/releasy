@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.gitbump;
 
-import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import java.io.File;
 import java.util.HashMap;

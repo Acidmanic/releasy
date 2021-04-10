@@ -6,8 +6,8 @@
 package com.acidmanic.release.gitbump;
 
 import com.acidmanic.io.file.FileSystemHelper;
-import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
-import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
+import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.test.TestResource;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import com.acidmanic.release.versions.standard.VersionStandards;

@@ -6,9 +6,9 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.commands.context.ExecutionContext;
-import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
-import com.acidmanic.release.commands.directoryscanning.MergeArguments;
-import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
+import com.acidmanic.release.directoryscanning.MergeArguments;
+import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
 import java.io.File;
 
 /**

@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.commands.directoryscanning;
 
+import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.utilities.Final;
 import java.io.File;
 import java.io.IOException;

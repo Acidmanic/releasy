@@ -16,8 +16,8 @@
  */
 package com.acidmanic.release.versionsources;
 
-import com.acidmanic.release.commands.directoryscanning.DirectoryScanner;
-import com.acidmanic.release.commands.directoryscanning.DirectoryScannerBundle;
+import com.acidmanic.release.directoryscanning.DirectoryScanner;
+import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
 import java.io.File;
 import java.util.List;
 import java.util.function.Consumer;

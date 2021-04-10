@@ -7,7 +7,7 @@ package com.acidmanic.release.commands.arguments;
 
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.ReleaseContext;
-import com.acidmanic.release.commands.directoryscanning.MergeArguments;
+import com.acidmanic.release.directoryscanning.MergeArguments;
 
 /**
  *
