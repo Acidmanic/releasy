@@ -19,6 +19,7 @@ package release;
 import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.commands.Auto;
+import com.acidmanic.release.commands.Bump;
 import com.acidmanic.release.commands.Manual;
 import com.acidmanic.release.commands.Status;
 import com.acidmanic.release.readmeupdate.updaters.CarthageReadmeUpdater;
@@ -77,6 +78,7 @@ public class Application {
         commandsRegistery.registerClass(Manual.class);
         commandsRegistery.registerClass(Status.class);
         commandsRegistery.registerClass(Help.class);
+        commandsRegistery.registerClass(Bump.class);
 
         releaser = new GitTag();
 
