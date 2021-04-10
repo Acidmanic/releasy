@@ -8,6 +8,7 @@ package com.acidmanic.release.commands;
 import com.acidmanic.release.commands.arguments.IncrementInputAnalyzer;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
+import com.acidmanic.release.commands.arguments.Inc;
 import com.acidmanic.release.directoryscanning.MergeArguments;
 import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.commands.arguments.Merge;
@@ -81,6 +82,7 @@ public class Bump extends ReleaseCommandBase {
         super.addArgumentClasses(registery);
 
         registery.registerClass(Merge.class);
+        registery.registerClass(Inc.class);
     }
 
     private boolean performMerge(File root, SourceControlSystem sourceControl, MergeArguments mergeArguments) {
