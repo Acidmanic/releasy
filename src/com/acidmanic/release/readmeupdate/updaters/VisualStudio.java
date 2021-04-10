@@ -30,6 +30,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class VisualStudio implements Versionable {
 
     private List<File> assemblyFiles;
