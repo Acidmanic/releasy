@@ -31,7 +31,6 @@ import com.acidmanic.release.releasestrategies.ReleaseIfAllPresentsSet;
 import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.sourcecontrols.JGitFacadeSourceControl;
 import com.acidmanic.release.sourcecontrols.SourceControlSystem;
-import com.acidmanic.release.versionables.Cocoapods;
 import com.acidmanic.release.versionables.GitTag;
 import com.acidmanic.release.versionables.JavaManifest;
 import com.acidmanic.release.versionables.Maven;
@@ -44,6 +43,7 @@ import com.acidmanic.release.versioncontrols.VersionControl;
 import com.acidmanic.release.versions.SemanticVersionFactory;
 import com.acidmanic.release.versions.VersionFactory;
 import com.acidmanic.release.utilities.ClassRegistery;
+import com.acidmanic.release.versionsources.Cocoapods;
 
 /**
  *
