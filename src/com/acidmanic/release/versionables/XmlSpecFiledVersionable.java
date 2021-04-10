@@ -17,7 +17,6 @@
 package com.acidmanic.release.versionables;
 
 import com.acidmanic.release.fileeditors.inplaceediting.XmlInPlaceEditor;
-import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.utilities.FileSearch;
 import java.io.File;
@@ -31,6 +30,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public abstract class XmlSpecFiledVersionable implements Versionable {
 
     protected int releaseType;

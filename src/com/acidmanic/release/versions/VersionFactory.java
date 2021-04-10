@@ -21,6 +21,7 @@ package com.acidmanic.release.versions;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  * @param <T> Concrete type of Version class
  */
+@Deprecated
 public interface VersionFactory<T extends Version> {
 
     T make(T base, Change changes,int releaseType);

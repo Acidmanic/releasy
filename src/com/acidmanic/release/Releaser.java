@@ -21,7 +21,6 @@ import com.acidmanic.release.utilities.VersionProcessor;
 import com.acidmanic.release.versionables.Versionable;
 import com.acidmanic.release.versions.Change;
 import com.acidmanic.release.versions.Version;
-import com.acidmanic.utilities.Plus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +33,7 @@ import release.Application;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class Releaser {
 
     /**

@@ -22,6 +22,7 @@ import com.acidmanic.parse.stringcomparison.StringComparison;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class NuGetDotnetCore extends XmlSpecFiledVersionable {
 
     private static final String PACKAGE_SPEC = ".+\\.csproj";

@@ -24,6 +24,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public interface Versionable {
 
     void setup(File directory,int releaseType);

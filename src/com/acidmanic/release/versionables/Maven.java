@@ -24,6 +24,7 @@ import com.acidmanic.release.versions.Version;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class Maven extends XmlSpecFiledVersionable {
 
     

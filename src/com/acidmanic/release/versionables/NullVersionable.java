@@ -25,6 +25,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class NullVersionable implements Versionable {
 
     @Override

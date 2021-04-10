@@ -27,6 +27,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class Cocoapods implements Versionable {
 
     private final static String PODSPEC_EXT = ".podspec";

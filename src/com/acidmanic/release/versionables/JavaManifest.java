@@ -27,6 +27,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class JavaManifest implements Versionable {
 
     private final String MANIFEST_FILE = "manifest.mf";

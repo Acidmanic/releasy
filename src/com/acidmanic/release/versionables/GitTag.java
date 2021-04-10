@@ -19,9 +19,7 @@ package com.acidmanic.release.versionables;
 import com.acidmanic.release.logging.Logger;
 import com.acidmanic.release.versions.Version;
 import com.acidmanic.release.utilities.GitStdWrapper;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.File;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +28,7 @@ import java.util.List;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class GitTag implements Versionable {
 
     private boolean gitAvalable = false;

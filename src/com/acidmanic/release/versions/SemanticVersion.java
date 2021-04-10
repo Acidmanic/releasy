@@ -20,6 +20,7 @@ package com.acidmanic.release.versions;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
+@Deprecated
 public class SemanticVersion implements Version {
 
     private int major;
