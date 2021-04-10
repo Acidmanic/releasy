@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.acidmanic.release.commands;
+package com.acidmanic.release.commands.arguments;
 
 import com.acidmanic.release.versions.standard.VersionSection;
 import com.acidmanic.release.versions.standard.VersionStandard;

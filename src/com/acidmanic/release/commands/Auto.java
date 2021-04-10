@@ -16,6 +16,7 @@
  */
 package com.acidmanic.release.commands;
 
+import com.acidmanic.release.commands.arguments.IncrementInputAnalyzer;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
