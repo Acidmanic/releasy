@@ -22,6 +22,9 @@ import com.acidmanic.release.utilities.Result;
 import com.acidmanic.release.utilities.delegates.UnSafeAction1;
 import com.acidmanic.release.utilities.trying.Trier;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullResult;
@@ -157,7 +160,9 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
             List<Ref> branches = git.branchList().call();
 
             for (Ref ref : branches) {
-                if (ref.getName().compareTo(name) == 0) {
+                String branchname = getBranchName(ref);
+
+                if (branchname.compareTo(name) == 0) {
                     return ref;
                 }
             }
@@ -185,7 +190,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
                     return MERGE_RESULT_CONFLICT;
                 }
-                if (Compare.EqualsOne(status, MERGED, MERGED_SQUASHED)) {
+                if (Compare.EqualsOne(status, MERGED, MERGED_SQUASHED, ALREADY_UP_TO_DATE,FAST_FORWARD,FAST_FORWARD_SQUASHED)) {
 
                     return MERGE_RESULT_SUCCESS;
                 }
@@ -194,29 +199,32 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         return MERGE_RESULT_FAILURE;
     }
 
-    
-    public boolean push(File directory,String branch) {
-        
-        return push(directory, "origin",branch);
+    public boolean push(File directory, String branch) {
+
+        return push(directory, "origin", branch);
     }
-    
+
     public boolean push(File directory, String remote, String branch) {
+
         Git git = tryGetGit(directory);
 
-        Result<Iterable<PushResult>> result = new Trier().tryFunction(
-                () -> git.push()
-                        .setRemote(remote)
-                        .add(branch)
-                        .call());
+        synchronized (git) {
 
-        if (result.isSuccess()) {
+            Result<Iterable<PushResult>> result = new Trier().tryFunction(
+                    () -> git.push()
+                            .setRemote(remote)
+                            .add(branch)
+                            .call());
 
-            for (PushResult pr : result.getValue()) {
+            if (result.isSuccess()) {
 
-                RemoteRefUpdate.Status status = pr.getRemoteUpdate(branch).getStatus();
+                for (PushResult pr : result.getValue()) {
 
-                if (Compare.EqualsOne(status, RemoteRefUpdate.Status.OK, RemoteRefUpdate.Status.UP_TO_DATE)) {
-                    return true;
+                    RemoteRefUpdate.Status status = getUpdateStatus(pr, branch);
+
+                    if (status != null && Compare.EqualsOne(status, RemoteRefUpdate.Status.OK, RemoteRefUpdate.Status.UP_TO_DATE)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -225,8 +233,8 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
     @Override
     public boolean mergeBranchIntoCurrent(File directory, String branchName) {
-        
-        return MERGE_RESULT_SUCCESS==merge(directory, branchName);
+
+        return MERGE_RESULT_SUCCESS == merge(directory, branchName);
     }
 
     @Override
@@ -238,7 +246,33 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     public boolean updateLocal(File directory, String branchName) {
         return pull(directory, branchName);
     }
-    
-    
+
+    private String getBranchName(Ref ref) {
+
+        String fullRef = ref.getName();
+
+        return getBranchName(fullRef);
+    }
+
+    private String getBranchName(String fullRef) {
+
+        return Paths.get(fullRef).getFileName().toString();
+    }
+
+    private RemoteRefUpdate.Status getUpdateStatus(PushResult pushResult, String branch) {
+
+        Collection<RemoteRefUpdate> updates = pushResult.getRemoteUpdates();
+
+        for (RemoteRefUpdate update : updates) {
+
+            String branchName = getBranchName(update.getRemoteName());
+
+            if (branch.compareTo(branchName) == 0) {
+                return update.getStatus();
+            }
+
+        }
+        return null;
+    }
 
 }
