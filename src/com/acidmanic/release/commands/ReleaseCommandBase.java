@@ -14,8 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.releasecommandbase;
+package com.acidmanic.release.commands;
 
+import com.acidmanic.release.commands.arguments.SourceRoot;
+import com.acidmanic.release.commands.arguments.Directory;
+import com.acidmanic.release.commands.arguments.DirectoryRadical;
+import com.acidmanic.release.commands.arguments.DirectoryTree;
 import com.acidmanic.commandline.commands.FractalCommandBase;
 import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
@@ -41,7 +45,7 @@ public abstract class ReleaseCommandBase extends FractalCommandBase<ReleaseConte
         registery.registerClass(Directory.class);
         registery.registerClass(DirectoryTree.class);
         registery.registerClass(DirectoryRadical.class);
-        registery.registerClass(com.acidmanic.release.commands.releasecommandbase.VersionStandard.class);
+        registery.registerClass(com.acidmanic.release.commands.arguments.VersionStandard.class);
         registery.registerClass(SourceRoot.class);
         registery.registerClass(Help.class);
     }

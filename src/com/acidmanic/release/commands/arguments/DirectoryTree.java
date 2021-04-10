@@ -14,35 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.releasecommandbase;
+package com.acidmanic.release.commands.arguments;
 
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.ReleaseContext;
+import java.io.File;
 
 /**
  *
  * @author Acidmanic
  */
-public class VersionStandard extends CommandBase {
+public class DirectoryTree extends CommandBase {
+
     @Override
     protected String getUsageDescription() {
-        return "Sets Cersion Standard. Default is BuiltIn Sematic Versioning";
+        return "Adds a directory to workspace (Recursively)";
     }
 
     @Override
     protected String getArgumentsDesciption() {
-        return "version standard name";
+        return "directory path";
     }
 
     @Override
     public void execute(String[] args) {
-        if(args.length==1){
-            ReleaseContext context = getContext();
-            
-            context.setStandardName(args[0]);
-            
-        }else{
-            error("Expected version standard name");
+
+        ReleaseContext context = getContext();
+
+        if (args.length == 1) {
+            context.getBundle().addTree(new File(args[0]));
+        } else {
+            error("Directory path expected.");
         }
     }
 

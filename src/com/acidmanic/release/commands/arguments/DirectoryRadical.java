@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.releasecommandbase;
+package com.acidmanic.release.commands.arguments;
 
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.ReleaseContext;
@@ -24,31 +24,27 @@ import java.io.File;
  *
  * @author Acidmanic
  */
-public class Directory extends CommandBase {
-
-   
+public class DirectoryRadical extends CommandBase {
 
     @Override
     protected String getUsageDescription() {
-        return "Adds given directory to workspace. (Not Recursively)";
+        return "Adds Given directory thowards the root directory to workspace.";
     }
 
     @Override
     protected String getArgumentsDesciption() {
-        return "Directory path";
+        return "directory path";
     }
 
     @Override
     public void execute(String[] args) {
+        
         ReleaseContext context = getContext();
         
         if(args.length==1){
-            
-            context.getBundle().addCurrentDirectory(new File(args[0]));
-            
+            context.getBundle().addRadically(new File(args[0]));
         }else{
-            
-            error("you should enter a directory.");
+            error("Expected directory path.");
         }
     }
 
@@ -56,5 +52,5 @@ public class Directory extends CommandBase {
     public boolean hasArguments() {
         return true;
     }
-
+    
 }

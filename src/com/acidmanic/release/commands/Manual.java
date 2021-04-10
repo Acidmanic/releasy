@@ -19,7 +19,6 @@ package com.acidmanic.release.commands;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser2;
 import com.acidmanic.release.commands.directoryscanning.ReleaseWorkspace;
-import com.acidmanic.release.commands.releasecommandbase.ReleaseCommandBase;
 import com.acidmanic.release.versions.standard.VersionStandard;
 
 /**
@@ -42,7 +41,7 @@ public class Manual extends ReleaseCommandBase {
     protected void addArgumentClasses(TypeRegistery registery) {
         super.addArgumentClasses(registery);
 
-        registery.registerClass(com.acidmanic.release.commands.releasecommandbase.Version.class);
+        registery.registerClass(com.acidmanic.release.commands.arguments.Version.class);
     }
 
     @Override

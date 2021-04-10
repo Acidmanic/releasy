@@ -14,37 +14,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.releasecommandbase;
+package com.acidmanic.release.commands.arguments;
 
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.ReleaseContext;
-import java.io.File;
 
 /**
  *
  * @author Acidmanic
  */
-public class DirectoryRadical extends CommandBase {
+public class Version extends CommandBase {
 
     @Override
     protected String getUsageDescription() {
-        return "Adds Given directory thowards the root directory to workspace.";
+        return "Sets the version to given version.";
     }
 
     @Override
     protected String getArgumentsDesciption() {
-        return "directory path";
+        return "Version string";
     }
 
     @Override
     public void execute(String[] args) {
-        
-        ReleaseContext context = getContext();
-        
-        if(args.length==1){
-            context.getBundle().addRadically(new File(args[0]));
-        }else{
-            error("Expected directory path.");
+
+        if (args.length == 1) {
+            ReleaseContext context = getContext();
+
+            context.setVersionString(args[0]);
+        } else {
+            error("Version string expected.");
         }
     }
 
@@ -52,5 +51,5 @@ public class DirectoryRadical extends CommandBase {
     public boolean hasArguments() {
         return true;
     }
-    
+
 }

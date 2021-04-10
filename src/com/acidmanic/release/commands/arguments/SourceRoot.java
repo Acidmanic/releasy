@@ -14,36 +14,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.releasecommandbase;
+package com.acidmanic.release.commands.arguments;
 
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.ReleaseContext;
+import java.io.File;
 
 /**
  *
  * @author Acidmanic
  */
-public class Version extends CommandBase {
+public class SourceRoot extends CommandBase {
 
     @Override
     protected String getUsageDescription() {
-        return "Sets the version to given version.";
+        return "Sets the root directory for source control commits.";
     }
 
     @Override
     protected String getArgumentsDesciption() {
-        return "Version string";
+        return "directory path";
     }
 
     @Override
     public void execute(String[] args) {
-
         if (args.length == 1) {
             ReleaseContext context = getContext();
 
-            context.setVersionString(args[0]);
+            context.setRoot(new File(args[0]));
         } else {
-            error("Version string expected.");
+            error("Expected Directory path.");
         }
     }
 

@@ -14,36 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.acidmanic.release.commands.releasecommandbase;
+package com.acidmanic.release.commands.arguments;
 
 import com.acidmanic.commandline.commands.CommandBase;
 import com.acidmanic.release.commands.ReleaseContext;
-import java.io.File;
 
 /**
  *
  * @author Acidmanic
  */
-public class SourceRoot extends CommandBase {
-
+public class VersionStandard extends CommandBase {
     @Override
     protected String getUsageDescription() {
-        return "Sets the root directory for source control commits.";
+        return "Sets Cersion Standard. Default is BuiltIn Sematic Versioning";
     }
 
     @Override
     protected String getArgumentsDesciption() {
-        return "directory path";
+        return "version standard name";
     }
 
     @Override
     public void execute(String[] args) {
-        if (args.length == 1) {
+        if(args.length==1){
             ReleaseContext context = getContext();
-
-            context.setRoot(new File(args[0]));
-        } else {
-            error("Expected Directory path.");
+            
+            context.setStandardName(args[0]);
+            
+        }else{
+            error("Expected version standard name");
         }
     }
 
