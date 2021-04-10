@@ -63,4 +63,18 @@ public class GitStdWrapperSourceControl implements SourceControlSystem {
         return false;
     }
 
+    @Override
+    public boolean updateRemote(File directory, String branchName) {
+        this.logger.error(this.getClass().getSimpleName() 
+                + " does not implement push operation.");
+        return false;
+    }
+
+    @Override
+    public boolean updateLocal(File directory, String branchName) {
+        this.logger.error(this.getClass().getSimpleName() 
+                + " does not implement pull operation.");
+        return false;
+    }
+
 }

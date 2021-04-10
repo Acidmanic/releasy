@@ -140,7 +140,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         Git git = tryGetGit(directory);
 
         Result<PullResult> result = new Trier()
-                .tryFunction(() -> git.pull().setRemote(branch)
+                .tryFunction(() -> git.pull().setRemoteBranchName(branch)
                 .setRemoteBranchName(branch)
                 .call());
 
@@ -228,5 +228,17 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         
         return MERGE_RESULT_SUCCESS==merge(directory, branchName);
     }
+
+    @Override
+    public boolean updateRemote(File directory, String branchName) {
+        return push(directory, branchName);
+    }
+
+    @Override
+    public boolean updateLocal(File directory, String branchName) {
+        return pull(directory, branchName);
+    }
+    
+    
 
 }

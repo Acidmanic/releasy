@@ -31,5 +31,9 @@ public interface SourceControlSystem {
     boolean switchBranch(File directory, String name);
     
     boolean mergeBranchIntoCurrent(File directory,String branchName);
+    
+    boolean updateRemote(File directory,String branchName);
+    
+    boolean updateLocal(File directory,String branchName);
 
 }
