@@ -33,7 +33,7 @@ public class JavaManifestTest {
         JavaManifest sut = new JavaManifest();
 
         DirectoryScannerBundle bundle = new DirectoryScannerBundle()
-                .add(new File("."), (d, v, s) -> s.accept(d));
+                .addCurrentDirectory(new File("."));
 
         sut.setup(bundle);
 
@@ -64,7 +64,7 @@ public class JavaManifestTest {
         JavaManifest sut = new JavaManifest();
 
         DirectoryScannerBundle bundle = new DirectoryScannerBundle()
-                .add(new File("."), (d, v, s) -> s.accept(d));
+                .addCurrentDirectory(new File("."));
 
         sut.setup(bundle);
 
@@ -111,7 +111,7 @@ public class JavaManifestTest {
         JavaManifest sut = new JavaManifest();
 
         DirectoryScannerBundle bundle = new DirectoryScannerBundle()
-                .add(new File("."), (d, v, s) -> s.accept(d));
+                .addCurrentDirectory(new File("."));
 
         sut.setup(bundle);
 

@@ -79,22 +79,14 @@ public class JavaManifest implements VersionSourceFile {
 
     @Override
     public void setup(DirectoryScannerBundle scanners) {
-
-        List<File> directories = new DirectoryScannerBundleExtensions(scanners).getDirectories();
-
-        for (File directory : directories) {
-
-            File manifest = new FileSearch()
-                    .search(directory, MANIFEST_FILE,
-                            StringComparison.COMPARE_CASE_INSENSITIVE);
-
-            if (manifest != null && manifest.exists()) {
-
-                this.manifests.add(manifest);
-            }
-
-        }
-
+        
+        List<File> presentManifests = new DirectoryScannerBundleExtensions(scanners)
+                .getFilesByName(MANIFEST_FILE, StringComparison.COMPARE_CASE_INSENSITIVE);
+        
+        this.manifests.clear();
+        
+        this.manifests.addAll(presentManifests);
+        
     }
 
     @Override
@@ -111,7 +103,7 @@ public class JavaManifest implements VersionSourceFile {
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "Java Manifest File (manifest.mf)";
     }
 
 }

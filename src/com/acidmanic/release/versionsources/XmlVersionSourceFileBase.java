@@ -17,10 +17,9 @@
 package com.acidmanic.release.versionsources;
 
 import com.acidmanic.io.file.FileIOHelper;
-import com.acidmanic.parse.stringcomparison.StringComparisionFactory;
-import com.acidmanic.parse.stringcomparison.StringComparison;
 import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.fileeditors.inplaceediting.XmlInPlaceEditor;
+import com.acidmanic.release.utilities.DirectoryScannerBundleExtensions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +46,8 @@ public abstract class XmlVersionSourceFileBase extends VersionSourceFileBase {
     @Override
     public void setup(DirectoryScannerBundle scanners) {
 
-        this.versionFiles = new ArrayList<>();
-
-        StringComparison comparison = new StringComparisionFactory().make(this.fileNameComparison);
-        
-        scanners.scan(file -> comparison.areEqual(fileNamePattern, file.getName()),
-                file -> this.versionFiles.add(file));
+        this.versionFiles = new DirectoryScannerBundleExtensions(scanners)
+                .getFilesByName(fileNamePattern, fileNameComparison);
     }
 
     @Override
