@@ -43,6 +43,8 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     public static final int MERGE_RESULT_SUCCESS = 0;
     public static final int MERGE_RESULT_CONFLICT = 1;
     public static final int MERGE_RESULT_FAILURE = 2;
+    
+    private static final Path GIT_BRANCH_BASEPATH = Paths.get("refs").resolve("heads");
 
     @Override
     public void acceptLocalChanges(File directory, String description) {
@@ -255,8 +257,12 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     }
 
     private String getBranchName(String fullRef) {
-
-        return Paths.get(fullRef).getFileName().toString();
+        
+        Path refPath = Paths.get(fullRef);
+        
+        return GIT_BRANCH_BASEPATH
+                .relativize(refPath)
+                .toString();
     }
 
     private RemoteRefUpdate.Status getUpdateStatus(PushResult pushResult, String branch) {
