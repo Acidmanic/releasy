@@ -20,7 +20,7 @@ import com.acidmanic.release.SetVersionResult;
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
 import java.util.List;
-import application.Application;
+import com.acidmanic.release.application.Application;
 
 /**
  *

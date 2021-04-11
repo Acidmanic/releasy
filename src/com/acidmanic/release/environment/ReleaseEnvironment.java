@@ -22,7 +22,7 @@ import com.acidmanic.release.utilities.ClassRegistery;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import application.Application;
+import com.acidmanic.release.application.Application;
 
 /**
  *
