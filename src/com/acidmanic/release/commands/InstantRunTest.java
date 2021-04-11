@@ -6,6 +6,7 @@
 package com.acidmanic.release.commands;
 
 import com.acidmanic.commandline.commands.CommandBase;
+import com.acidmanic.release.application.ApplicationContext;
 import com.acidmanic.release.environment.SourceControlSystemInspector;
 import com.acidmanic.release.sourcecontrols.SourceControlSystem;
 import java.io.File;
@@ -37,10 +38,11 @@ public class InstantRunTest extends CommandBase{
     @Override
     public void execute(String[] args) {
         
-        List<SourceControlSystem> presentSourceControls
-                    = new SourceControlSystemInspector(
-                            new File(".").toPath().toAbsolutePath().normalize().toFile())
-                            .getPresentSourceControlSystems();
+        ApplicationContext context = getContext();
+        
+        error("test command set to fail");
+        
+        context.fail(" I dont like you!");
         
         
     }
