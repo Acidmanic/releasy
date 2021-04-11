@@ -20,7 +20,7 @@ import com.acidmanic.release.SetVersionResult;
 import com.acidmanic.release.models.ReleaseParameters;
 import com.acidmanic.release.versionables.Versionable;
 import java.util.List;
-import com.acidmanic.release.application.Application;
+import com.acidmanic.release.application.AppConfig;
 
 /**
  *
@@ -43,7 +43,7 @@ public abstract class ReleaseIfAllPresentsSetBase extends ReleaseStrategyBase {
             if (parameters.getReleaser().setVersion(parameters.getVersion())) {
                 log("INFO: 👍   Released Successfully.");
                 if (parameters.getVersionables().isEmpty()) {
-                    log("WARNING: Only " + Application.getReleaseStrategy().getClass().getSimpleName()
+                    log("WARNING: Only " + AppConfig.getReleaseStrategy().getClass().getSimpleName()
                             + " Release has been performed");
                 }
             } else {

@@ -48,7 +48,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>release.Release</mainClass>
+                            <mainClass>com.acidmanic.release.application.Application</mainClass>
                         </manifest>
                     </archive>
                     <descriptors>

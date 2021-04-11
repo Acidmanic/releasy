@@ -32,7 +32,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
-import com.acidmanic.release.application.Application;
+import com.acidmanic.release.application.AppConfig;
 
 /**
  *
@@ -93,11 +93,11 @@ public class Releaser {
 
         File sourcesRoot = this.workspace.getSourceControlRoot();
 
-        if (Application.getSourceControlSystem().isPresent(sourcesRoot)) {
+        if (AppConfig.getSourceControlSystem().isPresent(sourcesRoot)) {
 
             String commitMessage = getDescription(version);
 
-            Application.getSourceControlSystem()
+            AppConfig.getSourceControlSystem()
                     .acceptLocalChanges(sourcesRoot, commitMessage);
         }
     }
@@ -160,7 +160,7 @@ public class Releaser {
 
     private void markReleaseOnVersionControl(VersionModel version) {
 
-        VersionControl versionControl = Application.getVersionControl();
+        VersionControl versionControl = AppConfig.getVersionControl();
 
         VersionParser parser = new VersionParser(this.standard);
 
@@ -178,7 +178,7 @@ public class Releaser {
         SetVersionResult results = setAllVersions(version);
         // Check if is it ok to continue the release, regarding the result
 
-        ReleaseStrategy strategy = Application.getReleaseStrategy();
+        ReleaseStrategy strategy = AppConfig.getReleaseStrategy();
 
         GrantResult grantResult = strategy.grantContinue(results);
 

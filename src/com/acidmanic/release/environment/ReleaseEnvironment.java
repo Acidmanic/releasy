@@ -22,7 +22,7 @@ import com.acidmanic.release.utilities.ClassRegistery;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import com.acidmanic.release.application.Application;
+import com.acidmanic.release.application.AppConfig;
 
 /**
  *
@@ -83,7 +83,7 @@ public class ReleaseEnvironment {
 
     private List<String> getReleaserVersions() {
         try {
-            Versionable clone = Application.getReleaser().getClass().newInstance();
+            Versionable clone = AppConfig.getReleaser().getClass().newInstance();
             clone.setup(directory, 0);
             return clone.getVersions();
         } catch (Exception e) {
