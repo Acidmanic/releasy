@@ -57,14 +57,14 @@ public class Bump extends ReleaseCommandBase {
 
                     } else {
                         //TODO: you might want to set a retrying mechanisem here
-                        error("Error Pushing merged branches.");
+                        failApplication("Error Pushing merged branches.");
                     }
                 } else {
-                    error("Error merging given branches.");
+                    failApplication("Error merging given branches.");
                 }
             }
         } else {
-            error("Unable to Update new version in workspace.");
+            failApplication("Unable to Update new version in workspace.");
         }
 
     }

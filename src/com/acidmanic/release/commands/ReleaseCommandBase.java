@@ -26,6 +26,7 @@ import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.consoletools.terminal.Terminal;
 import com.acidmanic.consoletools.terminal.styling.TerminalControlEscapeSequences;
 import com.acidmanic.consoletools.terminal.styling.TerminalStyle;
+import com.acidmanic.release.application.ApplicationContext;
 import com.acidmanic.release.commands.ReleaseContext;
 import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
@@ -62,21 +63,21 @@ public abstract class ReleaseCommandBase extends FractalCommandBase<ReleaseConte
 
         return context;
     }
-    
-    private void postProcessContext(ReleaseContext context){
-        if(context.getBundle()==null){
+
+    private void postProcessContext(ReleaseContext context) {
+        if (context.getBundle() == null) {
             context.setBundle(new DirectoryScannerBundle());
         }
-        if(context.getBundle().isEmpty()){
-            
+        if (context.getBundle().isEmpty()) {
+
             File here = new File(".").toPath().toAbsolutePath().normalize().toFile();
-            
+
             context.getBundle().addCurrentDirectory(here);
         }
         File root = context.getRoot();
-        
-        if(root==null || !root.exists() || !root.isDirectory()){
-            
+
+        if (root == null || !root.exists() || !root.isDirectory()) {
+
             root = new File(".").toPath().toAbsolutePath().normalize().toFile();
         }
         context.setRoot(root);
@@ -86,7 +87,7 @@ public abstract class ReleaseCommandBase extends FractalCommandBase<ReleaseConte
     protected void execute(ReleaseContext subCommandsExecutionContext) {
 
         postProcessContext(subCommandsExecutionContext);
-        
+
         File root = subCommandsExecutionContext.getRoot().toPath()
                 .toAbsolutePath().normalize().toFile();
 
@@ -119,5 +120,29 @@ public abstract class ReleaseCommandBase extends FractalCommandBase<ReleaseConte
         System.out.println(text);
 
         terminal.resetScreenAttributes();
+    }
+
+    /**
+     * This will mark failure through the application context which then will be
+     * used to change the application exit code accordingly
+     */
+    protected void failApplication() {
+
+        ApplicationContext context = getContext();
+
+        context.fail();
+
+    }
+
+    /**
+     * This will mark failure through the application context which then will be
+     * used to change the application exit code accordingly
+     */
+    protected void failApplication(String message) {
+
+        ApplicationContext context = getContext();
+
+        context.fail(message);
+
     }
 }

@@ -69,6 +69,9 @@ public class Auto extends ReleaseCommandBase {
 
         logRelease(success);
 
+        if(!success){
+            failApplication();
+        }
     }
 
     @Override
