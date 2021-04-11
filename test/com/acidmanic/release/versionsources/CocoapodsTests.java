@@ -6,6 +6,9 @@
 package com.acidmanic.release.versionsources;
 
 import com.acidmanic.io.file.FileIOHelper;
+import com.acidmanic.io.file.FileSystemHelper;
+import java.io.File;
+import java.io.IOException;
 
 /**
  *
@@ -17,13 +20,11 @@ public class CocoapodsTests extends VersionSourceFileTest<Cocoapods> {
     protected Cocoapods createInstance() {
         return new Cocoapods();
     }
-    
-    private final String specFileName = "fakeproject.podspec";
 
     @Override
     protected void makePresentInTestEnvironment(String version, String... args) {
         String content = "Pod::Spec.new do |s|\n"
-                + "  s.name             = 'TestProject'\n"
+                + "  s.name             = 'FakeProject'\n"
                 + "  s.version          = '" + version + "'\n"
                 + "  s.summary          = 'This is a lie!.'\n"
                 + "  s.swift_version    = '4.0'\n"
@@ -44,13 +45,29 @@ public class CocoapodsTests extends VersionSourceFileTest<Cocoapods> {
                 + "  s.source_files = 'FakeProject/Classes/**/*'\n"
                 + "\n"
                 + "end";
-        
-        new FileIOHelper().tryWriteAll(specFileName, content);
+
+        new FileIOHelper().tryWriteAll("FakeProject.podspec", content);
+
+        File xcodeProject = new File("FakeProject.xcodeproj");
+
+        xcodeProject.mkdirs();
+
+        File projectFile = xcodeProject.toPath().resolve("project.pbxproj").toFile();
+
+        if (!projectFile.exists()) {
+            try {
+                projectFile.createNewFile();
+            } catch (IOException ex) {
+
+            }
+        }
     }
 
     @Override
     protected void removeFromTestEnvironment() {
         deleteAnyFile("podspec");
+
+        new FileSystemHelper().deleteDirectory("FakeProject.xcodeproj");
     }
 
 }

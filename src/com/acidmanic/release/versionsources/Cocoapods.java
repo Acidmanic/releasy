@@ -19,6 +19,7 @@ package com.acidmanic.release.versionsources;
 import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.fileeditors.SpecFileEditor;
 import com.acidmanic.release.projectdirectory.XCodeProjectDirectoryInfo;
+import com.acidmanic.release.utilities.DirectoryScannerBundleExtensions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 public class Cocoapods implements VersionSourceFile {
 
-    private final static String PODSPEC_EXT = ".podspec";
+    private final static String PODSPEC_EXT = "podspec";
 
     private class Pod {
 
@@ -41,7 +42,7 @@ public class Cocoapods implements VersionSourceFile {
     private final List<Pod> pods = new ArrayList<>();
 
     private static File getSpecFile(File directory, String projectName) {
-        return directory.toPath().resolve(projectName + PODSPEC_EXT)
+        return directory.toPath().resolve(projectName + "." + PODSPEC_EXT)
                 .toFile();
     }
 
@@ -81,29 +82,28 @@ public class Cocoapods implements VersionSourceFile {
     @Override
     public void setup(DirectoryScannerBundle scanners) {
 
-        List<File> allDirectories = new ArrayList();
+        List<File> allPodSpecs = new DirectoryScannerBundleExtensions(scanners)
+                .getFilesByExtension(PODSPEC_EXT);
 
-        scanners.scan(f -> f.isDirectory(), f -> allDirectories.add(f));
+        this.pods.clear();
 
-        pods.clear();
+        for (File specFile : allPodSpecs) {
 
-        for (File directory : allDirectories) {
+            File parentDirectory = specFile.getParentFile();
 
-            String projectName = new XCodeProjectDirectoryInfo().getProjectName(directory);
+            String projectName = new XCodeProjectDirectoryInfo().getProjectName(parentDirectory);
 
-            if (projectName != null) {
+            File expectedSpecFile = getSpecFile(parentDirectory, projectName);
 
-                File specsFile = getSpecFile(directory, projectName);
+            if (expectedSpecFile.exists()) {
 
-                if (specsFile.exists()) {
-                    Pod pod = new Pod();
+                Pod pod = new Pod();
 
-                    pod.directory = directory;
-                    pod.projectName = projectName;
-                    pod.specsFile = specsFile;
+                pod.directory = parentDirectory;
+                pod.projectName = projectName;
+                pod.specsFile = expectedSpecFile;
 
-                    pods.add(pod);
-                }
+                pods.add(pod);
             }
         }
     }
