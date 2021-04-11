@@ -32,7 +32,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
-import release.Application;
+import application.Application;
 
 /**
  *
