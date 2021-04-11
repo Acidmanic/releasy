@@ -20,7 +20,6 @@ import com.acidmanic.parse.stringcomparison.StringComparison;
 import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.fileeditors.ManifestEditor;
 import com.acidmanic.release.utilities.DirectoryScannerBundleExtensions;
-import com.acidmanic.release.utilities.FileSearch;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
