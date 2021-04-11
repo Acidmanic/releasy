@@ -44,4 +44,26 @@ public class DirectoryScannerBundleExtensions {
         return versionFiles;
     }
     
+    /**
+     * returns any files ending with the given extension.
+     * @param extension the extension string EXCLUDING the (first) dot
+     * @return 
+     */
+    public List<File> getFilesByExtension(String extension){
+        List<File> versionFiles = new ArrayList();
+        
+        this.scanner.scan(file -> 
+                file.isFile() && extensionedWith(file, extension),
+                file -> versionFiles.add(file));
+        
+        return versionFiles;
+    }
+    
+    private boolean extensionedWith(File file,String extension){
+        
+        extension = "." + extension.toLowerCase();
+        
+        return file.getName().toLowerCase().endsWith(extension);
+    }
+    
 }

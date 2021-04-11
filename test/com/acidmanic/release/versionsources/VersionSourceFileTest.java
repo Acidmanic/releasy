@@ -5,7 +5,9 @@
  */
 package com.acidmanic.release.versionsources;
 
+import com.acidmanic.parse.stringcomparison.StringComparison;
 import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
+import com.acidmanic.release.utilities.DirectoryScannerBundleExtensions;
 import java.io.File;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
@@ -33,9 +35,26 @@ public abstract class VersionSourceFileTest<T extends VersionSourceFile> {
         return "1.2.3";
     }
     
-    
     private final String version = versionsForTest();
     
+    
+    protected void deleteAnyFile(String name,int comparison){
+        List<File> files = new DirectoryScannerBundleExtensions(
+                new DirectoryScannerBundle()
+                        .addCurrentDirectory(new File("."))
+        ).getFilesByName(name, comparison);
+
+        files.forEach(m -> m.delete());
+    }
+    
+    protected void deleteAnyFile(String extension){
+        List<File> files = new DirectoryScannerBundleExtensions(
+                new DirectoryScannerBundle()
+                        .addCurrentDirectory(new File("."))
+        ).getFilesByExtension(extension);
+
+        files.forEach(m -> m.delete());
+    }
     
     @Test
     public void versionSource_givenVersionFileAvailable_shouldReadVersion() {
