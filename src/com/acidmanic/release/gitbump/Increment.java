@@ -16,7 +16,7 @@
  */
 package com.acidmanic.release.gitbump;
 
-import com.acidmanic.release.Releaser2;
+import com.acidmanic.release.Releaser;
 import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.versions.standard.VersionStandard;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class Increment extends GitbumpStepBase{
         
         VersionStandard standard = context.getStandard();
         
-        Releaser2 releaser = new Releaser2(workspace, standard);
+        Releaser releaser = new Releaser(workspace, standard);
         
         boolean ret = releaser.release(changes);
         

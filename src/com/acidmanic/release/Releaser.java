@@ -16,15 +16,20 @@
  */
 package com.acidmanic.release;
 
-import com.acidmanic.release.environment.ReleaseEnvironment;
-import com.acidmanic.release.utilities.VersionProcessor;
-import com.acidmanic.release.versionables.Versionable;
-import com.acidmanic.release.versions.Change;
-import com.acidmanic.release.versions.Version;
+import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
+import com.acidmanic.release.environment.VersionInspector;
+import com.acidmanic.release.releasestrategies.GrantResult;
+import com.acidmanic.release.releasestrategies.ReleaseStrategy;
+import com.acidmanic.release.versionsources.VersionSourceFile;
+import com.acidmanic.release.versioncontrols.VersionControl;
+import com.acidmanic.release.versions.VersionModel;
+import com.acidmanic.release.versions.standard.VersionStandard;
+import com.acidmanic.release.versions.tools.VersionIncrementor;
+import com.acidmanic.release.versions.tools.VersionParser;
+import com.acidmanic.release.utilities.Result;
+import com.acidmanic.release.utilities.trying.Trier;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 import com.acidmanic.release.application.Application;
@@ -33,139 +38,177 @@ import com.acidmanic.release.application.Application;
  *
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
-@Deprecated
 public class Releaser {
 
-    /**
-     *
-     * states
-     */
-    private List<Versionable> versionables;
+    private Consumer<VersionModel> afterVersionSelect;
 
-    private File directory;
-    /**
-     *
-     * properties
-     */
-    private Consumer<Version> afterVersionSelect;
+    private Consumer<SetVersionResult> afterVersionSet;
 
-    private Consumer<HashMap<Versionable, Boolean>> afterVersionSet;
+    private final VersionStandard standard;
 
-    public Releaser(File directory) {
+    private final ReleaseWorkspace workspace;
 
-        this.directory = directory;
+
+    public Releaser(ReleaseWorkspace workspace, VersionStandard standard) {
+
+        this.workspace = workspace;
+
+        this.standard = standard;
 
         initialize();
     }
 
     private void initialize() {
 
-        this.afterVersionSelect = (Version version) -> {
+        this.afterVersionSelect = (VersionModel version) -> {
         };
 
-        this.afterVersionSet = (HashMap<Versionable, Boolean> t) -> {
+        this.afterVersionSet = (SetVersionResult r) -> {
         };
 
-        this.versionables = new ReleaseEnvironment(directory).getPresentVersionables();
-
     }
 
-    public boolean release(int releaseType, Change change) {
-
-        Version version = getLatesVersion(releaseType, change);
-
-        return release(releaseType, version);
-
-    }
-
-    public boolean release(int releaseType, Version version) {
-
-        this.afterVersionSelect.accept(version);
-
-        List<Boolean> setResults = setAllVersions(version, releaseType);
-
-        this.afterVersionSet.accept(hashResult(this.versionables, setResults));
-
-        if (Application.getReleaseStrategy().grantContinue(this.versionables, setResults)) {
-
-            if (Application.getSourceControlSystem().isPresent(directory)) {
-
-                Application.getSourceControlSystem()
-                        .acceptLocalChanges(directory, getDescription(version));
-
-            }
-
-            return performRelease(version, releaseType);
-        }
-        
-        return false;
-    }
-
-    private Version getLatesVersion(int releaseType, Change change) {
-
-        VersionProcessor processor
-                = new VersionProcessor(Application.getVersionFactory());
-
-        List<String> versionStrings = new ReleaseEnvironment(directory).enumAllVersions();
-
-        return processor.generateVersionFromStrings(versionStrings, change, releaseType);
-
-    }
-
-    private List<Boolean> setAllVersions(Version version, int releaseType) {
-
-        List<Boolean> ret = new ArrayList<>();
-
-        for (Versionable versionable : this.versionables) {
-
-            versionable.setup(directory, releaseType);
-
-            ret.add(versionable.setVersion(version));
-
-        }
-
-        return ret;
-    }
-
-    private String getDescription(Version version) {
-        return "Release version: " + version.getVersionString()
-                + ", " + new Date().toString();
-    }
-
-    private boolean performRelease(Version version, int releaseType) {
-
-        Versionable releaser = Application.getReleaser();
-
-        releaser.setup(directory, releaseType);
-
-        return releaser.setVersion(version);
-    }
-
-    public void setAfterVersionSet(Consumer<HashMap<Versionable, Boolean>> afterVersionSet) {
-        this.afterVersionSet = afterVersionSet;
-    }
-
-    public void setAfterVersionSelect(Consumer<Version> afterVersionSelect) {
+    public void setAfterVersionSelect(Consumer<VersionModel> afterVersionSelect) {
         this.afterVersionSelect = afterVersionSelect;
     }
 
-    public File getDirectory() {
-        return directory;
+    public void setAfterVersionSet(Consumer<SetVersionResult> afterVersionSet) {
+        this.afterVersionSet = afterVersionSet;
     }
 
-    public void setDirectory(File directory) {
-        this.directory = directory;
+    public boolean release(List<String> changes) {
+        // Get Latest version from the source
+        VersionModel version = getLatesVersion();
+        // Increment the way it should
+        VersionIncrementor inc = new VersionIncrementor(this.standard);
+
+        changes.forEach(name -> inc.increment(version, name));
+
+        boolean result = setVersionToWorkspace(version);
+
+        return result;
     }
 
-    private HashMap<Versionable, Boolean> hashResult(List<Versionable> versionables, List<Boolean> setResults) {
+    private void commitSourceChangesIntoSourceControl(VersionModel version) {
 
-        HashMap<Versionable, Boolean> ret = new HashMap<>();
+        File sourcesRoot = this.workspace.getSourceControlRoot();
 
-        for (int i = 0; i < versionables.size(); i++) {
-            ret.put(versionables.get(i), setResults.get(i));
+        if (Application.getSourceControlSystem().isPresent(sourcesRoot)) {
+
+            String commitMessage = getDescription(version);
+
+            Application.getSourceControlSystem()
+                    .acceptLocalChanges(sourcesRoot, commitMessage);
         }
+    }
 
+    private VersionModel getLatesVersion() {
+
+        VersionInspector inspector = new VersionInspector(workspace.getVersionFilesScanner());
+
+        List<String> allVersionStrings = inspector.getAllPresentedVersionStrings();
+
+        VersionParser parser = new VersionParser(standard);
+
+        VersionModel latest = parser.getZeroVersion();
+
+        for (String versionString : allVersionStrings) {
+
+            Result<VersionModel> result = new Trier().tryFunction(() -> parser.parse(versionString));
+
+            if (result.isSuccess()) {
+                
+                VersionModel model = result.getValue();
+                
+                if (model.toRawValue() > latest.toRawValue()) {
+
+                    latest = model;
+                }
+            }
+        }
+        return latest;
+    }
+
+    private SetVersionResult setAllVersions(VersionModel version) {
+
+        VersionInspector inspector = new VersionInspector(this.workspace.getVersionFilesScanner());
+
+        List<VersionSourceFile> sourceFiles = inspector.getPresentVersionSourceFiles();
+
+        SetVersionResult ret = new SetVersionResult();
+
+        VersionParser parser = new VersionParser(this.standard);
+
+        String versionString = parser.getVersionString(version);
+
+        for (VersionSourceFile source : sourceFiles) {
+
+            boolean res = source.setVersion(versionString);
+
+            ret.add(source, res);
+        }
         return ret;
+    }
+
+    private String getDescription(VersionModel version) {
+
+        VersionParser parser = new VersionParser(this.standard);
+
+        return "Release version: " + parser.getVersionString(version)
+                + ", " + new Date().toString();
+    }
+
+    private void markReleaseOnVersionControl(VersionModel version) {
+
+        VersionControl versionControl = Application.getVersionControl();
+
+        VersionParser parser = new VersionParser(this.standard);
+
+        String message = "Release version " + parser.getVersionString(version);
+
+        String versionString = parser.getTagString(version);
+
+        File sourceRoot = this.workspace.getSourceControlRoot();
+
+        versionControl.markVersion(sourceRoot, versionString, message);
+    }
+
+    public boolean setVersionToWorkspace(VersionModel version) {
+        // Set new version everywhere
+        SetVersionResult results = setAllVersions(version);
+        // Check if is it ok to continue the release, regarding the result
+
+        ReleaseStrategy strategy = Application.getReleaseStrategy();
+
+        GrantResult grantResult = strategy.grantContinue(results);
+
+        System.out.println(grantResult.getMessage());
+
+        if (grantResult.isGrant()) {
+            // Commit changes on source control
+            commitSourceChangesIntoSourceControl(version);
+            // Mark release on Version Control
+            markReleaseOnVersionControl(version);
+
+            return true;
+        }
+        return false;
+    }
+
+    // Expose functionality 
+    public boolean setVersionToWorkspace(String versionString) {
+
+        VersionParser parser = new VersionParser(standard);
+
+        Result<VersionModel> result = new Trier().tryFunction(() -> parser.parse(versionString));
+
+        if (result.isSuccess()) {
+
+            VersionModel versionModel = result.getValue();
+
+            return setVersionToWorkspace(versionModel);
+        }
+        return false;
     }
 
 }
