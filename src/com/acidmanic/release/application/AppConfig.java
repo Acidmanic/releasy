@@ -34,7 +34,6 @@ import com.acidmanic.release.releasestrategies.ReleaseStrategy;
 import com.acidmanic.release.sourcecontrols.JGitFacadeSourceControl;
 import com.acidmanic.release.sourcecontrols.SourceControlSystem;
 import com.acidmanic.release.versionables.GitTag;
-import com.acidmanic.release.versionables.Maven;
 import com.acidmanic.release.versionables.NodeJs;
 import com.acidmanic.release.versionables.NuGetSpec;
 import com.acidmanic.release.versionsources.NuGetDotnetCore;
@@ -46,6 +45,7 @@ import com.acidmanic.release.versions.VersionFactory;
 import com.acidmanic.release.utilities.ClassRegistery;
 import com.acidmanic.release.versionsources.Cocoapods;
 import com.acidmanic.release.versionsources.JavaManifest;
+import com.acidmanic.release.versionsources.Maven;
 
 /**
  *
