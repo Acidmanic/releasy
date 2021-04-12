@@ -34,7 +34,7 @@ public abstract class XmlVersionSourceFileBase extends VersionSourceFileBase {
     private final String[] versionNodeAddress;
     private final int fileNameComparison;
 
-    private List<File> versionFiles;
+    private List<File> versionFiles = new ArrayList<>();
 
     public XmlVersionSourceFileBase(String fileNamePattern, String[] versionNodeAddress, int fileNameComparison) {
         this.fileNamePattern = fileNamePattern;
