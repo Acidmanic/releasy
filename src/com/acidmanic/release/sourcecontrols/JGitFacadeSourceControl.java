@@ -43,8 +43,9 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     public static final int MERGE_RESULT_SUCCESS = 0;
     public static final int MERGE_RESULT_CONFLICT = 1;
     public static final int MERGE_RESULT_FAILURE = 2;
-    
+
     private static final Path GIT_BRANCH_BASEPATH = Paths.get("refs").resolve("heads");
+    private static final Path GIT_TAG_BASEPATH = Paths.get("refs").resolve("tags");
 
     @Override
     public void acceptLocalChanges(File directory, String description) {
@@ -156,33 +157,52 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         return true;
     }
 
-    private Ref getBranchRef(Git git, String name) {
+    private Ref getRefForName(Git git, String name) {
 
         try {
-            List<Ref> branches = git.branchList().call();
+            List<Ref> refs = git.branchList().call();
 
-            for (Ref ref : branches) {
+            for (Ref ref : refs) {
                 String branchname = getBranchName(ref);
 
                 if (branchname.compareTo(name) == 0) {
                     return ref;
                 }
             }
+
+            refs = git.tagList().call();
+
+            for (Ref ref : refs) {
+                String tagName = getTagName(ref);
+
+                if (tagName.compareTo(name) == 0) {
+                    return ref;
+                }
+            }
+
         } catch (Exception e) {
         }
         return null;
     }
 
-    public int merge(File directory, String branch) {
+    /**
+     * Merges a branch or tag into current branch
+     *
+     * @param directory root for .git
+     * @param referenceName the name of the branch or the tag to be merged into
+     * current branch
+     * @return
+     */
+    public int merge(File directory, String referenceName) {
 
         Git git = tryGetGit(directory);
 
-        Ref branchRefrence = getBranchRef(git, branch);
+        Ref reference = getRefForName(git, referenceName);
 
-        if (branchRefrence != null) {
+        if (reference != null) {
 
             Result<MergeResult> result = new Trier().tryFunction(()
-                    -> git.merge().include(branchRefrence).call());
+                    -> git.merge().include(reference).call());
 
             if (result.isSuccess()) {
 
@@ -192,7 +212,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
                     return MERGE_RESULT_CONFLICT;
                 }
-                if (Compare.EqualsOne(status, MERGED, MERGED_SQUASHED, ALREADY_UP_TO_DATE,FAST_FORWARD,FAST_FORWARD_SQUASHED)) {
+                if (Compare.EqualsOne(status, MERGED, MERGED_SQUASHED, ALREADY_UP_TO_DATE, FAST_FORWARD, FAST_FORWARD_SQUASHED)) {
 
                     return MERGE_RESULT_SUCCESS;
                 }
@@ -257,10 +277,26 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     }
 
     private String getBranchName(String fullRef) {
-        
+
         Path refPath = Paths.get(fullRef);
-        
+
         return GIT_BRANCH_BASEPATH
+                .relativize(refPath)
+                .toString();
+    }
+
+    private String getTagName(Ref ref) {
+
+        String fullRef = ref.getName();
+
+        return getTagName(fullRef);
+    }
+
+    private String getTagName(String fullRef) {
+
+        Path refPath = Paths.get(fullRef);
+
+        return GIT_TAG_BASEPATH
                 .relativize(refPath)
                 .toString();
     }
