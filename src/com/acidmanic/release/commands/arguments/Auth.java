@@ -46,4 +46,9 @@ public class Auth extends CommandBase {
         return true;
     }
 
+    @Override
+    public String getArgSplitRegEx() {
+        return ",";
+    }
+
 }
