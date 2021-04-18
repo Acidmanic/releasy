@@ -27,7 +27,6 @@ import com.acidmanic.consoletools.terminal.Terminal;
 import com.acidmanic.consoletools.terminal.styling.TerminalControlEscapeSequences;
 import com.acidmanic.consoletools.terminal.styling.TerminalStyle;
 import com.acidmanic.release.application.ApplicationContext;
-import com.acidmanic.release.commands.ReleaseContext;
 import com.acidmanic.release.directoryscanning.DirectoryScannerBundle;
 import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
 import com.acidmanic.release.versions.standard.VersionStandard;

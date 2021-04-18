@@ -24,6 +24,9 @@ public class ReleaseContext implements ExecutionContext {
     private String versionString;
     private String[] incrementSegmentNames = {};
     private MergeArguments mergeArguments;
+    private String username;
+    private String password;
+    private boolean credentialsReceived;
 
     public String getStandardName() {
         return standardName;
@@ -79,6 +82,30 @@ public class ReleaseContext implements ExecutionContext {
 
     public void setMergeArguments(MergeArguments mergeArguments) {
         this.mergeArguments = mergeArguments;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isCredentialsReceived() {
+        return credentialsReceived;
+    }
+
+    public void setCredentialsReceived(boolean credentialsReceived) {
+        this.credentialsReceived = credentialsReceived;
     }
 
 }

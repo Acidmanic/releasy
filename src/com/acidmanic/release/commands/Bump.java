@@ -8,6 +8,7 @@ package com.acidmanic.release.commands;
 import com.acidmanic.release.commands.arguments.IncrementInputAnalyzer;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.release.Releaser;
+import com.acidmanic.release.commands.arguments.Auth;
 import com.acidmanic.release.commands.arguments.Inc;
 import com.acidmanic.release.directoryscanning.MergeArguments;
 import com.acidmanic.release.directoryscanning.ReleaseWorkspace;
@@ -83,6 +84,7 @@ public class Bump extends ReleaseCommandBase {
 
         registery.registerClass(Merge.class);
         registery.registerClass(Inc.class);
+        registery.registerClass(Auth.class);
     }
 
     private boolean performMerge(File root, SourceControlSystem sourceControl, MergeArguments mergeArguments) {
@@ -93,7 +95,7 @@ public class Bump extends ReleaseCommandBase {
 
             if (!sourceControl.switchBranch(root, destination)
                     || !sourceControl.mergeBranchIntoCurrent(root, source)) {
-                
+
                 return false;
             }
 
@@ -102,17 +104,17 @@ public class Bump extends ReleaseCommandBase {
     }
 
     private boolean pushAll(File root, SourceControlSystem sourceControl, MergeArguments mergeArguments) {
-     
+
         List<String> updateBranches = new ArrayList<>();
-        
+
         updateBranches.add(mergeArguments.getSource());
-        
+
         updateBranches.addAll(mergeArguments.getDestinations());
-        
+
         boolean success = true;
-        
-        for(String branchName:updateBranches){
-            
+
+        for (String branchName : updateBranches) {
+
             success = success && sourceControl.updateRemote(root, branchName);
         }
         return success;
