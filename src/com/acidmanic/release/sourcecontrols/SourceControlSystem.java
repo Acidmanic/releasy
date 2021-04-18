@@ -23,17 +23,19 @@ import java.io.File;
  * @author Mani Moayedi (acidmanic.moayedi@gmail.com)
  */
 public interface SourceControlSystem {
-   
-    void acceptLocalChanges(File directory,String description);
+
+    void acceptLocalChanges(File directory, String description);
 
     boolean isPresent(File directory);
-    
+
     boolean switchBranch(File directory, String name);
-    
-    boolean mergeBranchIntoCurrent(File directory,String branchName);
-    
-    boolean updateRemote(File directory,String branchName);
-    
-    boolean updateLocal(File directory,String branchName);
+
+    boolean mergeBranchIntoCurrent(File directory, String branchName);
+
+    boolean updateRemote(File directory, String branchName);
+
+    boolean updateLocal(File directory, String branchName);
+
+    void setCredentials(String username, String password);
 
 }

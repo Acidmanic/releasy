@@ -46,6 +46,11 @@ public class Bump extends ReleaseCommandBase {
 
             for (SourceControlSystem sourceControl : presentSourceControls) {
 
+                if (subCommandsExecutionContext.isCredentialsReceived()) {
+                    sourceControl.setCredentials(subCommandsExecutionContext.getUsername(),
+                            subCommandsExecutionContext.getPassword());
+                }
+
                 success = performMerge(root, sourceControl, mergeArguments);
 
                 if (success) {

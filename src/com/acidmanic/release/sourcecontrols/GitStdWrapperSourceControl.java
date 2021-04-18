@@ -29,6 +29,10 @@ public class GitStdWrapperSourceControl implements SourceControlSystem {
 
     private final Logger logger;
 
+    private boolean useCredentials = false;
+    private String username;
+    private String password;
+
     public GitStdWrapperSourceControl(Logger logger) {
         this.logger = logger;
     }
@@ -58,23 +62,31 @@ public class GitStdWrapperSourceControl implements SourceControlSystem {
 
     @Override
     public boolean mergeBranchIntoCurrent(File directory, String branchName) {
-        this.logger.error(this.getClass().getSimpleName() 
+        this.logger.error(this.getClass().getSimpleName()
                 + " does not implement merge operation.");
         return false;
     }
 
     @Override
     public boolean updateRemote(File directory, String branchName) {
-        this.logger.error(this.getClass().getSimpleName() 
+        this.logger.error(this.getClass().getSimpleName()
                 + " does not implement push operation.");
         return false;
     }
 
     @Override
     public boolean updateLocal(File directory, String branchName) {
-        this.logger.error(this.getClass().getSimpleName() 
+        this.logger.error(this.getClass().getSimpleName()
                 + " does not implement pull operation.");
         return false;
+    }
+
+    @Override
+    public void setCredentials(String username, String password) {
+
+        this.username = username;
+        this.password = password;
+        this.useCredentials = true;
     }
 
 }

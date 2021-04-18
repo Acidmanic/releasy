@@ -35,8 +35,10 @@ import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.MergeResult;
 import static org.eclipse.jgit.api.MergeResult.MergeStatus.*;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 /**
  *
@@ -59,6 +61,9 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
             + "	minRacyThreshold = 4051 microseconds";
 
     private final Logger logger = new ConsoleLogger();
+
+    private boolean useCredentials = false;
+    private CredentialsProvider credentialsProvider = CredentialsProvider.getDefault();
 
     @Override
     public void acceptLocalChanges(File directory, String description) {
@@ -106,7 +111,9 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
             this.logger.log("Config file: " + (configFile.exists() ? "Exists" : "Missing"));
 
-            return Git.open(directory);
+            Git git = Git.open(directory);
+
+            return git;
 
         } catch (Exception e) {
             this.logger.error("Error accessing local git repository: "
@@ -144,8 +151,8 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
                 + "' at directory: " + directory.toPath().toAbsolutePath());
         boolean result = tryCommand(directory, git -> {
 
-            git.fetch().call();
-            
+            fetch(directory);
+
             Ref targetRef = getRefrenceFor(git, name);
 
             git.checkout()
@@ -174,8 +181,16 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
     public boolean fetch(File directory, String remote) {
 
-        boolean result = tryCommand(directory, g -> g.fetch().setRemote(remote));
+        boolean result = false;
 
+        if (this.useCredentials) {
+            result = tryCommand(directory, g -> g.fetch()
+                    .setCredentialsProvider(credentialsProvider)
+                    .setRemote(remote));
+        } else {
+            result = tryCommand(directory, g -> g.fetch()
+                    .setRemote(remote));
+        }
         return result;
     }
 
@@ -195,6 +210,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         Result<PullResult> result = new Trier()
                 .tryFunction(() -> git.pull().setRemoteBranchName(branch)
                 .setRemoteBranchName(branch)
+                .setCredentialsProvider(credentialsProvider)
                 .call());
 
         if (result.isSuccess()) {
@@ -291,6 +307,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
                     () -> git.push()
                             .setRemote(remote)
                             .add(branch)
+                            .setCredentialsProvider(credentialsProvider)
                             .call());
 
             if (result.isSuccess()) {
@@ -401,6 +418,13 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
                     + ": " + e.getClass().getSimpleName());
         }
         return null;
+    }
+
+    @Override
+    public void setCredentials(String username, String password) {
+
+        this.credentialsProvider = new UsernamePasswordCredentialsProvider(username, password);
+        this.useCredentials = true;
     }
 
 }
