@@ -301,7 +301,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
                 .toString();
     }
 
-    private RemoteRefUpdate.Status getUpdateStatus(PushResult pushResult, String branch) {
+    private RemoteRefUpdate.Status getUpdateStatus(PushResult pushResult, String name) {
 
         Collection<RemoteRefUpdate> updates = pushResult.getRemoteUpdates();
 
@@ -309,7 +309,9 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
             String branchName = getBranchName(update.getRemoteName());
 
-            if (branch.compareTo(branchName) == 0) {
+            String tagName = getTagName(update.getRemoteName());
+
+            if (name.compareTo(branchName) == 0 || name.compareTo(tagName) == 0) {
                 return update.getStatus();
             }
 
