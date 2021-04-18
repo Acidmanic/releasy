@@ -16,6 +16,9 @@
  */
 package com.acidmanic.release.sourcecontrols;
 
+import com.acidmanic.io.file.FileIOHelper;
+import com.acidmanic.lightweight.logger.ConsoleLogger;
+import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.release.versioncontrols.VersionControl;
 import com.acidmanic.release.utilities.Compare;
 import com.acidmanic.release.utilities.Result;
@@ -24,6 +27,7 @@ import com.acidmanic.release.utilities.trying.Trier;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.jgit.api.Git;
@@ -46,6 +50,15 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
     private static final Path GIT_BRANCH_BASEPATH = Paths.get("refs").resolve("heads");
     private static final Path GIT_TAG_BASEPATH = Paths.get("refs").resolve("tags");
+
+    private static final String DEFAULT_CONFIG = "[filesystem \"Private Build|1.8.0_275|/dev/sda1\"]\n"
+            + "	timestampResolution = 1001 microseconds\n"
+            + "	minRacyThreshold = 5782 microseconds\n"
+            + "[filesystem \"Ubuntu|11.0.10|/dev/sda1\"]\n"
+            + "	timestampResolution = 8000 nanoseconds\n"
+            + "	minRacyThreshold = 4051 microseconds";
+
+    private final Logger logger = new ConsoleLogger();
 
     @Override
     public void acceptLocalChanges(File directory, String description) {
@@ -74,8 +87,30 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
     private Git tryGetGit(File directory) {
         try {
+
+            File configDir = Paths.get(System.getenv("HOME"))
+                    .resolve(".config").resolve("jgit").toFile();
+
+            if (!configDir.exists()) {
+                this.logger.log("Creating config directory at: "
+                        + configDir.getAbsolutePath());
+                configDir.mkdirs();
+            }
+            File configFile = configDir.toPath().resolve("config").toFile();
+
+            if (!configFile.exists()) {
+                this.logger.log("Creating config file at: "
+                        + configFile.getAbsolutePath());
+                new FileIOHelper().tryWriteAll(configFile, DEFAULT_CONFIG);
+            }
+
+            this.logger.log("Config file: " + (configFile.exists() ? "Exists" : "Missing"));
+
             return Git.open(directory);
+
         } catch (Exception e) {
+            this.logger.error("Error accessing local git repository: "
+                    + e.getClass().getSimpleName());
         }
         return null;
     }
@@ -105,10 +140,20 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
     @Override
     public boolean switchBranch(File directory, String name) {
-        boolean result = tryCommand(directory, git -> git.checkout()
-                .setName(name)
-                .setCreateBranch(false)
-                .call());
+        this.logger.log("checking out the branch '" + name
+                + "' at directory: " + directory.toPath().toAbsolutePath());
+        boolean result = tryCommand(directory, git -> {
+
+            git.fetch().call();
+            
+            Ref targetRef = getRefrenceFor(git, name);
+
+            git.checkout()
+                    .setName(targetRef.getName())
+                    .setCreateBranch(false)
+                    .call();
+        });
+        this.logger.log("checkout " + (result ? "Succeeded" : "Failed"));
         return result;
     }
 
@@ -121,6 +166,8 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
             return true;
         } catch (Exception e) {
+            this.logger.error("Error executing command: " + e.getClass().getSimpleName());
+            this.logger.error("Details: " + e.getMessage());
         }
         return false;
     }
@@ -201,12 +248,18 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
         if (reference != null) {
 
+            this.logger.log("merge, referenceName referenced to: " + reference.getName());
+
             Result<MergeResult> result = new Trier().tryFunction(()
                     -> git.merge().include(reference).call());
 
             if (result.isSuccess()) {
 
+                this.logger.log("Merge Result succeeded.");
+
                 MergeResult.MergeStatus status = result.getValue().getMergeStatus();
+
+                this.logger.log("merge status: " + status);
 
                 if (Compare.EqualsOne(status, CONFLICTING, CHECKOUT_CONFLICT)) {
 
@@ -216,6 +269,8 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
                     return MERGE_RESULT_SUCCESS;
                 }
+            } else {
+                this.logger.log("merge result is not successfull.");
             }
         }
         return MERGE_RESULT_FAILURE;
@@ -315,6 +370,35 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
                 return update.getStatus();
             }
 
+        }
+        return null;
+    }
+
+    private Ref getRefrenceFor(Git git, String name) {
+        try {
+
+            List<Ref> branches = git.branchList().call();
+            List<Ref> tags = git.tagList().call();
+            List<Ref> refs = new ArrayList<>();
+            refs.addAll(branches);
+            refs.addAll(tags);
+
+            branches.forEach(ref -> this.logger.log("branch: " + ref.getName()));
+
+            Ref targetRef = null;
+
+            for (Ref ref : refs) {
+                String refName = getBranchName(ref);
+
+                if (name.compareTo(refName) == 0) {
+                    targetRef = ref;
+                    break;
+                }
+            }
+            return targetRef;
+        } catch (Exception e) {
+            this.logger.error("Error finding reference for " + name
+                    + ": " + e.getClass().getSimpleName());
         }
         return null;
     }
