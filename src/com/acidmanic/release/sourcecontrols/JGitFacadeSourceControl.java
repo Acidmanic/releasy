@@ -30,12 +30,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.MergeResult;
 import static org.eclipse.jgit.api.MergeResult.MergeStatus.*;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -151,14 +153,24 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
                 + "' at directory: " + directory.toPath().toAbsolutePath());
         boolean result = tryCommand(directory, git -> {
 
-            fetch(directory);
+            this.logger.log("Fetching...");
+
+            boolean fetchResult = fetch(directory);
+
+            this.logger.log("Fetch " + (fetchResult ? "Succeeded" : "Failed"));
 
             Ref targetRef = getRefrenceFor(git, name);
 
-            git.checkout()
-                    .setName(targetRef.getName())
-                    .setCreateBranch(false)
-                    .call();
+            if (targetRef == null) {
+                this.logger.error("Could not find any refts for " + name);
+            } else {
+                this.logger.log("Found ref: " + targetRef.getName() + " for " + name);
+
+                git.checkout()
+                        .setName(targetRef.getName())
+                        .setCreateBranch(false)
+                        .call();
+            }
         });
         this.logger.log("checkout " + (result ? "Succeeded" : "Failed"));
         return result;
@@ -183,14 +195,21 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
         boolean result = false;
 
-        if (this.useCredentials) {
-            result = tryCommand(directory, g -> g.fetch()
+        UnSafeAction1<Git> code = (git) -> {
+            FetchResult fetchResult = git.fetch()
                     .setCredentialsProvider(credentialsProvider)
-                    .setRemote(remote));
-        } else {
-            result = tryCommand(directory, g -> g.fetch()
-                    .setRemote(remote));
-        }
+                    .setRemote(remote)
+                    .call();
+
+            logger.log("Fetch result: ");
+
+            fetchResult.submoduleResults().forEach((s, r) -> {
+                logger.log("Submodule: " + s + " -> " + r.getMessages());
+            });
+        };
+
+        result = tryCommand(directory, code);
+
         return result;
     }
 
@@ -400,6 +419,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
             refs.addAll(branches);
             refs.addAll(tags);
 
+            this.logger.log(" All available branches: ");
             branches.forEach(ref -> this.logger.log("branch: " + ref.getName()));
 
             Ref targetRef = null;
