@@ -46,6 +46,7 @@ import com.acidmanic.release.utilities.ClassRegistery;
 import com.acidmanic.release.versionsources.Cocoapods;
 import com.acidmanic.release.versionsources.JavaManifest;
 import com.acidmanic.release.versionsources.Maven;
+import com.acidmanic.release.versionsources.DotVersionTextFile;
 
 /**
  *
@@ -62,7 +63,7 @@ public class AppConfig {
     private static final TypeRegistery commandsRegistery = new TypeRegistery();
 
     public static void initialize() {
-        
+
         // Version Source Files
         ClassRegistery.makeInstance().add(Cocoapods.class);
         ClassRegistery.makeInstance().add(Maven.class);
@@ -72,6 +73,7 @@ public class AppConfig {
         ClassRegistery.makeInstance().add(NuGetDotnetCore.class);
         ClassRegistery.makeInstance().add(JavaManifest.class);
         ClassRegistery.makeInstance().add(VisualStudio.class);
+        ClassRegistery.makeInstance().add(DotVersionTextFile.class);
         // Readme Updaters
         ClassRegistery.makeInstance().add(MavenReadmeUpdater.class);
         ClassRegistery.makeInstance().add(GradleReadmeUpdater.class);
@@ -79,8 +81,7 @@ public class AppConfig {
         ClassRegistery.makeInstance().add(CocoapodsReadmeUpdater.class);
         //SourceControl Systems
         ClassRegistery.makeInstance().add(JGitFacadeSourceControl.class);
-        
-        
+
         //Commands
         commandsRegistery.registerClass(Auto.class);
         commandsRegistery.registerClass(Manual.class);
