@@ -17,8 +17,8 @@
 package com.acidmanic.release.sourcecontrols;
 
 import com.acidmanic.io.file.FileIOHelper;
-import com.acidmanic.lightweight.logger.ConsoleLogger;
 import com.acidmanic.lightweight.logger.Logger;
+import com.acidmanic.lightweight.logger.SilentLogger;
 import com.acidmanic.release.versioncontrols.VersionControl;
 import com.acidmanic.release.utilities.Compare;
 import com.acidmanic.release.utilities.Result;
@@ -30,7 +30,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.MergeResult;
@@ -62,9 +61,8 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
             + "	timestampResolution = 8000 nanoseconds\n"
             + "	minRacyThreshold = 4051 microseconds";
 
-    private final Logger logger = new ConsoleLogger();
+    private final Logger logger = new SilentLogger();
 
-    private boolean useCredentials = false;
     private CredentialsProvider credentialsProvider = CredentialsProvider.getDefault();
 
     @Override
@@ -444,7 +442,5 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     public void setCredentials(String username, String password) {
 
         this.credentialsProvider = new UsernamePasswordCredentialsProvider(username, password);
-        this.useCredentials = true;
     }
-
 }
