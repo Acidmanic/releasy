@@ -65,7 +65,7 @@ public class Auto extends ReleaseCommandBase {
 
         List<String> changes = new IncrementInputAnalyzer().extractChanges(standard, subCommandsExecutionContext.getIncrementSegmentNames());
 
-        boolean success = releaser.release(changes);
+        boolean success = releaser.release(changes).isSuccessful();
 
         logRelease(success);
 

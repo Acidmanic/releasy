@@ -25,7 +25,7 @@ import java.io.File;
 public interface VersionControl {
     
     
-    boolean markVersion(File directory,String versionString,String message);
+    MarkVersionResult markVersion(File directory,String versionString,String message);
     
     void setCredentials(String username, String password);
     

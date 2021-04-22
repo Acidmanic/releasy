@@ -7,6 +7,7 @@ package com.acidmanic.release.commands;
 
 import com.acidmanic.release.commands.arguments.IncrementInputAnalyzer;
 import com.acidmanic.commandline.commands.TypeRegistery;
+import com.acidmanic.release.ReleaseResult;
 import com.acidmanic.release.Releaser;
 import com.acidmanic.release.commands.arguments.Auth;
 import com.acidmanic.release.commands.arguments.Inc;
@@ -36,13 +37,11 @@ public class Bump extends ReleaseCommandBase {
                     subCommandsExecutionContext.getPassword());
         }
         
-        releaser.alsoMarkVersionOnRemoteServer(true);
-
         List<String> changes = new IncrementInputAnalyzer().extractChanges(standard, subCommandsExecutionContext.getIncrementSegmentNames());
 
-        boolean success = releaser.release(changes);
+        ReleaseResult releaseResult = releaser.release(changes);
 
-        if (success) {
+        if (releaseResult.isSuccessful()) {
             List<SourceControlSystem> presentSourceControls
                     = new SourceControlSystemInspector(workspace.getSourceControlRoot())
                             .getPresentSourceControlSystems();
@@ -58,11 +57,12 @@ public class Bump extends ReleaseCommandBase {
                             subCommandsExecutionContext.getPassword());
                 }
 
-                success = performMerge(root, sourceControl, mergeArguments);
+                boolean success = performMerge(root, sourceControl, mergeArguments);
 
                 if (success) {
 
-                    success = pushAll(root, sourceControl, mergeArguments);
+                    success = pushAll(root, sourceControl, mergeArguments)
+                            && releaseResult.getUpdateSourceControlRemote().invoke();
 
                     if (success) {
 

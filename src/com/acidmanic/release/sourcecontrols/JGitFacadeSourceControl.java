@@ -24,6 +24,7 @@ import com.acidmanic.release.utilities.Compare;
 import com.acidmanic.release.utilities.Result;
 import com.acidmanic.release.utilities.delegates.UnSafeAction1;
 import com.acidmanic.release.utilities.trying.Trier;
+import com.acidmanic.release.versioncontrols.MarkVersionResult;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -140,21 +141,25 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     }
 
     @Override
-    public boolean markVersion(File directory, String versionString, String message) {
-        
+    public MarkVersionResult markVersion(File directory, String versionString, String message) {
+
         String tag = normalizeForTag(versionString);
-        
-        deleteTagIfExists(directory,tag);
-        
+
+        deleteTagIfExists(directory, tag);
+
         Ref tagRef = tag(directory, tag, message);
-        
-        if(tagRef!=null){
-            
-            boolean success = (!this.keepServerUpdate) || push(directory, tag);
-            
-            return success;
+
+        if (tagRef != null) {
+
+            MarkVersionResult result = new MarkVersionResult();
+
+            result.setSuccessful(true);
+
+            result.setUpdateSourceControlRemote(() -> push(directory, tag));
+
+            return result;
         }
-        return false;
+        return new MarkVersionResult();
     }
 
     private String normalizeForTag(String value) {

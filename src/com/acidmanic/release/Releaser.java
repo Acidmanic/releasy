@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import com.acidmanic.release.application.AppConfig;
+import com.acidmanic.release.versioncontrols.MarkVersionResult;
 
 /**
  *
@@ -51,8 +52,6 @@ public class Releaser {
     private boolean useCredentials = false;
     private String username = null;
     private String password = null;
-
-    private boolean keepRemoteServerUpdate = false;
 
     public Releaser(ReleaseWorkspace workspace, VersionStandard standard) {
 
@@ -81,7 +80,7 @@ public class Releaser {
         this.afterVersionSet = afterVersionSet;
     }
 
-    public boolean release(List<String> changes) {
+    public ReleaseResult release(List<String> changes) {
         // Get Latest version from the source
         VersionModel version = getLatesVersion();
         // Increment the way it should
@@ -89,7 +88,7 @@ public class Releaser {
 
         changes.forEach(name -> inc.increment(version, name));
 
-        boolean result = setVersionToWorkspace(version);
+        ReleaseResult result = setVersionToWorkspace(version);
 
         return result;
     }
@@ -163,7 +162,7 @@ public class Releaser {
                 + ", " + new Date().toString();
     }
 
-    private boolean markReleaseOnVersionControl(VersionModel version) {
+    private ReleaseResult markReleaseOnVersionControl(VersionModel version) {
 
         VersionControl versionControl = AppConfig.getVersionControl();
 
@@ -173,8 +172,6 @@ public class Releaser {
             versionControl.resetCredentials();
         }
 
-        versionControl.setKeepRemoteServerUpdate(this.keepRemoteServerUpdate);
-
         VersionParser parser = new VersionParser(this.standard);
 
         String message = "Release version " + parser.getVersionString(version);
@@ -183,12 +180,16 @@ public class Releaser {
 
         File sourceRoot = this.workspace.getSourceControlRoot();
 
-        boolean success = versionControl.markVersion(sourceRoot, versionString, message);
+        MarkVersionResult markResult = versionControl.markVersion(sourceRoot, versionString, message);
 
-        return success;
+        ReleaseResult result = new ReleaseResult(
+                markResult.isSuccessful(),
+                markResult.getUpdateSourceControlRemote()
+        );
+        return result;
     }
 
-    public boolean setVersionToWorkspace(VersionModel version) {
+    public ReleaseResult setVersionToWorkspace(VersionModel version) {
         // Set new version everywhere
         SetVersionResult results = setAllVersions(version);
         // Check if is it ok to continue the release, regarding the result
@@ -203,15 +204,15 @@ public class Releaser {
             // Commit changes on source control
             commitSourceChangesIntoSourceControl(version);
             // Mark release on Version Control
-            boolean success = markReleaseOnVersionControl(version);
+            ReleaseResult result = markReleaseOnVersionControl(version);
 
-            return success;
+            return result;
         }
-        return false;
+        return new ReleaseResult();
     }
 
     // Expose functionality 
-    public boolean setVersionToWorkspace(String versionString) {
+    public ReleaseResult setVersionToWorkspace(String versionString) {
 
         VersionParser parser = new VersionParser(standard);
 
@@ -223,7 +224,7 @@ public class Releaser {
 
             return setVersionToWorkspace(versionModel);
         }
-        return false;
+        return new ReleaseResult();
     }
 
     public void setCredentials(String username, String password) {
@@ -243,9 +244,4 @@ public class Releaser {
 
         this.password = null;
     }
-
-    public void alsoMarkVersionOnRemoteServer(boolean keepUpdate) {
-        this.keepRemoteServerUpdate = keepUpdate;
-    }
-
 }

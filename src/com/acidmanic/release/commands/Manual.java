@@ -34,7 +34,7 @@ public class Manual extends ReleaseCommandBase {
 
         Releaser releaser = new Releaser(workspace, standard);
 
-        boolean success = releaser.setVersionToWorkspace(version);
+        boolean success = releaser.setVersionToWorkspace(version).isSuccessful();
 
         if (!success) {
             failApplication();
