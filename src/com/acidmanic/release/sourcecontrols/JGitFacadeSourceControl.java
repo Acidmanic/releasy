@@ -144,6 +144,8 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         
         String tag = normalizeForTag(versionString);
         
+        deleteTagIfExists(directory,tag);
+        
         Ref tagRef = tag(directory, tag, message);
         
         if(tagRef!=null){
@@ -469,5 +471,20 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     @Override
     public void resetCredentials() {
         this.credentialsProvider = CredentialsProvider.getDefault();
+    }
+
+    private void deleteTagIfExists(File directory, String tagName) {
+        Git git = tryGetGit(directory);
+
+        if (git != null) {
+
+            try {
+
+                git.tagDelete()
+                        .setTags(tagName)
+                        .call();
+            } catch (Exception e) {
+            }
+        }
     }
 }
