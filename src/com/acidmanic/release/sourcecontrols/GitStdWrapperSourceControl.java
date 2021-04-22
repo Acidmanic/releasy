@@ -89,4 +89,11 @@ public class GitStdWrapperSourceControl implements SourceControlSystem {
         this.useCredentials = true;
     }
 
+    @Override
+    public void resetCredentials() {
+        this.username = null;
+        this.password = null;
+        this.useCredentials = false;
+    }
+
 }

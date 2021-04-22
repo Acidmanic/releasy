@@ -25,6 +25,12 @@ import java.io.File;
 public interface VersionControl {
     
     
-    void markVersion(File directory,String versionString,String message);
+    boolean markVersion(File directory,String versionString,String message);
+    
+    void setCredentials(String username, String password);
+    
+    void setKeepRemoteServerUpdate(boolean keepUpdate);
+
+    void resetCredentials();
 
 }

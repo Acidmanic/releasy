@@ -48,6 +48,11 @@ public class Releaser {
 
     private final ReleaseWorkspace workspace;
 
+    private boolean useCredentials = false;
+    private String username = null;
+    private String password = null;
+
+    private boolean keepRemoteServerUpdate = false;
 
     public Releaser(ReleaseWorkspace workspace, VersionStandard standard) {
 
@@ -117,9 +122,9 @@ public class Releaser {
             Result<VersionModel> result = new Trier().tryFunction(() -> parser.parse(versionString));
 
             if (result.isSuccess()) {
-                
+
                 VersionModel model = result.getValue();
-                
+
                 if (model.toRawValue() > latest.toRawValue()) {
 
                     latest = model;
@@ -158,9 +163,17 @@ public class Releaser {
                 + ", " + new Date().toString();
     }
 
-    private void markReleaseOnVersionControl(VersionModel version) {
+    private boolean markReleaseOnVersionControl(VersionModel version) {
 
         VersionControl versionControl = AppConfig.getVersionControl();
+
+        if (this.useCredentials) {
+            versionControl.setCredentials(this.username, this.password);
+        } else {
+            versionControl.resetCredentials();
+        }
+
+        versionControl.setKeepRemoteServerUpdate(this.keepRemoteServerUpdate);
 
         VersionParser parser = new VersionParser(this.standard);
 
@@ -170,7 +183,9 @@ public class Releaser {
 
         File sourceRoot = this.workspace.getSourceControlRoot();
 
-        versionControl.markVersion(sourceRoot, versionString, message);
+        boolean success = versionControl.markVersion(sourceRoot, versionString, message);
+
+        return success;
     }
 
     public boolean setVersionToWorkspace(VersionModel version) {
@@ -188,9 +203,9 @@ public class Releaser {
             // Commit changes on source control
             commitSourceChangesIntoSourceControl(version);
             // Mark release on Version Control
-            markReleaseOnVersionControl(version);
+            boolean success = markReleaseOnVersionControl(version);
 
-            return true;
+            return success;
         }
         return false;
     }
@@ -209,6 +224,28 @@ public class Releaser {
             return setVersionToWorkspace(versionModel);
         }
         return false;
+    }
+
+    public void setCredentials(String username, String password) {
+
+        this.useCredentials = true;
+
+        this.username = username;
+
+        this.password = password;
+    }
+
+    public void resetCredentials() {
+
+        this.useCredentials = false;
+
+        this.username = null;
+
+        this.password = null;
+    }
+
+    public void alsoMarkVersionOnRemoteServer(boolean keepUpdate) {
+        this.keepRemoteServerUpdate = keepUpdate;
     }
 
 }

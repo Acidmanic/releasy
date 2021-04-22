@@ -65,6 +65,8 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
     private CredentialsProvider credentialsProvider = CredentialsProvider.getDefault();
 
+    private boolean keepServerUpdate = false;
+
     @Override
     public void acceptLocalChanges(File directory, String description) {
         Git git = tryGetGit(directory);
@@ -122,20 +124,35 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         return null;
     }
 
-    @Override
-    public void markVersion(File directory, String versionString, String message) {
+    private Ref tag(File directory, String tagName, String message) {
         Git git = tryGetGit(directory);
 
         if (git != null) {
-            String tag = normalizeForTag(versionString);
 
             try {
 
-                git.tag().setName(tag).setMessage(message).call();
+                return git.tag().setName(tagName).setMessage(message).call();
 
             } catch (Exception e) {
             }
         }
+        return null;
+    }
+
+    @Override
+    public boolean markVersion(File directory, String versionString, String message) {
+        
+        String tag = normalizeForTag(versionString);
+        
+        Ref tagRef = tag(directory, tag, message);
+        
+        if(tagRef!=null){
+            
+            boolean success = (!this.keepServerUpdate) || push(directory, tag);
+            
+            return success;
+        }
+        return false;
     }
 
     private String normalizeForTag(String value) {
@@ -314,7 +331,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
         return push(directory, "origin", branch);
     }
 
-    public boolean push(File directory, String remote, String branch) {
+    public boolean push(File directory, String remote, String reference) {
 
         Git git = tryGetGit(directory);
 
@@ -323,7 +340,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
             Result<Iterable<PushResult>> result = new Trier().tryFunction(
                     () -> git.push()
                             .setRemote(remote)
-                            .add(branch)
+                            .add(reference)
                             .setCredentialsProvider(credentialsProvider)
                             .call());
 
@@ -331,7 +348,7 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
 
                 for (PushResult pr : result.getValue()) {
 
-                    RemoteRefUpdate.Status status = getUpdateStatus(pr, branch);
+                    RemoteRefUpdate.Status status = getUpdateStatus(pr, reference);
 
                     if (status != null && Compare.EqualsOne(status, RemoteRefUpdate.Status.OK, RemoteRefUpdate.Status.UP_TO_DATE)) {
                         return true;
@@ -442,5 +459,15 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     public void setCredentials(String username, String password) {
 
         this.credentialsProvider = new UsernamePasswordCredentialsProvider(username, password);
+    }
+
+    @Override
+    public void setKeepRemoteServerUpdate(boolean keepUpdate) {
+        this.keepServerUpdate = keepUpdate;
+    }
+
+    @Override
+    public void resetCredentials() {
+        this.credentialsProvider = CredentialsProvider.getDefault();
     }
 }

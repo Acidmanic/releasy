@@ -38,4 +38,6 @@ public interface SourceControlSystem {
 
     void setCredentials(String username, String password);
 
+    void resetCredentials();
+
 }

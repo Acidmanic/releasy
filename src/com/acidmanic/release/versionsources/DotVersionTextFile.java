@@ -63,7 +63,7 @@ public class DotVersionTextFile implements VersionSourceFile {
         List<String> versions = new ArrayList<>();
 
         this.sources.forEach(source -> versions.add(
-                new FileIOHelper().tryReadAllText(source))
+                new FileIOHelper().tryReadAllText(source).trim())
         );
         return versions;
     }

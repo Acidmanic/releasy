@@ -31,6 +31,13 @@ public class Bump extends ReleaseCommandBase {
 
         Releaser releaser = new Releaser(workspace, standard);
 
+        if (subCommandsExecutionContext.isCredentialsReceived()) {
+            releaser.setCredentials(subCommandsExecutionContext.getUsername(),
+                    subCommandsExecutionContext.getPassword());
+        }
+        
+        releaser.alsoMarkVersionOnRemoteServer(true);
+
         List<String> changes = new IncrementInputAnalyzer().extractChanges(standard, subCommandsExecutionContext.getIncrementSegmentNames());
 
         boolean success = releaser.release(changes);
