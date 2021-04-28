@@ -17,6 +17,7 @@
 package com.acidmanic.release.sourcecontrols;
 
 import com.acidmanic.io.file.FileIOHelper;
+import com.acidmanic.lightweight.logger.ConsoleLogger;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.lightweight.logger.SilentLogger;
 import com.acidmanic.release.versioncontrols.VersionControl;
@@ -62,11 +63,9 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
             + "	timestampResolution = 8000 nanoseconds\n"
             + "	minRacyThreshold = 4051 microseconds";
 
-    private final Logger logger = new SilentLogger();
+    private final Logger logger = new ConsoleLogger();
 
     private CredentialsProvider credentialsProvider = CredentialsProvider.getDefault();
-
-    private boolean keepServerUpdate = false;
 
     @Override
     public void acceptLocalChanges(File directory, String description) {
@@ -466,11 +465,6 @@ public class JGitFacadeSourceControl implements SourceControlSystem, VersionCont
     public void setCredentials(String username, String password) {
 
         this.credentialsProvider = new UsernamePasswordCredentialsProvider(username, password);
-    }
-
-    @Override
-    public void setKeepRemoteServerUpdate(boolean keepUpdate) {
-        this.keepServerUpdate = keepUpdate;
     }
 
     @Override

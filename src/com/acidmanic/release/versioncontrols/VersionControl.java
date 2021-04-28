@@ -29,8 +29,6 @@ public interface VersionControl {
     
     void setCredentials(String username, String password);
     
-    void setKeepRemoteServerUpdate(boolean keepUpdate);
-
     void resetCredentials();
 
 }
