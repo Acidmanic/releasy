@@ -19,7 +19,7 @@ package com.acidmanic.release.application;
 import com.acidmanic.commandline.commands.Command;
 import com.acidmanic.commandline.commands.CommandFactory;
 import com.acidmanic.lightweight.logger.ConsoleLogger;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -38,19 +38,18 @@ public class Application {
 
         CommandFactory factory = new CommandFactory(
                 AppConfig.getCommandsRegistery(),
-                 new ConsoleLogger(), context
+                new ConsoleLogger(), context
         );
 
-        HashMap<Command, String[]> commands = factory.make(args, true);
+        Map<Command, String[]> commands = factory.make(args, true);
 
         commands.forEach((c, a) -> c.execute(a));
-        
-        
-        if(!context.getExecutionSuccess()){
+
+        if (!context.getExecutionSuccess()) {
             System.err.println("------------------------------");
             System.err.println(context.getFailureMessage());
             System.err.println("------------------------------");
-            
+
             System.exit(-1);
         }
 
